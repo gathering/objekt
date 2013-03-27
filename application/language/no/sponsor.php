@@ -19,7 +19,8 @@ return array(
 	'choose_sponsor2' => 'Velg hvilken sponsor person tilhører',
 	'otherpersons' => 'Andre person(er)',
 	'child' => 'Unger',
-	'add_child' => 'Fød'
+	'add_child' => 'Fød',
+	'log' => 'Logg'
 );
 
 ?>

@@ -27,9 +27,13 @@ return array(
 	'footer' => 'Laga av folk med noe mellom øreflippene. Alt er beskytta med kopirettigheter, men vi gir ut bruksrett til tider - helt gratis.',
 	'index' => array(
 		'users' => 'Registrerte brukere',
-		'sponsors' => 'Registrerte sponsorer'
+		'sponsors' => 'Registrerte sponsorer',
+		'search' => 'Søk'
 	),
-	'success_title' => 'Jasså! Dette løste du med stil!'
+	'success_title' => 'Jasså! Dette løste du med stil!',
+	'nothing_found' => 'Fant ingenting..',
+	'search_person' => 'Søk på person…',
+	'search_sponsor' => 'Søk på sponsor…'
 );
 
 ?>

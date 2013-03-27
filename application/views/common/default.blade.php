@@ -41,7 +41,7 @@
 	</div> <!-- #header -->
 	
 	<div id="search">
-		<form>
+		<form method="post" action="{{ url('search') }}">
 			<input type="text" name="search" placeholder="{{ __('common.search') }}" id="searchField" />
 		</form>		
 	</div> <!-- #search -->
@@ -65,6 +65,12 @@
 				<a href="{{ url('/sponsors') }}">{{ __('nav.sponsors') }}</a>				
 			</li>
 			@endif
+			@if (Auth::user()->can("accreditation"))
+			<li id="navDashboard" class="nav{{ URI::segment(2) == 'accreditation' ? ' active' : '' }}">
+				<span class="icon-document-fill"></span>
+				<a href="{{ url('/accreditation') }}">{{ __('nav.accreditation') }}</a>				
+			</li>
+			@endif
 		</ul>
 				
 	</div> <!-- #sidebar -->
@@ -77,7 +83,7 @@
 		
 		<div class="container">
 
-			@if ( is_object(Session::get('error')) )
+			@if ( is_object(Session::get('error')) && isset(Session::get('error')->messages) && is_array(Session::get('error')->messages) )
 			@foreach (Session::get('error')->messages as $message)
 				<div class="grid-24">
 					<div class="notify notify-error">
@@ -168,6 +174,14 @@
 </div>
 
 <script src="{{ asset('javascripts/all.js') }}"></script>
-
+<script>
+$(function() {
+	$("#datepicker").datepicker({ dateFormat: "yy-mm-dd", minDate: 0 });
+	$("#timepicker").timepicker({ 
+		showPeriod: false , showNowButton: true, showCloseButton: true,
+		showPeriodLabels: false
+	});
+});
+</script>
 </body>
 </html>

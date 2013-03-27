@@ -1,10 +1,9 @@
 <div class="grid-24">
-<a href="{{ url('sponsor/add') }}" class="btn btn-small btn-primary">{{ __('user.add_new_sponsor') }}</a><br /><br />
 	<div class="widget widget-table">
 						
 		<div class="widget-header">
 			<span class="icon-list"></span>
-			<h3 class="icon chart">{{ __('common.index.sponsors') }}</h3>		
+			<h3 class="icon chart">{{ __('common.index.search') }}</h3>		
 		</div>
 
 		<div class="widget-content">
@@ -16,14 +15,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (Sponsor::all() as $sponsor)
+					@foreach ($results as $result)
 					<tr>
-						<td><a href="{{ $sponsor->url() }}">{{ $sponsor->name }}</a></td>
+						<td><a href="{{ $result->url }}">{{ $result->name }}</a></td>
 					</tr>
 					@endforeach
 				</tbody>
 			</table>
 		</div>
 	</div>
-
 </div>

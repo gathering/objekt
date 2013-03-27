@@ -22,7 +22,7 @@
 					</div> <!-- .user-card-avatar -->
 					
 					<div class="details">
-						<p><strong><a href="{{ url('sponsor/'.$sponsor->slug.'/'.$person->slug) }}">{{ $person->firstname }} {{ $person->surname }}</a></strong><br>
+						<p><strong><a href="{{ $person->url() }}">{{ $person->firstname }} {{ $person->surname }}</a></strong><br>
 							{{ Format::phone($person->phone) }}<br><br>
 							@if ($person->status == "registred")
 							<span class="ticket ticket-info">{{ __('sponsor.status.registred') }}</span><br />
@@ -57,7 +57,7 @@
 					</div> <!-- .user-card-avatar -->
 					
 					<div class="details">
-						<p><strong><a href="{{ url('sponsor/'.$sponsor->slug.'/'.$person->slug) }}">{{ $person->firstname }} {{ $person->surname }}</a></strong><br>
+						<p><strong><a href="{{ $person->url() }}">{{ $person->firstname }} {{ $person->surname }}</a></strong><br>
 							{{ Format::phone($person->phone) }}<br><br>
 							@if ($person->status == "registred")
 							<span class="ticket ticket-info">{{ __('sponsor.status.registred') }}</span><br />

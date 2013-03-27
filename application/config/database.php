@@ -69,10 +69,10 @@ return array(
 
 		'mysql' => array(
 			'driver'   => 'mysql',
-			'host'     => '127.0.0.1',
+			'host'     => '151.216.104.8',
 			'database' => 'supersponsor',
-			'username' => 'root',
-			'password' => 'root',
+			'username' => 'supersponsor',
+			'password' => 'tRnENa4Zz3vBGWqm',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 		),

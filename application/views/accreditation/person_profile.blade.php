@@ -19,10 +19,6 @@ $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) 
 				<span class="ticket"><i class="icon-user"></i> {{ __('sponsor.contactperson') }}</span><br />
 				@endif
 				<br />
-				@if (!$person->is_child())
-				<a href="{{ url('sponsor/'.$person->sponsor()->slug.'/'.$person->slug.'/add-child') }}" class="btn btn-small btn-primary">{{ __('sponsor.add_child') }}</a><br /><br />	
-				@endif
-				<br />
 			</div>
 			<div class="grid-16">
 				<div class="field-group">
@@ -34,23 +30,15 @@ $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) 
 							</tr>
 							<tr>
 								<td class="description"><b>{{ __('user.phone') }}</b></td>
-								<td class="value"><span><a href="skype:{{ $person->phone }}?call">{{ Format::phone($person->phone) }}</a></span></td>
+								<td class="value"><span><a href="skype:{{ $person->phone }}?call">{{ empty($person->phone) ? "<i>".__('user.missing_string')."</i>" : Format::phone($person->phone) }}</a></span></td>
 							</tr>
 							<tr>
 								<td class="description"><b>{{ __('user.email') }}</b></td>
-								<td class="value"><span><a href="mailto:{{ $person->email }}">{{ $person->email }}</a></span></td>
+								<td class="value"><span><a href="mailto:{{ $person->email }}">{{ empty($person->email) ? "<i>".__('user.missing_string')."</i>" : $person->email }}</a></span></td>
 							</tr>
 							<tr>
 								<td class="description"><b>{{ __('sponsor.associated') }}</b></td>
 								<td class="value"><span><a href="{{ url('sponsor/'.$person->sponsor()->slug) }}">{{ $person->sponsor()->name }}</a></span></td>
-							</tr>
-							<tr>
-								<td class="description"><b>{{ __('user.created_at') }}</b></td>
-								<td class="value"><span>{{ Date::nice($person->created_at) }}</span></td>
-							</tr>
-							<tr>
-								<td class="description"><b>{{ __('user.updated_at') }}</b></td>
-								<td class="value"><span>{{ Date::nice($person->updated_at) }}</span></td>
 							</tr>
 							<tr>
 								<td class="description"><b>{{ __('user.notes') }}</b></td>
@@ -70,9 +58,30 @@ $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) 
 									@endif
 								</span></td>
 							</tr>
+							<tr>
+								<td class="value" colspan="2"><a href="{{ $person->url() }}">{{ __('user.readmore') }}…</a></td>
+							</tr>
 						</tbody>
 					</table>
-					<a href="{{ $person->url('accreditation') }}" class="btn">{{ __('accreditation.accredit') }}</a>
+					@if ($person->status != "arrived")
+					<a href="{{ $person->url('accreditation/wristband') }}" onclick="return confirm('{{ __('accreditation.confirm') }}')" class="btn btn-pink">
+						<span class="icon-document-alt-fill"></span>
+						{{ __('accreditation.wristband') }}
+					</a>
+
+					<a href="{{ $person->url('accreditation/badge') }}" class="btn btn-green">
+						<span class="icon-award-fill"></span>
+						{{ __('accreditation.badge') }}
+					</a>
+					@elseif ($person->status == "departed")
+					<i>{{ __('accreditation.has_departed') }}</i>			
+					@else
+					<i>{{ __('accreditation.already_done') }}</i><br /><br />
+					<a href="{{ $person->url('accreditation/departed') }}" class="btn btn-red">
+						<span class="icon-arrow-right-alt1"></span>
+						{{ __('accreditation.departed') }}
+					</a>
+					@endif
 				</div>
 			</div>
 		</div>

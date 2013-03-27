@@ -6,6 +6,10 @@ return array(
 		array(
 			'index' => __('nav.dashboard')
 		),
+	'search' =>
+		array(
+			'results' => 'Søk'
+		),
 	'sponsors' =>
 		array(
 			'index' => __('nav.sponsors'),
@@ -18,6 +22,12 @@ return array(
 		array(
 			'index' => __('nav.users'),
 			'add' => __('user.add_new_user')
+		),
+	'accreditation' =>
+		array(
+			'index' => __('nav.accreditation'),
+			'person_profile' => __('nav.accreditation'),
+			'badge' => 'Akkreditering med badge'
 		)
 
 );

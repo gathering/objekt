@@ -14,8 +14,22 @@ class Sponsor extends Eloquent {
 		return $this->has_many('person')->where("parent_id", "=", "0");
 	}
 
+	public function logs(){
+		return $this->has_many('logg', 'related_id')->where("type", "=", "sponsor")->order_by("created_at", "desc");
+	}
+
 	public function person_x(){
 		return $this->has_many('person');
+	}
+	function is_current_event(){
+		$event = Config::get('application.event');
+
+		if($this->event_id == $event->id){
+			return true;
+		} else return false;
+	}
+	public function url(){
+		return URL::to('sponsor/'.$this->slug);
 	}
 
 	public function contactpersons(){

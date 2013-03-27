@@ -14,13 +14,40 @@ Route::group(array('before' => 'auth|event'), function()
 	});
 
 });
-/* Functions for super admins */
+/* Users */
 Route::group(array('before' => 'auth|superadmin|event'), function()
 {
 	Route::get('/users', 'users@index');
 	Route::get('/users/add', 'users@add');
 	Route::post('/users/add', 'users@post_add');
 });
+/* Accreditation */
+Route::group(array('before' => 'auth|superadmin|event'), function()
+{
+	Route::get('/accreditation', 'accreditation@index');
+	Route::post('/accreditation', 'search@search_accreditation');
+
+	Route::get('/accreditation/wristband/(:any)/(:any)', 'accreditation@wristband');
+	Route::get('/accreditation/wristband/(:any)/(:any)/(:any)', 'accreditation@wristband');
+
+	Route::get('/accreditation/departed/(:any)/(:any)', 'accreditation@departed');
+	Route::get('/accreditation/departed/(:any)/(:any)/(:any)', 'accreditation@departed');
+
+	Route::get('/accreditation/badge/(:any)/(:any)', 'accreditation@badge');
+	Route::get('/accreditation/badge/(:any)/(:any)/(:any)', 'accreditation@badge');
+	Route::post('/accreditation/badge/(:any)/(:any)', 'accreditation@post_badge');
+	Route::post('/accreditation/badge/(:any)/(:any)/(:any)', 'accreditation@post_badge');
+	
+	Route::get('/accreditation/(:any)/(:any)', 'accreditation@person');
+	Route::get('/accreditation/(:any)/(:any)/(:any)', 'accreditation@child');
+});
+/* Search */
+Route::group(array('before' => 'auth|superadmin|event'), function(){
+	Route::post('/search', 'search@index');
+	Route::get('/search/(:any)', 'search@index');
+	Route::post('/search/(:any)', 'search@index');
+});
+/* Sponsors */
 Route::group(array('before' => 'auth|superadmin|event'), function(){
 	Route::get('/sponsors', 'sponsors@index');
 	Route::get('/sponsor/(:any)', 'sponsors@profile');

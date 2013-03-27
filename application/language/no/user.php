@@ -32,8 +32,9 @@ return array(
 	'firstname' => 'Fornavn',
 	'surname' => 'Etternavn',
 	'add_child' => 'Fød nytt barn',
-	'notes' => 'Notater'
-
+	'notes' => 'Notater',
+	'missing_string' => 'Mangler…',
+	'readmore' => 'Les profil'
 );
 
 ?>

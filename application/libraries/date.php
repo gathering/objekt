@@ -25,9 +25,32 @@ class Date {
         	return __("day.".strtolower(date('l', $time))).$ttime;
         }
 
-        $ttime = " ".date("Y", $time);
+        $ttime = " ".date("Y", $time)." ".$ttime;
 
         return date('j', $time).". ".__("month.".strtolower(date('F', $time))).$ttime;
+    }
+
+    public static function regular($datetime=0) {
+        if($datetime == "0000-00-00 00:00:00") return "Ukjent dato.";
+        $time = ($datetime > 0) ? strtotime($datetime) : time();
+        if(date('H:i:s', $time) != '00:00:00'){
+             $ttime = " kl. ".date('H:i', $time);
+        } else {
+            $ttime = "";
+        }
+        $ttime = " ".date("Y", $time)." ".$ttime;
+
+        return date('j', $time).". ".__("month.".strtolower(date('F', $time))).$ttime;
+    }
+
+    public static function countdown($to=0, $from=0) {
+        if($from == 0) $from = time();
+        $dt_end = new DateTime(date("Y-m-d H:i:s", $from));
+        $remain = $dt_end->diff(new DateTime(date("Y-m-d H:i:s", strtotime($to))));
+        if($remain->d > 0)
+            return __("time.countdown_days", array("days" => $remain->d, "hours" => $remain->h));
+        else
+            return __("time.countdown_hours", array("hours" => $remain->h));
     }
 
     public static function snice($datetime=0) {
