@@ -57,8 +57,8 @@ class Accreditation_Controller extends Controller {
 
 		$input = Input::all();
 		$rules = array(
-		    'badge_id'  => 'required|numeric',
-		    'date' => 'required|after:today',
+		    'badge_id'  => 'numeric',
+		    'date' => 'required|after:'.date("Y-m-d H:i:s", time()-86400),
 		    'time' => 'required'
 		);
 
@@ -78,7 +78,35 @@ class Accreditation_Controller extends Controller {
 		unset($entry->date, $entry->time);
 		$entry = $person->entries()->insert($entry);
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$sponsor->name}» has arrived for a while, equiped with a badge, departing at {$entry->delivery_date}.");
+		$event = Config::get('application.event');
+		if(isset($input['automatic'])){
+			if($event->has_badge_printer){
+				BadgeCreator::printBadge($entry);
+			} else {
+				BadgeCreator::save($entry);
+			}
+		}
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_arrived', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
+	}
+	public function action_save_badge($sponsor_slug, $person_slug, $child_slug=""){
+		$sponsor = Sponsor::find($sponsor_slug);
+		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug) && $child_slug != "debug"){
+			$person = $sponsor->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+		$badges = $person->entries()->where("type", "=", "badge")->get();
+		$event = Config::get('application.event');
+		foreach($badges as $badge){
+			if($event->has_badge_printer){
+				BadgeCreator::printBadge($badge);
+			} else {
+				if($child_slug == "debug")
+					BadgeCreator::save($badge, false);
+				else
+					BadgeCreator::save($badge);
+			}
+		}
+		die("Saved!");
 	}
 	public function action_departed($sponsor_slug, $person_slug, $child_slug=""){
 		$sponsor = Sponsor::find($sponsor_slug);
@@ -97,25 +125,6 @@ class Accreditation_Controller extends Controller {
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$sponsor->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_departed', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
-	public function action_img_test(){
-		$event = Config::get('application.event');
-		$layer = PHPImageWorkshop\ImageWorkshop::initFromPath(path('app')."views/crewBadge-{$event->id}.jpg");
-
-		$text = strtoupper("I am the text");
-		$fontPath = path('app')."fonts/quan-extralight.otf";
-		$fontSize = 58;
-		$fontColor = "000000";
-		$textRotation = 0;
-		    
-		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
-		$sublayerInfos = $layer->addLayerOnTop($text, 10, 10, 0);
-		$image = $layer->getResult();
-		header('Content-type: image/jpeg');
-		header('Content-Disposition: filename="butterfly.jpg"');
-		imagejpeg($image, null, 95); // We choose to show a JPEG (quality of 95%)
-		exit;
-	}
-
 }
 
 ?>

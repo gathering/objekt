@@ -14,8 +14,8 @@
 							<label for="fname">{{ __('accreditation.badge_id') }}</label>
 						</div>
 						<div class="field">
-							<input type="checkout" name="automatic" id="automatic" size="10" class="">			
-							<label for="fname">{{ __('accreditation.automatic') }}</label>
+							<input type="checkbox" name="automatic" id="automatic" checked="checked" value="1" />
+							<label for="automatic">{{ __('accreditation.automatic') }}</label>
 						</div>
 					</div>
 					<div class="field-group inlineField">								

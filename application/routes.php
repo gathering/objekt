@@ -36,9 +36,9 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::get('/accreditation/departed/(:any)/(:any)', 'accreditation@departed');
 	Route::get('/accreditation/departed/(:any)/(:any)/(:any)', 'accreditation@departed');
 
-	Route::get('/accreditation/test', 'accreditation@img_test');
-
 	Route::get('/accreditation/badge/(:any)/(:any)', 'accreditation@badge');
+	Route::get('/accreditation/save-badge/(:any)/(:any)', 'accreditation@save_badge');
+	Route::get('/accreditation/save-badge/(:any)/(:any)/(:any)', 'accreditation@save_badge');
 	Route::get('/accreditation/badge/(:any)/(:any)/(:any)', 'accreditation@badge');
 	Route::post('/accreditation/badge/(:any)/(:any)', 'accreditation@post_badge');
 	Route::post('/accreditation/badge/(:any)/(:any)/(:any)', 'accreditation@post_badge');
