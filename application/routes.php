@@ -20,6 +20,9 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::get('/users', 'users@index');
 	Route::get('/users/add', 'users@add');
 	Route::post('/users/add', 'users@post_add');
+
+	Route::get('/user/(:num)/reset-password', 'users@reset_password');
+	Route::post('/user/(:num)/reset-password', 'users@post_reset_password');
 });
 /* Accreditation */
 Route::group(array('before' => 'auth|superadmin|event'), function()
@@ -32,6 +35,8 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 
 	Route::get('/accreditation/departed/(:any)/(:any)', 'accreditation@departed');
 	Route::get('/accreditation/departed/(:any)/(:any)/(:any)', 'accreditation@departed');
+
+	Route::get('/accreditation/test', 'accreditation@img_test');
 
 	Route::get('/accreditation/badge/(:any)/(:any)', 'accreditation@badge');
 	Route::get('/accreditation/badge/(:any)/(:any)/(:any)', 'accreditation@badge');

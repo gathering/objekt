@@ -17,6 +17,7 @@
 						<th>{{ __('user.username') }}</th>
 						<th>{{ __('user.email') }}</th>
 						<th>{{ __('user.role') }}</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -27,6 +28,7 @@
 						<td>{{ $user->username }}</td>
 						<td>{{ $user->email }}</td>
 						<td>{{ __('user.roles.'.strtolower($user->role->name)) }}</td>
+						<td><a href="{{url('user/'.$user->id.'/reset-password')}}">{{ __('user.reset_password') }}</a></td>
 					</tr>
 					@endforeach
 				</tbody>

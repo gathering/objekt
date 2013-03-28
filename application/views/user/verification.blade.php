@@ -125,6 +125,9 @@
 			at du alltid har kontroll over hva som skjer.
 		</p>
 		<p>
+			Ditt brukernavn er: {{ $user->username }}<br />
+			… og ditt passord er: {{ $password }}
+		<p>
 			<h3><a href="{{ url('verification/'.$user->salt) }}">Klikk for å verifisere kontoen</a></h3>
 			<small>Fungerer ikke lenken? Prøv å skriv inn denne i nettleseren din {{ url('verification/'.$user->salt) }}</small>
 		<p>

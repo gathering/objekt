@@ -97,6 +97,24 @@ class Accreditation_Controller extends Controller {
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$sponsor->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_departed', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
+	public function action_img_test(){
+		$event = Config::get('application.event');
+		$layer = PHPImageWorkshop\ImageWorkshop::initFromPath(path('app')."views/crewBadge-{$event->id}.jpg");
+
+		$text = strtoupper("I am the text");
+		$fontPath = path('app')."fonts/quan-extralight.otf";
+		$fontSize = 58;
+		$fontColor = "000000";
+		$textRotation = 0;
+		    
+		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
+		$sublayerInfos = $layer->addLayerOnTop($text, 10, 10, 0);
+		$image = $layer->getResult();
+		header('Content-type: image/jpeg');
+		header('Content-Disposition: filename="butterfly.jpg"');
+		imagejpeg($image, null, 95); // We choose to show a JPEG (quality of 95%)
+		exit;
+	}
 
 }
 

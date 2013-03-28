@@ -8,10 +8,15 @@
 			<div class="widget-content">
 				<div class="field-group">
 					<label>{{ __('accreditation.badge_details') }}</label>
-
-					<div class="field">
-						<input type="text" name="badge_id" id="badge_id" size="10" class="">			
-						<label for="fname">{{ __('accreditation.badge_id') }}</label>
+					<div class="field-group inlineField">
+						<div class="field">
+							<input type="text" name="badge_id" id="badge_id" size="10" class="">			
+							<label for="fname">{{ __('accreditation.badge_id') }}</label>
+						</div>
+						<div class="field">
+							<input type="checkout" name="automatic" id="automatic" size="10" class="">			
+							<label for="fname">{{ __('accreditation.automatic') }}</label>
+						</div>
 					</div>
 					<div class="field-group inlineField">								
 						<label for="datepicker">{{ __('accreditation.delivery_deadline') }}</label>

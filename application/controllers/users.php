@@ -12,6 +12,47 @@ class Users_Controller extends Base_Controller {
 		return View::make('user.add');
 	}
 
+	public function action_reset_password($user_id)
+	{
+		return View::make('user.reset-password');
+	}
+
+	public function action_post_reset_password($user_id)
+	{
+		$input = Input::all();
+		$rules = array(
+		    'password' => 'required|same:password2'
+		   	);
+
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+		$user = Auth::retrieve($user_id);
+		if(!$user) return Redirect::to(Request::referrer())->with('error', 'User not found.');
+		
+		$password = Input::get('password');
+
+		$user->password = $password;
+
+		$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
+		$response = Mandrill::request('/messages/send', array(
+		    'message' => array(
+		        'html' => $contents->render(),
+		        'subject' => Lang::line('user.verification_subject')->get(),
+		        'from_email' => Lang::line('user.noreply')->get(),
+		        'from_name' => Lang::line('user.noreply_name')->get(),
+		        'to' => array(array('email'=>$user->email)),
+		    ),
+		));
+
+		$user->save();
+		return Redirect::to('users')->with('success', __('user.user_added'));
+	}
+
 	public function action_post_add()
 	{		
 		$input = Input::all();
@@ -43,12 +84,13 @@ class Users_Controller extends Base_Controller {
 		$user->role_id = $role->id;
 		$user->save();
 
-		$contents = View::make("user.verification")->with("user", $user);
+		$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
 		$response = Mandrill::request('/messages/send', array(
 		    'message' => array(
 		        'html' => $contents->render(),
 		        'subject' => Lang::line('user.verification_subject')->get(),
 		        'from_email' => Lang::line('user.noreply')->get(),
+		        'from_name' => Lang::line('user.noreply_name')->get(),
 		        'to' => array(array('email'=>$user->email)),
 		    ),
 		));

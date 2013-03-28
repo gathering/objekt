@@ -37,6 +37,7 @@ return array(
 
 	'verify' => array('auto' => true),
 	'mandrill' => array('auto' => true),
+	'imageworkshop' => array('auto' => true),
 	'superevent' => array('auto' => true)
 
 );

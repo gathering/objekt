@@ -74,7 +74,7 @@ return array(
 			'username' => 'supersponsor',
 			'password' => 'tRnENa4Zz3vBGWqm',
 			'charset'  => 'utf8',
-			'prefix'   => '',
+			'prefix'   => '', 
 		),
 
 		'pgsql' => array(

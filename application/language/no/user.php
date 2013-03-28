@@ -14,6 +14,7 @@ return array(
 	'add_new_sponsor' => 'Legg til ny sponsor',
 	'verification_subject' => 'Velkommen til SuperSponsor!',
 	'noreply' => 'caremail@supersponsor.no',
+	'noreply_name' => 'CareMail Sponsor',
 	'roles' => array(
 			'supersponsoradmin' => '<i>SuperSponsorkoordinator</i>'
 		),
@@ -34,7 +35,8 @@ return array(
 	'add_child' => 'Fød nytt barn',
 	'notes' => 'Notater',
 	'missing_string' => 'Mangler…',
-	'readmore' => 'Les profil'
+	'readmore' => 'Les profil',
+	'reset_password' => 'Resett passord'
 );
 
 ?>

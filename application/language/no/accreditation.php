@@ -15,7 +15,8 @@ return array(
 	'departed' => 'Merk forlatt',
 	'has_departed' => 'Personen har forlatt arrangementet, og er ikke forventet å returnere. Dette objektet er derfor ugyldig.',
 	'confirm' => 'Bekreft.',
-	'undelivered_badges' => 'Ikke innleverte badger..'
+	'undelivered_badges' => 'Ikke innleverte badger..',
+	'automatic' => 'Automatisk utprint av badge'
 );
 
 ?>
