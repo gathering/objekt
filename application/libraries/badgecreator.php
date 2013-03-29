@@ -23,7 +23,6 @@ class BadgeCreator {
 		$sublayerInfos = $layer->addLayerOnTop($text, 169, 33, 0);
 
 		$text = strtoupper(date("d.m \k\l. H:i", strtotime($badge->delivery_date)));
-		die($text);
 		$fontPath = path('app')."fonts/PlutoSansCondBold.otf";
 		$fontSize = 44;
 		$fontColor = "FFFFFF";
