@@ -101,7 +101,7 @@ class Accreditation_Controller extends Controller {
 					BadgeCreator::save($badge, false);
 			else {
 				if($event->has_badge_printer){
-					#BadgeCreator::printBadge($badge);
+					BadgeCreator::printBadge($badge);
 				} else {
 					BadgeCreator::save($badge);
 				}
