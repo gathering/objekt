@@ -22,7 +22,8 @@ class BadgeCreator {
 		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
 		$sublayerInfos = $layer->addLayerOnTop($text, 169, 33, 0);
 
-		$text = strtoupper("29.03 KL. 16:00");
+		$text = strtoupper(date("d.m \k\l. H:i", strtotime($badge->delivery_date)));
+		die($text);
 		$fontPath = path('app')."fonts/PlutoSansCondBold.otf";
 		$fontSize = 44;
 		$fontColor = "FFFFFF";

@@ -97,13 +97,14 @@ class Accreditation_Controller extends Controller {
 		$badges = $person->entries()->where("type", "=", "badge")->get();
 		$event = Config::get('application.event');
 		foreach($badges as $badge){
-			if($event->has_badge_printer){
-				BadgeCreator::printBadge($badge);
-			} else {
-				if($child_slug == "debug")
+			if($child_slug == "debug")
 					BadgeCreator::save($badge, false);
-				else
+			else {
+				if($event->has_badge_printer){
+					#BadgeCreator::printBadge($badge);
+				} else {
 					BadgeCreator::save($badge);
+				}
 			}
 		}
 		die("Saved!");
