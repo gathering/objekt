@@ -40,7 +40,7 @@ class BadgeCreator {
 		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
 		$sublayerInfos = $layer->addLayerOnTop($text, 1080, 643, 0);
 
-		$dirPath = path('storage')."bagde/";
+		$dirPath = path('storage')."badge/";
 		$filename = "badge-{$badge->id}.png";
 		$createFolders = true;
 		$backgroundColor = null; // transparent, only for PNG (otherwise it will be white if set null)
