@@ -7,7 +7,12 @@ class Sponsor extends Eloquent {
 	}
 
 	static function all(){
-		return parent::order_by('name', 'asc')->get();
+		$event = Config::get('application.event');
+		return parent::order_by('name', 'asc')->where("event_id", "=", $event->id)->get();
+	}
+
+	static function everyone(){
+		return parent::all();
 	}
 
 	public function person(){
@@ -40,6 +45,42 @@ class Sponsor extends Eloquent {
 		$event = Config::get('application.event');
 		$this->event_id = $event->id;
 		parent::save();
+	}
+
+	function color(){
+		$logo = $this->logo();
+		if(!$logo) return false;
+
+		if (Cache::has('color_'.$this->slug))
+			return Cache::get('color_'.$this->slug);
+
+		$color = colorPalette::get($this->logo(), 1);
+		$color = isset($color[0]) ? $color[0] : false;
+		Cache::forever('color_'.$this->slug, $color);
+		return $color;
+	}
+
+	function logo(){
+		if(empty($this->website)) return false;
+		if (Cache::has('logo_'.$this->slug))
+			return Cache::get('logo_'.$this->slug);
+
+		$html = httpAsset::get($this->website);
+
+		$doc = new DOMDocument();
+		@$doc->loadHTML($html);
+
+		$tags = $doc->getElementsByTagName('img');
+
+		foreach ($tags as $tag) {
+			$src = $tag->getAttribute('src');
+			if(preg_match("/logo/", $src)){
+				$host = parse_url($this->website);
+				$src = preg_match("/http/", $src) ? $src : "http://".$host['host'].$src;
+				Cache::forever('logo_'.$this->slug, $src);
+				return $src;
+			}
+		}
 	}
 
 	static function find($any){

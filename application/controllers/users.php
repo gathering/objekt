@@ -7,6 +7,26 @@ class Users_Controller extends Base_Controller {
 		return View::make('user.index');
 	}
 
+	public function action_delete_user($user_id)
+	{
+		$user = Auth::retrieve($user_id);
+		if(!$user) return Redirect::to(Request::referrer())->with('error', 'User not found.');
+
+		return View::make('user.delete_user')->with("user", $user);
+	}
+
+	public function action_post_delete_user($user_id)
+	{
+		$user = Auth::retrieve($user_id);
+		if(!$user) return Redirect::to(Request::referrer())->with('error', 'User not found.');
+
+		$user->disabled = 1;
+		$user->deleted = 1;
+		$user->save();
+
+		return Redirect::to('/users')->with("success", __('user.user_deleted'));
+	}
+
 	public function action_add()
 	{
 		return View::make('user.add');
@@ -15,6 +35,11 @@ class Users_Controller extends Base_Controller {
 	public function action_reset_password($user_id)
 	{
 		return View::make('user.reset-password');
+	}
+
+	public function action_activate_user($user_id)
+	{
+		
 	}
 
 	public function action_post_reset_password($user_id)

@@ -21,7 +21,8 @@ return array(
 	'user' =>
 		array(
 			'index' => __('nav.users'),
-			'add' => __('user.add_new_user')
+			'add' => __('user.add_new_user'),
+			'delete_user' => __('user.delete_user')
 		),
 	'accreditation' =>
 		array(

@@ -20,7 +20,14 @@ return array(
 	'otherpersons' => 'Andre person(er)',
 	'child' => 'Unger',
 	'add_child' => 'Fød',
-	'log' => 'Logg'
+	'log' => 'Logg',
+	'activity' => 'Aktiviteter',
+	'profile' => 'Profil',
+	'total' => 'Totalt',
+	'registred' => 'Registrerte',
+	'arrived' => 'Ankommet',
+	'departed' => 'Forduftet',
+	'timeline' => 'Titslinje'
 );
 
 ?>

@@ -6,7 +6,9 @@ return array(
 	'users' => 'Brukere',
 	'sponsors' => 'Sponsorer',
 	'logout' => 'Logg ut',
-	'accreditation' => 'Akkreditering'
+	'accreditation' => 'Akkredd',
+	'admin' => 'Sjef',
+	'list_sponsors' => 'Vis sponsorer'
 
 );
 

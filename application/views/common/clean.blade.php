@@ -11,12 +11,11 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />		
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/all.css') }}" type="text/css" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/reset.css') }}" type="text/css" media="screen" title="no title" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/text.css') }}" type="text/css" media="screen" title="no title" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/buttons.css') }}" type="text/css" media="screen" title="no title" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/theme-default.css') }}" type="text/css" media="screen" title="no title" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/login.css?v=2') }}" type="text/css" media="screen" title="no title" />
+	<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+  	<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  	<link rel="stylesheet" href="{{ asset('css/plugin.css') }}">
+  	<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
 </head>
 
 <body>

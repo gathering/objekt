@@ -1,55 +1,49 @@
-<div class="grid-24">
-	<form method="post" class="form uniformForm" action="{{ url('users/add') }}">
-		<div class="widget">
-			
-			<div class="widget-header">
-				<span class="icon-article"></span>
-				<h3>{{ __('user.add_new_user') }}</h3>
-			</div> <!-- .widget-header -->
-			
-			<div class="widget-content">
-			
-				<div class="field-group">
-					<label>{{ __('user.details') }}</label>
-
-					<div class="field">
-						<input type="text" name="username" autocomplete="off" id="username">			
-						<label for="username">{{ __('user.username') }}</label>
-					</div>
-					@if (Auth::user()->is("superSponsorAdmin"))
-					<div class="field">
-						<select name="role" id="role">
-							@foreach (Role::all() as $role)
-							<option value="{{ $role->id }}">{{ __('user.roles.'. strtolower($role->name)) }}
-							@endforeach
-						</select>
-						<label for="role">{{ __('user.role') }}</label>
-					</div>
-					@endif
-					<br />
-					<div class="field">
-						<input type="password" name="password" autocomplete="off" id="password">			
-						<label for="password">{{ __('user.password') }}</label>
-					</div>
-					<div class="field">
-						<input type="password" name="password2" autocomplete="off" id="password2">			
-						<label for="user_password">Gidder du å repetere?</label>
-					</div>
-				</div> <!-- .field-group -->
-
-				<div class="field-group">
-					<label>{{ __('user.contact') }}</label>
-
-					<div class="field">
-						<input type="text" name="email" id="email" autocomplete="off" placeholder="{{ __('user.email_placeholder') }}">			
-						<label for="email">{{ __('user.email') }}</label>
-					</div>
-				</div>
-
-				<input type="submit" class="btn btn-small btn-primary" value="{{ __('user.add_new_user') }}" />
-			
-			</div> <!-- .widget-content -->
-			
-		</div>
-	</form>
-</div>
+<section class="panel">
+	<div class="panel-body">
+	  <form class="form-horizontal" method="get" data-validate="parsley">      
+	    <div class="form-group">
+	      <label class="col-lg-3 control-label">{{ __('user.username') }}</label>
+	      <div class="col-lg-8">
+	        <input type="text" name="username" tabindex="1" placeholder="{{ __('user.placeholder.username') }}" class="bg-focus form-control parsley-validated" data-required="true" data-type="email">
+	      </div>
+	    </div>
+	    @if (Auth::user()->is("superSponsorAdmin"))
+	    <div class="form-group">
+	      <label class="col-lg-3 control-label">{{ __('user.role') }}</label>
+	      <div class="col-lg-4">
+	        <select name="account" tabindex="2" class="form-control">
+	          @foreach (Role::all() as $role)
+			  <option value="{{ $role->id }}">{{ __('user.roles.'. strtolower($role->name)) }}
+			  @endforeach
+	        </select>
+	        <div class="line line-dashed m-t-large"></div>
+	      </div>
+	    </div>
+		@endif
+	    <div class="form-group">
+	      <label class="col-lg-3 control-label">{{ __('user.password') }}</label>
+	      <div class="col-lg-8">
+	        <input type="password" tabindex="3" name="password" placeholder="{{ __('user.placeholder.password') }}" class="bg-focus form-control">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="col-lg-3 control-label">{{ __('user.password2') }}</label>
+	      <div class="col-lg-8">
+	        <input type="password" tabindex="4" name="password2" placeholder="{{ __('user.placeholder.password2') }}" class="bg-focus form-control">
+	        <div class="line line-dashed m-t-large"></div>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="col-lg-3 control-label">{{ __('user.email') }}</label>
+	      <div class="col-lg-8">
+	        <input type="text" tabindex="5" name="email" placeholder="{{ __('user.placeholder.email') }}" class="bg-focus form-control">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-lg-9 col-lg-offset-3">                      
+	        <button type="submit" class="btn btn-primary">{{ __('user.add_new_user') }}</button>
+	      </div>
+	    </div>
+	  </form>
+	</div>
+</section>

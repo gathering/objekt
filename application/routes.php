@@ -23,6 +23,9 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 
 	Route::get('/user/(:num)/reset-password', 'users@reset_password');
 	Route::post('/user/(:num)/reset-password', 'users@post_reset_password');
+
+	Route::get('/user/(:num)/delete-user', 'users@delete_user');
+	Route::post('/user/(:num)/delete-user', 'users@post_delete_user');
 });
 /* Accreditation */
 Route::group(array('before' => 'auth|superadmin|event'), function()
@@ -203,14 +206,12 @@ Route::filter('event', function()
 {
 	$event = Config::get('application.event');
 	if(!is_object($event) && $event == 0){
-		$content = "<h1>Velg arrangement</h1>";
-		foreach (Events::where("status", "=", "activated")->get() as $event)
-		{
-			$content .= "<a href='/".$event->slug."'>".$event->name."</a>";
-		}
-
+		$user = Auth::user()->id;
+		$user = User::find($user);
+		$events = $user->events();
+		$content = View::make('event.select')->with("events", $events);
 		$content = View::make('common.clean', array('content' => $content));
-		print($content);
+		print($content->__toString());
 		exit;
 	}
 });

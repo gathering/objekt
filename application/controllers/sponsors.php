@@ -8,11 +8,15 @@ class Sponsors_Controller extends Controller {
 	public function action_profile($slug)
 	{
 		$sponsor = Sponsor::find($slug);
+		if(!$sponsor) die("FUCK IT! IT DONT WORK! (SLUG: {$slug})");
+		tplConstructor::set(true);
 		return View::make('sponsors.profile')->with("sponsor", $sponsor);
 	}
 	public function action_person($sponsor_slug, $person_slug)
 	{
 		$sponsor = Sponsor::find($sponsor_slug);
+		if(!$sponsor) return Event::first('404');
+		tplConstructor::set(true);
 		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
 		return View::make('sponsors.person_profile')->with("person", $person);
 	}

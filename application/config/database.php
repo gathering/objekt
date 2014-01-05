@@ -69,7 +69,7 @@ return array(
 
 		'mysql' => array(
 			'driver'   => 'mysql',
-			'host'     => 'localhost',
+			'host'     => 'supersponsor.no',
 			'database' => 'supersponsor',
 			'username' => 'supersponsor',
 			'password' => 'j6C6dSfCzb2w5pxB',
