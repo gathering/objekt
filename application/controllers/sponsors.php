@@ -134,6 +134,9 @@ class Sponsors_Controller extends Controller {
 		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
 		}
 
+		$event = Config::get('application.event');
+		$rules['event_id'] = $event->id;
+
 		$sponsor = new Sponsor;
 		foreach($rules as $field => $rule){
 			$sponsor->{$field} = $input[$field];

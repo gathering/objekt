@@ -1,142 +1,82 @@
-<?php
-$email = $person->email;
-$default = URL::to_asset("/images/stream/defaultavatar_small.png");
-$size = 150;
+<section id="content" class="content-sidebar bg-white">
+	<aside class="sidebar bg-lighter sidebar">
+		<div class="text-center clearfix bg-white">
+			<img src="{{ $person->gravatar(200) }}">
+		</div>
+		<div class="bg-light padder padder-v">
+			<span class="h4">{{ $person->firstname }} {{ $person->surname }}</span>
+			@if ($person->contact_person == '1')
+			<span class="block"><i class="icon-user"></i> {{ __('sponsor.contactperson') }}</span><br />
+			@endif
+		</div>
+		<div class="list-group list-normal m-b-none">
+			<a href="{{ $person->url() }}" class="list-group-item">Profil</a>
+			<a href="{{ $person->url('accreditation') }}" class="list-group-item active">{{ __('accreditation.accredit') }}</a>
+			<!--<a href="#" class="list-group-item">Activity</a>
+			<a href="#" class="list-group-item">Group</a>
+			<a href="#" class="list-group-item"><span class="badge m-r">3</span> Friends</a>
+			<a href="#" class="list-group-item"><span class="badge m-r">4</span> Posts</a>-->
+		</div>
+	</aside>
+	<section class="main padder">
+		<h4>{{ $person->firstname }} {{ $person->surname }}</h4>
+		@if ($person->status != "arrived")
+		<a href="{{ $person->url('accreditation/wristband') }}" onclick="return confirm('{{ __('accreditation.confirm') }}')" class="btn btn-pink">
+			<span class="icon-document-alt-fill"></span>
+			{{ __('accreditation.wristband') }}
+		</a>
 
-$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
-?>
-<div class="grid-24">				
-	<div class="widget">			
-		
-		<div class="widget-header">
-			<h3>{{ $person->is_child() ? "<a href='".url('sponsor/'.$person->sponsor()->slug.'/'.$person->parent()->slug)."'>".$person->parent()->firstname." ".$person->parent()->surname."</a> > " : "" }}{{ $person->firstname }} {{ $person->surname }}</h3>
-		</div>
-		
-		<div class="widget-content">
-			<div class="grid-4">
-				<img src="{{$grav_url}}" title="User" alt=""><br /><br />
-				@if ($person->contact_person == '1')
-				<span class="ticket"><i class="icon-user"></i> {{ __('sponsor.contactperson') }}</span><br />
-				@endif
-				<br />
-			</div>
-			<div class="grid-16">
-				<div class="field-group">
-					<table class="table">					
-						<tbody>
-							<tr>
-								<td class="description"><b>{{ __('user.name') }}</b></td>
-								<td class="value"><span>{{ $person->firstname }} {{ $person->surname }}</span></td>
-							</tr>
-							<tr>
-								<td class="description"><b>{{ __('user.phone') }}</b></td>
-								<td class="value"><span><a href="skype:{{ $person->phone }}?call">{{ empty($person->phone) ? "<i>".__('user.missing_string')."</i>" : Format::phone($person->phone) }}</a></span></td>
-							</tr>
-							<tr>
-								<td class="description"><b>{{ __('user.email') }}</b></td>
-								<td class="value"><span><a href="mailto:{{ $person->email }}">{{ empty($person->email) ? "<i>".__('user.missing_string')."</i>" : $person->email }}</a></span></td>
-							</tr>
-							<tr>
-								<td class="description"><b>{{ __('sponsor.associated') }}</b></td>
-								<td class="value"><span><a href="{{ url('sponsor/'.$person->sponsor()->slug) }}">{{ $person->sponsor()->name }}</a></span></td>
-							</tr>
-							<tr>
-								<td class="description"><b>{{ __('user.notes') }}</b></td>
-								<td class="value"><span>{{ empty($person->note) ? "<i>".__('user.missing_string')."</i>" : $person->note }}</span></td>
-							</tr>
-							<tr>
-								<td class="description"><b>{{ __('user.status') }}</b></td>
-								<td class="value"><span>
-									@if ($person->status == "registred")
-									<span class="ticket ticket-info">{{ __('sponsor.status.registred') }}</span><br />
-									@endif
-									@if ($person->status == "arrived")
-									<span class="ticket ticket-success">{{ __('sponsor.status.arrived') }}</span><br />
-									@endif
-									@if ($person->status == "departed")
-									<span class="ticket ticket-important">{{ __('sponsor.status.departed') }}</span><br />
-									@endif
-								</span></td>
-							</tr>
-							<tr>
-								<td class="value" colspan="2"><a href="{{ $person->url() }}">{{ __('user.readmore') }}…</a></td>
-							</tr>
-						</tbody>
-					</table>
-					@if ($person->status != "arrived")
-					<a href="{{ $person->url('accreditation/wristband') }}" onclick="return confirm('{{ __('accreditation.confirm') }}')" class="btn btn-pink">
-						<span class="icon-document-alt-fill"></span>
-						{{ __('accreditation.wristband') }}
-					</a>
-
-					<a href="{{ $person->url('accreditation/badge') }}" class="btn btn-green">
-						<span class="icon-award-fill"></span>
-						{{ __('accreditation.badge') }}
-					</a>
-					@elseif ($person->status == "departed")
-					<i>{{ __('accreditation.has_departed') }}</i>			
-					@else
-					<i>{{ __('accreditation.already_done') }}</i><br /><br />
-					<a href="{{ $person->url('accreditation/departed') }}" class="btn btn-red">
-						<span class="icon-arrow-right-alt1"></span>
-						{{ __('accreditation.departed') }}
-					</a>
-					@endif
-				</div>
-			</div>
-		</div>
-	</div>					
-</div>
-<div class="grid-24">
-	<div class="widget">			
-		
-		<div class="widget-header">
-			<h3>{{ __('sponsor.log') }}</h3>
-		</div>
-
-		<div class="widget-content">
-			<div class="field-group">
-				<table class="table">					
-					<tbody>
-						@foreach ($person->logs()->get() as $log)
-						<tr>
-							<td class="description">
-								<b>{{ Date::nice($log->created_at) }}:</b> {{ $log->message }}
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-@if ($person->num_child() > 0)
-<div class="grid-24">
-	<div class="widget">			
-		
-		<div class="widget-header">
-			<h3>{{ __('sponsor.child') }}</h3>
-		</div>
-
-		<div class="widget-content">
-			<div class="field-group">
-				<table class="table">					
-					<thead>
-						<tr>
-							<th class="description"><b>{{ __('user.name') }}</b></td>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach ($person->child()->get() as $child)
-						<tr>
-							<td class="description"><a href="{{ url('sponsor/'.$person->sponsor()->slug.'/'.$person->slug.'/'.$child->slug) }}">{{ $child->firstname }} {{ $child->surname }}</a></td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-@endif
+		<a href="{{ $person->url('accreditation/badge') }}" class="btn btn-green">
+			<span class="icon-award-fill"></span>
+			{{ __('accreditation.badge') }}
+		</a>
+		@elseif ($person->status == "departed")
+		<i>{{ __('accreditation.has_departed') }}</i>			
+		@else
+		<i>{{ __('accreditation.already_done') }}</i><br />
+		<a href="{{ $person->url('accreditation/departed') }}" class="btn btn-red">
+			<span class="icon-arrow-right-alt1"></span>
+			{{ __('accreditation.departed') }}
+		</a>
+		@endif
+	</section>
+	<aside class="sidebar bg text-small">
+      <div class="padder padder-v">
+      	<h4>{{ __('sponsor.child') }}</h4>
+      </div>
+      <ul class="list-group list-normal m-b">
+      	@foreach ($person->child()->get() as $person)
+        <li class="list-group-item">
+          <div class="media">
+          	<?php
+			$email = $person->email;
+			$size = 36;
+			
+			$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "&s=" . $size;
+			?>
+            <span class="pull-left thumb-small"><img src="<?=$grav_url?>" alt="John said" class="img-circle"></span>
+            @if ($person->status == "registred")
+            <div class="pull-right text-warning m-t-small">
+              <i class="icon-circle"></i>
+            </div>
+            @endif
+            @if ($person->status == "arrived")
+            <div class="pull-right text-success m-t-small">
+              <i class="icon-circle"></i>
+            </div>
+            @endif
+            @if ($person->status == "departed")
+            <div class="pull-right text-danger m-t-small">
+              <i class="icon-circle"></i>
+            </div>
+            @endif
+            <div class="media-body">
+              <div><a href="#" class="h5"><a href="{{ $person->url() }}">{{ $person->firstname }} {{ $person->surname }}</a></a></div>
+              <small class="text-muted">{{ $person->contact_person ? __('sponsor.contactperson') : "" }}</small>
+            </div>
+          </div>
+        </li>
+		@endforeach
+      </ul>
+    </aside>
+</section>

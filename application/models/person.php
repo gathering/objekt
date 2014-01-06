@@ -43,6 +43,11 @@ class Person extends Eloquent {
 	public function is_parent(){
 		return $this->parent_id > 0 ? false : true;
 	}
+	function gravatar($size=36){
+		$email = $this->email;
+        $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "&s=" . $size . "&d=".urlencode(URL::to_asset('images/default_profile.png'));
+		return $grav_url;
+	}
 	function num_child(){
 		return $this->child()->count();
 	}

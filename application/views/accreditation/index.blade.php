@@ -1,31 +1,70 @@
 <div class="row">
-	<div class="grid-12">
-		<div class="widget">
-			<div class="widget-header">
-				<span class="icon-check"></span>
-				<h3>{{ __('accreditation.existing_person') }}</h3>
+	<div class="col-sm-6">
+		<section class="panel">
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-lg-3 control-label">{{ __('accreditation.existing_person') }}</label>
+					<div class="col-lg-8">
+						<form method="post" action="{{ url('accreditation') }}">
+							<div class="input-group">
+						      <input type="text" name="search" placeholder="{{ __('common.search_person') }}" class="accreditationSearch form-control" id="searchField" />
+						      <span class="input-group-btn">
+						        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
+						      </span>
+						    </div><!-- /input-group -->
+						</form>
+					</div>
+				</div>
 			</div>
-			<div class="widget-content">
-				<form method="post" action="{{ url('accreditation') }}">
-					<input type="text" name="search" placeholder="{{ __('common.search_person') }}" class="accreditationSearch" id="searchField" />
-				</form>		
-			</div>
-		</div>
+		</section>
 	</div>
-	<div class="grid-12">
-		<div class="widget">
-			<div class="widget-header">
-				<span class="icon-x"></span>
-				<h3>{{ __('accreditation.non_existing_person') }}</h3>
+	<div class="col-sm-6">
+		<section class="panel">
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-lg-3 control-label">{{ __('accreditation.non_existing_person') }}</label>
+					<div class="col-lg-8">
+						<form method="post" action="{{ url('search/sponsor') }}">
+							<div class="input-group">
+							  <input type="hidden" name="type" value="accreditiation" />
+						      <input type="text" name="search" placeholder="{{ __('common.search_sponsor') }}" class="accreditationSearch form-control" id="searchField" />
+						      <span class="input-group-btn">
+						        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
+						      </span>
+						    </div><!-- /input-group -->
+						</form>
+					</div>
+				</div>
 			</div>
-			<div class="widget-content">
-				<form method="post" action="{{ url('search/sponsor') }}">
-					<input type="text" name="search" placeholder="{{ __('common.search_sponsor') }}" class="accreditationSearch" id="searchField" />
-				</form>	
-			</div>
-		</div>
-	</div>	
+		</section>
+	</div>
 </div>
+@if (isset($results))
+<section class="panel">
+	<table class="table table-bordered table-striped data-table">
+		<thead>
+			<tr>
+				<th>{{ __('user.name') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach ($results as $result)
+			<tr>
+				<td><a href="{{ $result->url }}">{{ $result->name }}</a></td>
+			</tr>
+			@endforeach
+		</tbody>
+	</table>
+</section>
+@endif
+<?
+/*
+********************************************
+THIS FUNCTION IS MOVING IN AT THE DASHBOARD.
+********************************************
+
+Awaiting moving trucks...
+
 <div class="grid-24">
 	<div class="widget">			
 		
@@ -64,3 +103,4 @@
 		</div>
 	</div>
 </div>
+*/ ?>

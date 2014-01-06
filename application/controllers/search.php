@@ -15,7 +15,9 @@ class Search_Controller extends Controller {
 
 		$results = array();
 
-		$folks = Person::raw_where("match (`firstname` ,  `surname` ,  `phone` ,  `email`) against (? IN BOOLEAN MODE)", array($search))->get();
+		$event = Config::get('application.event');
+		$folks = Person::raw_where("match (`firstname` ,  `surname` ,  `phone` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
+					->where("event_id", "=", $event->id)->get();
 		foreach($folks as $dude){
 			if($dude->is_current_event()){
 				$data = new StdClass;
@@ -32,7 +34,7 @@ class Search_Controller extends Controller {
 			return Redirect::to(Request::referrer())->with('error',  __('common.nothing_found'));
 		}
 
-		return View::make('search.results')->with("results", $results);
+		return View::make('accreditation.index')->with("results", $results);
 
 
 	}
@@ -64,9 +66,11 @@ class Search_Controller extends Controller {
 		}
 
 		$results = array();
+		$event = Config::get('application.event');
 
 		if($search_for_person){
-			$folks = Person::raw_where("match (`firstname` ,  `surname` ,  `phone` ,  `email`) against (? IN BOOLEAN MODE)", array($search))->get();
+			$folks = Person::raw_where("match (`firstname` ,  `surname` ,  `phone` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
+						->where("event_id", "=", $event->id)->get();
 			foreach($folks as $dude){
 				if($dude->is_current_event()){
 					$data = new StdClass;
@@ -78,7 +82,8 @@ class Search_Controller extends Controller {
 		}
 
 		if($search_for_sponsor){
-			$sponsors = Sponsor::raw_where("match (`name` ,  `website` ,  `email`) against (? IN BOOLEAN MODE)", array($search))->get();
+			$sponsors = Sponsor::raw_where("match (`name` ,  `website` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
+						->where("event_id", "=", $event->id)->get();
 			foreach($sponsors as $sponsor){
 				if($sponsor->is_current_event()){
 					$data = new StdClass;
@@ -94,6 +99,14 @@ class Search_Controller extends Controller {
 		}
 		if(count($results) == 0){
 			return Redirect::to(Request::referrer())->with('error',  __('common.nothing_found'));
+		}
+
+		$type = isset($_POST['type']) ? $_POST['type'] : "";
+
+		switch($type){
+			case "accreditiation":
+				return View::make('accreditation.index')->with("results", $results);
+			break;
 		}
 
 		return View::make('search.results')->with("results", $results);

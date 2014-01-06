@@ -10,6 +10,7 @@ class Accreditation_Controller extends Controller {
 	public function action_person($sponsor_slug, $person_slug)
 	{
 		$sponsor = Sponsor::find($sponsor_slug);
+		tplConstructor::set(true);
 		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
 		return View::make('accreditation.person_profile')->with("person", $person);
 	}

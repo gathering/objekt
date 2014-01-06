@@ -1,14 +1,7 @@
-<?php
-$email = $person->email;
-$default = URL::to_asset("/images/stream/defaultavatar_small.png");
-$size = 200;
-
-$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
-?>
 <section id="content" class="content-sidebar bg-white">
 	<aside class="sidebar bg-lighter sidebar">
 		<div class="text-center clearfix bg-white">
-			<img src="{{$grav_url}}">
+			<img src="{{ $person->gravatar(200) }}">
 		</div>
 		<div class="bg-light padder padder-v">
 			<span class="h4">{{ $person->firstname }} {{ $person->surname }}</span>
@@ -17,6 +10,7 @@ $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) 
 			@endif
 		</div>
 		<div class="list-group list-normal m-b-none">
+			<a href="{{ $person->url() }}" class="list-group-item active">Profil</a>
 			<a href="{{ $person->url('accreditation') }}" class="list-group-item">{{ __('accreditation.accredit') }}</a>
 			<!--<a href="#" class="list-group-item">Activity</a>
 			<a href="#" class="list-group-item">Group</a>
