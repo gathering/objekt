@@ -48,13 +48,7 @@
       	@foreach ($person->child()->get() as $person)
         <li class="list-group-item">
           <div class="media">
-          	<?php
-			$email = $person->email;
-			$size = 36;
-			
-			$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "&s=" . $size;
-			?>
-            <span class="pull-left thumb-small"><img src="<?=$grav_url?>" alt="John said" class="img-circle"></span>
+            <span class="pull-left thumb-small"><img src="{{ $person->gravatar() }}" class="img-circle"></span>
             @if ($person->status == "registred")
             <div class="pull-right text-warning m-t-small">
               <i class="icon-circle"></i>

@@ -11,52 +11,74 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />		
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/all.css') }}" type="text/css" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/reset.css') }}" type="text/css" media="screen" title="no title" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/text.css') }}" type="text/css" media="screen" title="no title" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/buttons.css') }}" type="text/css" media="screen" title="no title" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/theme-default.css') }}" type="text/css" media="screen" title="no title" />
-	<link rel="stylesheet" href="{{ asset('stylesheets/login.css?v=2') }}" type="text/css" media="screen" title="no title" />
+	<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+  	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  	<link rel="stylesheet" href="{{ asset('css/plugin.css') }}">
+  	<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+
+	<style>
+		.login-page .login-wrapper {
+			position: relative;
+			z-index: 2;
+		}
+		.login-page .login-wrapper form {
+			background-color: #fff;
+			padding: 20px;
+			width: 340px;
+			margin: 0 auto;
+		}
+	</style>
 </head>
 
 <body>
 
-<div id="login">
-	<h1></h1>
-	@if ( Session::get('error') )
-	<div class="notify notify-error">
-		
-		<a href="javascript:;" class="close">&times;</a>
-		
-		<h3>{{ __('common.error_title_login') }}</h3>
-		
-		<p>{{ Session::get('error') }}</p>
-
-	</div>
-	@endif
-	<div id="login_panel">
-		<form action="{{ url('/login') }}" method="post" accept-charset="utf-8">
-
-			<div class="login_fields">
-				<div class="field">
-					<label for="username">{{ __('common.username') }}</label>
-					<input type="text" name="username" value="" id="username" tabindex="1" placeholder="{{ __('common.placeholder_username') }}" />		
+<div class="login-page">	
+	<div class="login-wrapper">
+		<form id="form-login" action="{{ url('/login') }}" method="post">
+			<center>
+				<img src="{{ asset('images/logo_transolini_black.png') }}" />
+			</center>
+			<h3>Logg inn på din konto</h3>
+			<hr>
+			<div class="form-group">
+				<div class="controls">
+					<input type="text" name="username" placeholder="{{ __('common.username') }}" class="form-control" autocomplete="off">
 				</div>
-				
-				<div class="field">
-					<label for="password">{{ __('common.password') }} <small><a href="javascript:alert('{{ __('common.forgot_alert') }}');">{{ __('common.forgot') }}</a></small></label>
-					<input type="password" name="password" value="" id="password" tabindex="2" placeholder="{{ __('common.placeholder_password') }}" />			
-				</div>
-			</div> <!-- .login_fields -->
-			
-			<div class="login_actions">
-				<button type="submit" class="btn btn-primary" tabindex="3" title="{{ __('common.logged_in_title') }}">{{ __('common.login_button') }}</button>
 			</div>
+			<div class="form-group">
+				<div class="controls">
+					<input type="password" name="password" placeholder="{{ __('common.password') }}" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="controls">
+					<button type="submit" class="btn btn-primary form-control" title="{{ __('common.logged_in_title') }}">{{ __('common.login_button') }}</button>
+				</div>
+			</div>
+			<hr>
+			<p>
+				Tilgang til denne tjenesten gis kun i anledning et arrangement.
+			</p>
+			<p>
+				@if ( Session::get('error') )
+				<hr>
+				<div class="notify notify-error">
+					
+					<a href="javascript:;" class="close">&times;</a>
+					
+					<h3>{{ __('common.error_title_login') }}</h3>
+					
+					<p>{{ Session::get('error') }}</p>
+
+				</div>
+				@endif
+			</p>
 		</form>
-	</div> <!-- #login_panel -->		
+	</div>	
 </div> <!-- #login -->
 
-<script src="{{ asset('javascripts/all.js') }}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/retina.js/1.0.1/retina.js"></script> 
 
 
 </body>
