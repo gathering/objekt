@@ -22,7 +22,7 @@ class Search_Controller extends Controller {
 			if($dude->is_current_event()){
 				$data = new StdClass;
 				$data->name = $dude->firstname." ".$dude->surname;
-				$data->url = $dude->url("accreditation");
+				$data->url = $dude->url();
 				array_push($results, $data);
 			}
 		}
