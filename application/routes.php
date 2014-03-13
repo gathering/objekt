@@ -14,6 +14,8 @@ Route::group(array('before' => 'auth|event'), function()
 	});
 
 });
+
+
 /* Users */
 Route::group(array('before' => 'auth|superadmin|event'), function()
 {
@@ -27,7 +29,13 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::get('/user/(:num)/delete-user', 'users@delete_user');
 	Route::post('/user/(:num)/delete-user', 'users@post_delete_user');
 });
+
+
 /* Accreditation */
+
+Route::get('/accreditation/controll/(:any)/(:any)', array('uses' => 'accreditation@controll', 'before' => 'event'));
+
+
 Route::group(array('before' => 'auth|superadmin|event'), function()
 {
 	Route::get('/accreditation', 'accreditation@index');
@@ -57,18 +65,18 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 });
 /* Sponsors */
 Route::group(array('before' => 'auth|superadmin|event'), function(){
-	Route::get('/sponsors', 'sponsors@index');
-	Route::get('/sponsor/(:any)', 'sponsors@profile');
-	Route::get('/sponsor/add-person', 'sponsors@add_person');
-	Route::post('/sponsor/add-person', 'sponsors@post_add_person');
-	Route::get('/sponsor/(:any)/add-person', 'sponsors@add_person_sponsor');
-	Route::post('/sponsor/(:any)/add-person', 'sponsors@post_add_person');
-	Route::get('/sponsor/(:any)/(:any)/add-child', 'sponsors@add_child');
-	Route::post('/sponsor/(:any)/(:any)/add-child', 'sponsors@post_add_child');
-	Route::get('/sponsor/(:any)/(:any)', 'sponsors@person');
-	Route::get('/sponsor/(:any)/(:any)/(:any)', 'sponsors@child');
-	Route::get('/sponsor/add', 'sponsors@add');
-	Route::post('/sponsor/add', 'sponsors@post_add');
+	Route::get('/profiles', 'profiles@index');
+	Route::get('/profile/(:any)', 'profiles@profile');
+	Route::get('/profile/add-person', 'profiles@add_person');
+	Route::post('/profile/add-person', 'profiles@post_add_person');
+	Route::get('/profile/(:any)/add-person', 'profiles@add_person_profile');
+	Route::post('/profile/(:any)/add-person', 'profiles@post_add_person');
+	Route::get('/profile/(:any)/(:any)/add-child', 'profiles@add_child');
+	Route::post('/profile/(:any)/(:any)/add-child', 'profiles@post_add_child');
+	Route::get('/profile/(:any)/(:any)', 'profiles@person');
+	Route::get('/profile/(:any)/(:any)/(:any)', 'profiles@child');
+	Route::get('/profile/add', 'profiles@add');
+	Route::post('/profile/add', 'profiles@post_add');
 });
 
 Route::get('/verification/(:any)', function($salt){

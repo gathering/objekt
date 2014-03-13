@@ -24,10 +24,10 @@
 				<div class="form-group">
 					<label class="col-lg-3 control-label">{{ __('accreditation.non_existing_person') }}</label>
 					<div class="col-lg-8">
-						<form method="post" action="{{ url('search/sponsor') }}">
+						<form method="post" action="{{ url('search/profile') }}">
 							<div class="input-group">
 							  <input type="hidden" name="type" value="accreditiation" />
-						      <input type="text" name="search" placeholder="{{ __('common.search_sponsor') }}" class="accreditationSearch form-control" id="searchField" />
+						      <input type="text" name="search" placeholder="{{ __('common.search_profiles') }}" class="accreditationSearch form-control" id="searchField" />
 						      <span class="input-group-btn">
 						        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
 						      </span>

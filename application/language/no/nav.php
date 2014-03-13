@@ -4,12 +4,10 @@ return array(
 
 	'dashboard' => 'Dashbord',
 	'users' => 'Brukere',
-	'sponsors' => 'Sponsorer',
+	'profiles' => 'Profiler',
 	'logout' => 'Logg ut',
-	'accreditation' => 'Akkredd',
-	'admin' => 'Sjef',
-	'list_sponsors' => 'Vis sponsorer'
+	'accreditation' => 'I/O',
+	'admin' => 'System',
+	'list_profiles' => 'Vis profiler'
 
 );
-
-?>

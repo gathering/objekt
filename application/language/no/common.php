@@ -33,7 +33,7 @@ return array(
 	'success_title' => 'Jasså! Dette løste du med stil!',
 	'nothing_found' => 'Fant ingenting..',
 	'search_person' => 'Søk på person…',
-	'search_sponsor' => 'Søk på sponsor…'
+	'search_profiles' => 'Søk på profiler…'
 );
 
 ?>

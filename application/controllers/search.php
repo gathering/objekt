@@ -1,7 +1,7 @@
 <?php
 
 // ALTER TABLE  `people` ADD INDEX (  `firstname` ,  `surname` ,  `phone` ,  `email` ) ;
-// ALTER TABLE  `sponsors` ADD INDEX (  `name` ,  `website` ,  `email` ) ;
+// ALTER TABLE  `profiles` ADD INDEX (  `name` ,  `website` ,  `email` ) ;
 
 class Search_Controller extends Controller {
 	function action_search_accreditation(){
@@ -39,16 +39,16 @@ class Search_Controller extends Controller {
 
 	}
 	function action_index($search=""){
-		$search_for_sponsor = false;
+		$search_for_profile = false;
 		$search_for_person = false;
 		switch($search){
 			case "person":
 				$search = Input::get('search');
 				$search_for_person = true;
 			break;
-			case "sponsor":
+			case "profile":
 				$search = Input::get('search');
-				$search_for_sponsor = true;
+				$search_for_profile = true;
 			break;
 			case "": default:
 				if(empty($search) && Input::get('search')){
@@ -56,7 +56,7 @@ class Search_Controller extends Controller {
 				} elseif(empty($search)) {
 					return Event::first(404);
 				}
-				$search_for_sponsor = true;
+				$search_for_profile = true;
 				$search_for_person = true;
 			break;
 		}
@@ -81,14 +81,14 @@ class Search_Controller extends Controller {
 			}
 		}
 
-		if($search_for_sponsor){
-			$sponsors = Sponsor::raw_where("match (`name` ,  `website` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
+		if($search_for_profile){
+			$profiles = profile::raw_where("match (`name` ,  `website` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
 						->where("event_id", "=", $event->id)->get();
-			foreach($sponsors as $sponsor){
-				if($sponsor->is_current_event()){
+			foreach($profiles as $profile){
+				if($profile->is_current_event()){
 					$data = new StdClass;
-					$data->name = $sponsor->name;
-					$data->url = $sponsor->url();
+					$data->name = $profile->name;
+					$data->url = $profile->url();
 					array_push($results, $data);
 				}
 			}

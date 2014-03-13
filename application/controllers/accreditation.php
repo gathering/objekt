@@ -7,25 +7,25 @@ class Accreditation_Controller extends Controller {
 		return View::make('accreditation.index');
 	}
 
-	public function action_person($sponsor_slug, $person_slug)
+	public function action_person($profile_slug, $person_slug)
 	{
-		$sponsor = Sponsor::find($sponsor_slug);
+		$profile = profile::find($profile_slug);
 		tplConstructor::set(true);
-		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		return View::make('accreditation.person_profile')->with("person", $person);
 	}
-	public function action_child($sponsor_slug, $person_slug, $child_slug)
+	public function action_child($profile_slug, $person_slug, $child_slug)
 	{
-		$sponsor = Sponsor::find($sponsor_slug);
-		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
-		$child = $sponsor->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		$profile = profile::find($profile_slug);
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		$child = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		return View::make('accreditation.person_profile')->with("person", $child);
 	}
-	public function action_wristband($sponsor_slug, $person_slug, $child_slug=""){
-		$sponsor = Sponsor::find($sponsor_slug);
-		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
+	public function action_wristband($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		if(!empty($child_slug)){
-			$person = $sponsor->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		}
 
 		$person->status = "arrived";
@@ -34,23 +34,23 @@ class Accreditation_Controller extends Controller {
 		$entry = new Entry;
 		$entry->type = "wristband";
 		$person->entries()->insert($entry);
-		Loogie::doo("person", $person, "User «{$person->slug}» at «{$sponsor->name}» has arrived to stay, equiped with a wristband.");
+		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has arrived to stay, equiped with a wristband.");
 
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_arrived', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
-	public function action_badge($sponsor_slug, $person_slug, $child_slug=""){
-		$sponsor = Sponsor::find($sponsor_slug);
-		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
+	public function action_badge($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		if(!empty($child_slug)){
-			$person = $sponsor->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		}
 		return View::make('accreditation.badge')->with("person", $person);
 	}
-	public function action_post_badge($sponsor_slug, $person_slug, $child_slug=""){
-		$sponsor = Sponsor::find($sponsor_slug);
-		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
+	public function action_post_badge($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		if(!empty($child_slug)){
-			$person = $sponsor->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		}
 
 		$person->status = "arrived";
@@ -78,43 +78,49 @@ class Accreditation_Controller extends Controller {
 		$entry->delivery_date = $entry->date." ".$entry->time;
 		unset($entry->date, $entry->time);
 		$entry = $person->entries()->insert($entry);
-		Loogie::doo("person", $person, "User «{$person->slug}» at «{$sponsor->name}» has arrived for a while, equiped with a badge, departing at {$entry->delivery_date}.");
+		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has arrived for a while, equiped with a badge, departing at {$entry->delivery_date}.");
 		$event = Config::get('application.event');
 		if(isset($input['automatic'])){
 			if($event->has_badge_printer){
 				BadgeCreator::printBadge($entry);
 			} else {
-				BadgeCreator::save($entry);
+				BadgeCreator::make($entry);
 			}
 		}
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_arrived', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
-	public function action_save_badge($sponsor_slug, $person_slug, $child_slug=""){
-		$sponsor = Sponsor::find($sponsor_slug);
-		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
+	public function action_save_badge($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		if(!$profile)
+			return Redirect::to("accreditation")->with("error", __('accreditation.person_not_found'));
+
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		if(!empty($child_slug) && $child_slug != "debug"){
-			$person = $sponsor->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		}
 		$badges = $person->entries()->where("type", "=", "badge")->get();
+		if(count($badges) < 1)
+			return Redirect::to("accreditation")->with("error", __('accreditation.no_badges_found'));
 		$event = Config::get('application.event');
 		foreach($badges as $badge){
-			if($child_slug == "debug")
-					BadgeCreator::save($badge, false);
-			else {
+			if($child_slug == "debug"){
+					BadgeCreator::make($badge, false);
+					die("……");
+			} else {
 				if($event->has_badge_printer){
 					BadgeCreator::printBadge($badge);
 				} else {
-					BadgeCreator::save($badge);
+					BadgeCreator::make($badge);
 				}
 			}
 		}
 		die("Saved!");
 	}
-	public function action_departed($sponsor_slug, $person_slug, $child_slug=""){
-		$sponsor = Sponsor::find($sponsor_slug);
-		$person = $sponsor->person()->where("slug", "=", $person_slug)->first();
+	public function action_departed($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		if(!empty($child_slug)){
-			$person = $sponsor->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		}
 
 		foreach($person->entries()->where("status", "=", "valid")->get() as $entry){
@@ -124,7 +130,7 @@ class Accreditation_Controller extends Controller {
 
 		$person->status = "departed";
 		$person->save();
-		Loogie::doo("person", $person, "User «{$person->slug}» at «{$sponsor->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
+		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_departed', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
 }

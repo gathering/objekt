@@ -4,17 +4,17 @@ class Person extends Eloquent {
 	function user(){
 		return $this->firstname." ".$this->surname;
 	}
-	function sponsor(){
-		return $this->belongs_to('sponsor')->first();
+	function profile(){
+		return $this->belongs_to('profile')->first();
 	}
 	function child(){
 		return $this->has_many("person", "parent_id");
 	}
 	function is_current_event(){
-		$sponsor = $this->sponsor();
+		$profile = $this->profile();
 		$event = Config::get('application.event');
 			
-		if($sponsor->event_id == $event->id){
+		if($profile->event_id == $event->id){
 			return true;
 		} else return false;
 	}
@@ -24,13 +24,13 @@ class Person extends Eloquent {
 	function entries(){
 		return $this->has_many("entry");
 	}
-	function url($url="sponsor"){
-		$sponsor = $this->sponsor();
+	function url($url="profile"){
+		$profile = $this->profile();
 
 		if($this->is_child()){
-			return URL::to($url.'/'.$this->sponsor()->slug.'/'.$this->parent()->slug.'/'.$this->slug);
+			return URL::to($url.'/'.$this->profile()->slug.'/'.$this->parent()->slug.'/'.$this->slug);
 		} else {
-			return URL::to($url.'/'.$this->sponsor()->slug.'/'.$this->slug);
+			return URL::to($url.'/'.$this->profile()->slug.'/'.$this->slug);
 		}
 	}
 	function parent(){
@@ -45,7 +45,7 @@ class Person extends Eloquent {
 	}
 	function gravatar($size=36){
 		$email = $this->email;
-        $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size . "&d=http%3A%2F%2Fsupersponsor.no%2Fimages%2Fdefault_profile.png";
+        $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size . "&d=http%3A%2F%2Fsuperprofile.no%2Fimages%2Fdefault_profile.png";
 		return $grav_url;
 	}
 	function num_child(){

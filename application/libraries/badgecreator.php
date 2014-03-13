@@ -1,44 +1,14 @@
 <?php
 class BadgeCreator {
 	/* Requires ImageWorkShop */
-	static function save($badge, $saveToFile=true){
+	static function make($badge, $saveToFile=true){
 
 
 		ini_set('memory_limit', '-1');
 		$event = Config::get('application.event');
-		$layer = PHPImageWorkshop\ImageWorkshop::initFromPath(path('app')."views/badge-{$event->id}.jpg");
-
-		$text = strtoupper($badge->person()->sponsor()->name);
-		$fontPath = path('app')."fonts/PlutoSansCondLight-Italic.otf";
-		$fontSize = 48;
-		$fontColor = "000000";
-		$textRotation = 0;
-
-		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
-		$sublayerInfos = $layer->addLayerOnTop($text, 169, 93, 0);
-
-		$text = strtoupper($badge->person()->firstname." ".$badge->person()->surname);
-		$fontPath = path('app')."fonts/PlutoSansCondBold.otf";
-		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
-		$sublayerInfos = $layer->addLayerOnTop($text, 169, 33, 0);
-
-		$text = strtoupper(date("d.m \k\l. H:i", strtotime($badge->delivery_date)));
-		$fontPath = path('app')."fonts/PlutoSansCondBold.otf";
-		$fontSize = 44;
-		$fontColor = "FFFFFF";
-		$textRotation = 0;
 		
-		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
-		$sublayerInfos = $layer->addLayerOnTop($text, 789, 527, 0);
-
-		$text = strtoupper($badge->id);
-		$fontPath = path('app')."fonts/PlutoSansCondRegular.otf";
-		$fontSize = 44;
-		$fontColor = "000000";
-		$textRotation = 0;
-		
-		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
-		$sublayerInfos = $layer->addLayerOnTop($text, 1080, 643, 0);
+		$layer = BadgeTemplate::findTemplate($event->id, $badge);
+		if(!$layer) die("There is something wrong with this template. Please consult Objekt-staff. ({$event->id})");
 
 		$dirPath = path('storage')."badge/";
 		$filename = "badge-{$badge->id}.png";
@@ -55,14 +25,14 @@ class BadgeCreator {
 			exit;
 		}
 	}
-	static function getBadgeUrl($badge, $full=true){
+	static function getBadgePath($badge, $full=true){
 		return path('storage')."badge/badge-".$badge->id.".png";
 	}
 	static function printBadge($badge){
-		if(!file_exists(self::getBadgeUrl($badge))){
-			self::save($badge);
+		if(!file_exists(self::getBadgePath($badge))){
+			self::make($badge);
 		}
-		system("lp ".self::getBadgeUrl($badge));
+		system("lp ".self::getBadgePath($badge));
 	}
 }
 ?>

@@ -17,13 +17,13 @@ return array(
 	'password' => 'Passord',
 	'password2' => 'Gjenta passord',
 	'add_new_user' => 'Legg til ny bruker',
-	'add_new_sponsor' => 'Legg til ny sponsor',
-	'verification_subject' => 'Velkommen til SuperSponsor!',
-	'noreply' => 'caremail@supersponsor.no',
-	'noreply_name' => 'CareMail Sponsor',
+	'add_new_profile' => 'Legg til ny profil',
+	'verification_subject' => 'Velkommen til Objekt!',
+	'noreply' => 'caremail@obj.no',
+	'noreply_name' => 'Objekt',
 	'roles' => array(
-			'supersponsoradmin' => 'SuperSponsorkoordinator',
-			'sponsorsupportmember' => 'Medlem av SponsorSupport'
+			'supersponsoradmin' => 'Administrator',
+			'sponsorsupportmember' => 'Medlem'
 		),
 	'missing' => array(
 			'username' => 'Vi mangler brukernavnet..',
@@ -51,5 +51,3 @@ return array(
 	'delete_yes' => 'Ja, slett',
 	'user_deleted' => 'Brukeren er slettet!'
 );
-
-?>

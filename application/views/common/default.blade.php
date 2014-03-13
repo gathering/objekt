@@ -34,7 +34,7 @@
     <button type="button" class="btn btn-link pull-left nav-toggle visible-xs" data-toggle="class:slide-nav slide-nav-left" data-target="body">
       <i class="icon-reorder icon-xlarge text-default"></i>
     </button>
-    <ul class="nav navbar-nav hidden-xs">
+    <!--<ul class="nav navbar-nav hidden-xs">
       <li>
         <div class="m-t m-b-small" id="panel-notifications">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-comment-alt icon-xlarge text-default"></i><b class="badge badge-notes bg-danger count-n">2</b></a>
@@ -64,7 +64,7 @@
           </section>
         </div>
       </li>
-    </ul>
+    </ul>-->
     <form action="{{ url('search') }}" method="post" class="navbar-form pull-left shift">
       <i class="icon-search text-muted"></i>
       <input type="text" name="search" class="input-sm form-control" placeholder="{{ __('common.search') }}">
@@ -85,10 +85,10 @@
       @endif
       @if (Auth::user()->can("sponsorprofiles"))
       <li class="dropdown-submenu">
-        <a href="{{ url('/sponsors') }}"><i class="icon-group icon-xlarge"></i><span>{{ __('nav.sponsors') }}</span></a>
+        <a href="{{ url('/profiles') }}"><i class="icon-group icon-xlarge"></i><span>{{ __('nav.profiles') }}</span></a>
         <ul class="dropdown-menu">
-          <li><a href="{{ url('/sponsors') }}">{{ __('nav.list_sponsors') }}</a></li>
-          <li><a href="{{ url('/sponsor/add') }}">{{ __('user.add_new_sponsor') }}</a></li>
+          <li><a href="{{ url('/profiles') }}">{{ __('nav.list_profiles') }}</a></li>
+          <li><a href="{{ url('/profile/add') }}">{{ __('user.add_new_profile') }}</a></li>
         </ul>
       </li>
       @endif
@@ -145,6 +145,10 @@
 	<script src="{{ asset('js/app.plugin.js') }}"></script>
 	<script src="{{ asset('js/app.data.js') }}"></script>
 
+  <!-- TODO: Add authentication -->
+  <script src="{{ asset('js/strophe.js') }}"></script>
+  <script src="{{ asset('js/chat.js') }}"></script>
+
 	<!-- fuelux -->
 	<script src="{{ asset('js/fuelux/fuelux.js') }}"></script>
 	<script src="{{ asset('js/underscore-min.js') }}"></script>
@@ -156,6 +160,7 @@
 	<script src="{{ asset('js/charts/sparkline/jquery.sparkline.min.js') }}"></script>  
 	<!-- Easy Pie Chart -->
 	<script src="{{ asset('js/charts/easypiechart/jquery.easy-pie-chart.js') }}"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/retina.js/1.0.1/retina.js"></script>  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/retina.js/1.0.1/retina.js"></script>
+
 </body>
 </html>

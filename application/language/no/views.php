@@ -10,10 +10,10 @@ return array(
 		array(
 			'results' => 'Søk'
 		),
-	'sponsors' =>
+	'profiles' =>
 		array(
-			'index' => __('nav.sponsors'),
-			'profile' => 'Sponsorprofil',
+			'index' => __('nav.profiles'),
+			'profile' => 'Profil',
 			'person_profile' => 'Profil',
 			'add' => __('user.add_new_sponsor'),
 			'add-person' => 'Legger til person'
