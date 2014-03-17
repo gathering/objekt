@@ -10,6 +10,7 @@ return array(
 		'arrived' => 'Ankommet',
 		'departed' => 'Dratt'
 	),
+	'edit' => 'Rediger',
 	'person_read_more' => 'Gå til «:name»…',
 	'associated' => 'Tilknyttet',
 	'contactperson' => 'Kontaktperson',
@@ -29,10 +30,11 @@ return array(
 	'departed' => 'Forduftet',
 	'timeline' => 'Titslinje',
 	'attached_to' => 'Tilknyttet til',
+	'back_to_parent' => 'Tilbake til <b>%s</b>',
 	'placeholder' => array(
 			'name' => 'Profilens navn',
-			'surname' => 'Ola',
-			'firstname' => 'Nordmann',
+			'surname' => 'Normann',
+			'firstname' => 'Ola',
 			'phone' => '95308087',
 			'website' => 'Nettadresse',
 			'contact_person' => 'La denne personen stå som kontaktperson mot profilen',

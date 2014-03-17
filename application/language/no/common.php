@@ -22,15 +22,15 @@ return array(
 	'view_all_notifications' => 'Vis alle notifikasjoner',
 	'logged_in' => 'Logged inn som',
 	'access_denied' => 'Du har ikke tilgang til denne modulen. ',
-	'error_title' => 'Hei, du... Det skjedde noe feil.',
+	'error_title' => 'En feil oppsto.',
 	'error_title_login' => 'Du, en ting..',
 	'footer' => 'Laga av folk med noe mellom øreflippene. Alt er beskytta med kopirettigheter, men vi gir ut bruksrett til tider - helt gratis.',
 	'index' => array(
 		'users' => 'Registrerte brukere',
-		'sponsors' => 'Registrerte sponsorer',
+		'profiles' => 'Registrerte profiler',
 		'search' => 'Søk'
 	),
-	'success_title' => 'Jasså! Dette løste du med stil!',
+	'success_title' => 'Suksess!',
 	'nothing_found' => 'Fant ingenting..',
 	'search_person' => 'Søk på person…',
 	'search_profiles' => 'Søk på profiler…'

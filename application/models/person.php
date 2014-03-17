@@ -45,7 +45,7 @@ class Person extends Eloquent {
 	}
 	function gravatar($size=36){
 		$email = $this->email;
-        $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size . "&d=http%3A%2F%2Fsuperprofile.no%2Fimages%2Fdefault_profile.png";
+        $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size . "&d=http%3A%2F%2Fsupersponsor.no%2Fimages%2Fdefault_profile.png";
 		return $grav_url;
 	}
 	function num_child(){

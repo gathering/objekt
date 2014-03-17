@@ -15,6 +15,22 @@ Route::group(array('before' => 'auth|event'), function()
 
 });
 
+/* Admin */
+Route::group(array('before' => 'auth|superadmin|event'), function()
+{
+	Route::get('/admin', 'admin@index');
+	Route::get('/admin/events', 'admin@events');
+
+	Route::get('/admin/event/(:any)', 'admin@event');
+	Route::post('/admin/event/(:any)', 'admin@post_event');
+});
+
+/* Mediabank */
+Route::group(array('before' => 'auth|superadmin|event'), function()
+{
+	Route::get('/mediabank', 'mediabank@index');
+});
+
 
 /* Users */
 Route::group(array('before' => 'auth|superadmin|event'), function()
@@ -32,10 +48,7 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 
 
 /* Accreditation */
-
 Route::get('/accreditation/controll/(:any)/(:any)', array('uses' => 'accreditation@controll', 'before' => 'event'));
-
-
 Route::group(array('before' => 'auth|superadmin|event'), function()
 {
 	Route::get('/accreditation', 'accreditation@index');
@@ -57,13 +70,24 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::get('/accreditation/(:any)/(:any)', 'accreditation@person');
 	Route::get('/accreditation/(:any)/(:any)/(:any)', 'accreditation@child');
 });
+
+/* SMS */
+Route::group(array('before' => 'auth|superadmin|event'), function()
+{
+	Route::get('/sms/(:any)/(:any)', 'sms@person');
+	Route::post('/sms/(:any)/(:any)', 'sms@post_person');
+	Route::get('/sms/(:any)/(:any)/(:any)', 'sms@person');
+	Route::post('/sms/(:any)/(:any)/(:any)', 'sms@post_person');
+});
+
 /* Search */
 Route::group(array('before' => 'auth|superadmin|event'), function(){
 	Route::post('/search', 'search@index');
 	Route::get('/search/(:any)', 'search@index');
 	Route::post('/search/(:any)', 'search@index');
 });
-/* Sponsors */
+
+/* Profiles */
 Route::group(array('before' => 'auth|superadmin|event'), function(){
 	Route::get('/profiles', 'profiles@index');
 	Route::get('/profile/(:any)', 'profiles@profile');
@@ -77,6 +101,22 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 	Route::get('/profile/(:any)/(:any)/(:any)', 'profiles@child');
 	Route::get('/profile/add', 'profiles@add');
 	Route::post('/profile/add', 'profiles@post_add');
+	
+	/* Profile */
+	Route::get('/profile/(:any)/(:any)/edit', 'profiles@edit');
+	Route::get('/profile/(:any)/(:any)/(:any)/edit', 'profiles@edit');
+	Route::post('/profile/(:any)/(:any)/edit', 'profiles@post_edit');
+	Route::post('/profile/(:any)/(:any)/(:any)/edit', 'profiles@post_edit');
+});
+
+
+/* General */
+
+Route::get('/change_event', function(){
+	$user = Auth::user()->id;
+	$user = User::find($user);
+	$events = $user->events();
+	return View::make('event.select')->with("events", $events);
 });
 
 Route::get('/verification/(:any)', function($salt){
@@ -112,7 +152,8 @@ Route::post('/login', function(){
 	try {
 		if (Auth::attempt($credentials))
 		{
-		     return Redirect::to('/');
+			if(Input::get('referer')) return Redirect::to(Input::get('referer'));
+		    return Redirect::to('/');
 		}
 	} catch (Exception $e) {
 		$exception = strtolower(str_replace("Exception", "", get_class($e)));
@@ -226,7 +267,7 @@ Route::filter('event', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('login');
+	if (Auth::guest()) return Redirect::to('login')->with("referer", URI::full());
 });
 
 Route::filter('superadmin', function()

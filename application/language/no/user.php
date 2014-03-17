@@ -39,7 +39,7 @@ return array(
 	'primary_email' => 'Primær e-post',
 	'firstname' => 'Fornavn',
 	'surname' => 'Etternavn',
-	'add_child' => 'Fød nytt barn',
+	'add_child' => 'Legg til ny tilknyttet registrering',
 	'notes' => 'Notater',
 	'missing_string' => 'Mangler…',
 	'readmore' => 'Les profil',

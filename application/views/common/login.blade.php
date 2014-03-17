@@ -40,6 +40,9 @@
 				<img src="{{ asset('images/logo_transolini_black.png') }}" />
 			</center>
 			<h3>Logg inn på din konto</h3>
+			@if ( Session::get('referer') )
+			<input type="hidden" name="referer" value="{{ Session::get('referer') }}" />
+			@endif
 			<hr>
 			<div class="form-group">
 				<div class="controls">

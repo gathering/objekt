@@ -23,6 +23,7 @@ class Profiles_Controller extends Controller {
 	public function action_child($profile_slug, $person_slug, $child_slug)
 	{
 		$profile = profile::find($profile_slug);
+		tplConstructor::set(true);
 		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		$child = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		return View::make('profiles.person_profile')->with("person", $child);
@@ -187,4 +188,6 @@ class Profiles_Controller extends Controller {
 		$profile->person()->insert($person);
 		return Redirect::to("profile/".$profile->slug."/".$parent->slug)->with("success", "Informasjonen ble lagret!");
 	}
+
+
 }

@@ -18,6 +18,14 @@ return array(
 			'add' => __('user.add_new_sponsor'),
 			'add-person' => 'Legger til person'
 		),
+	'event' =>
+		array(
+			'select' => 'Velg arrangement'
+		),
+	'admin' =>
+		array(
+			'event' => 'Arrangementsinnstillinger'
+		),
 	'user' =>
 		array(
 			'index' => __('nav.users'),
@@ -29,7 +37,8 @@ return array(
 			'index' => __('nav.accreditation'),
 			'person_profile' => __('nav.accreditation'),
 			'badge' => 'Akkreditering med badge'
-		)
+		),
+	'sms/send_person' => __('sms.send_to_person')
 
 );
 

@@ -8,6 +8,10 @@ return array(
 	'logout' => 'Logg ut',
 	'accreditation' => 'I/O',
 	'admin' => 'System',
-	'list_profiles' => 'Vis profiler'
+	'list_profiles' => 'Vis profiler',
+	'mediabank' => 'Mediebank',
+	'invoices' => 'Fakturering',
+	'events' => 'Arrangementer',
+	'change_event' => 'Endre arrangement'
 
 );

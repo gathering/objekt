@@ -1,7 +1,7 @@
 <section class="panel">
 	<div class="panel-body">
 	  <form class="form-horizontal" method="post">  
-	  	<h3>{{ isset($person) ? __('user.add_child') : __('profile.add_personel') }}</h3>    
+	  	<h3>{{ isset($person) ? __('user.add_child') : __('profile.add_personel') }}</h3>    <br /><br />
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.firstname') }}</label>
 	      <div class="col-lg-8">
@@ -29,10 +29,10 @@
 	    @if (isset($profile))
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label" style="margin-right: 15px;">{{ __('profile.attached_to') }}</label>
-	      <div class="clearfix m-b" style="border: 0px;">
+	      <div class="clearfix m-b" style="border: 0px; margin-top: 7px;">
 	          <ul>
 	            <li class="label bg-default" style="font-size: 13px;">{{ $profile->name }}</li>
-	            {{ isset($person) ? "<li class='label bg-default'>".$person->firstname." ".$person->surname."</li>" : "" }}
+	            {{ isset($person) ? "<li class='label bg-inverse' style='font-size: 13px;'>".$person->firstname." ".$person->surname."</li>" : "" }}
 	          </ul>
 	      </div>
 	    </div>

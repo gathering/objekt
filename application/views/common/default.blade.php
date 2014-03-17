@@ -14,6 +14,7 @@
 		<script src="{{ asset('js/ie/html5.js') }}"></script>
 		<script src="{{ asset('js/ie/excanvas.js') }}"></script>
 	<![endif]-->
+  @yield('styles')
 </head>
 <body>
 <!-- header -->
@@ -26,6 +27,8 @@
           <b class="caret hidden-xs-only"></b>
         </a>
         <ul class="dropdown-menu">
+          <li><a href="{{ url('/change_event') }}">{{ __('nav.change_event') }}</a></li>
+          <li class="divider"></li>
           <li><a href="{{ url('logout/') }}">{{ __('nav.logout') }}</a></li>
         </ul>
       </li>
@@ -76,12 +79,17 @@
     <ul class="nav" data-spy="affix" data-offset-top="50">
       <li {{ URI::segment(2) == '' ? 'class="active"' : '' }}><a href="{{ url('/') }}"><i class="icon-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span></a></li>
       @if (Auth::user()->is("superSponsorAdmin"))
-      <li class="dropdown-submenu {{ URI::segment(2) == 'users' ? ' active' : '' }}">
-        <a href="#"><i class="icon-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+      <li class="dropdown-submenu {{ URI::segment(2) == 'admin' ? ' active' : '' }}">
+        <a href="{{ url('/admin') }}"><i class="icon-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
         <ul class="dropdown-menu">
+          <li><a href="{{ url('/admin/invoices') }}">{{ __('nav.invoices') }}</a></li>
+          <li><a href="{{ url('/admin/events') }}">{{ __('nav.events') }}</a></li>
           <li><a href="{{ url('/users') }}">{{ __('nav.users') }}</a></li>
         </ul>
       </li>
+      @endif
+      @if (Auth::user()->can("mediabank"))
+      <li {{ URI::segment(2) == 'mediabank' ? 'class="active"' : '' }}><a href="{{ url('/mediabank') }}"><i class="icon-picture icon-xlarge"></i><span>{{ __('nav.mediabank') }}</span></a></li>
       @endif
       @if (Auth::user()->can("sponsorprofiles"))
       <li class="dropdown-submenu">
@@ -102,22 +110,34 @@
   @endif
   	@if ( is_object(Session::get('error')) && isset(Session::get('error')->messages) && is_array(Session::get('error')->messages) )
   	@foreach (Session::get('error')->messages as $message)
-  	<div class="alert alert-danger">
-  		<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
-  		<i class="icon-ban-circle icon-large"></i><strong>{{ __('common.error_title') }}</strong> {{ $message[0] }}.
-  	</div>
+    <section id="content">
+      <section class="main padder">
+      	<div class="alert alert-danger">
+      		<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+      		<i class="icon-ban-circle icon-large"></i><strong>{{ __('common.error_title') }}</strong> {{ $message[0] }}.
+      	</div>
+      </section>
+    </section>
   	@endforeach
   	@elseif ( Session::get('error') )
-  	<div class="alert alert-danger">
-  		<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
-  		<i class="icon-ban-circle icon-large"></i><strong>{{ __('common.error_title') }}</strong> {{ Session::get('error') }}.
-  	</div>
+    <section id="content">
+      <section class="main padder">
+      	<div class="alert alert-danger">
+      		<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+      		<i class="icon-ban-circle icon-large"></i><strong>{{ __('common.error_title') }}</strong> {{ Session::get('error') }}.
+      	</div>
+      </section>
+    </section>
   	@endif
   	@if ( Session::get('success') )
-  	<div class="alert alert-success">
-          <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
-          <i class="icon-ok-sign icon-large"></i><strong>{{ __('common.success_title') }}</strong> {{ Session::get('success') }}.
-      </div>
+    <section id="content">
+      <section class="main padder">
+      	<div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+            <i class="icon-ok-sign icon-large"></i><strong>{{ __('common.success_title') }}</strong> {{ Session::get('success') }}.
+        </div>
+      </section>
+    </section>
   	@endif
   	{{ $content }}
     @if (!tplConstructor::has())
@@ -162,5 +182,7 @@
 	<script src="{{ asset('js/charts/easypiechart/jquery.easy-pie-chart.js') }}"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/retina.js/1.0.1/retina.js"></script>
 
+  @yield('scripts')
+  @yield('custom_scripts')
 </body>
 </html>

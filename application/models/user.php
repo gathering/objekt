@@ -6,6 +6,10 @@ class User extends Verify\Models\User {
 		return $this->belongs_to('Role');
 	}
 
+	public function sms(){
+		return $this->has_many('sms');
+	}
+
 	static function current(){
 		$currentRoles = Role::current();
 
