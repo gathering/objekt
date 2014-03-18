@@ -82,23 +82,33 @@
       <li {{ URI::segment(2) == '' ? 'class="active"' : '' }}><a href="{{ url('/') }}"><i class="icon-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span></a></li>
       @if (Auth::user()->is("superSponsorAdmin"))
       <li class="dropdown-submenu {{ URI::segment(2) == 'admin' ? ' active' : '' }}">
-        <a href="{{ url('/admin') }}"><i class="icon-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+        <a href="{{ url('/admin/events') }}"><i class="icon-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
         <ul class="dropdown-menu">
-          <li><a href="{{ url('/admin/invoices') }}">{{ __('nav.invoices') }}</a></li>
-          <li><a href="{{ url('/admin/events') }}">{{ __('nav.events') }}</a></li>
-          <li><a href="{{ url('/users') }}">{{ __('nav.users') }}</a></li>
+          <li{{ URI::segment(2) == 'admin' && URI::segment(3) =='events' ? ' class="active"' : '' }}>
+            <a href="{{ url('/admin/events') }}">{{ __('nav.events') }}</a>
+          </li>
+          <!--<li{{ URI::segment(2) == 'admin' && URI::segment(3) =='invoices' ? ' class="active"' : '' }}>
+            <a href="{{ url('/admin/invoices') }}">{{ __('nav.invoices') }}</a>
+          </li>-->
+          <li{{ URI::segment(2) == 'users' ? ' class="active"' : '' }}>
+            <a href="{{ url('/users') }}">{{ __('nav.users') }}</a>
+          </li>
         </ul>
       </li>
       @endif
       @if (Auth::user()->can("mediabank"))
       <li {{ URI::segment(2) == 'mediabank' ? 'class="active"' : '' }}><a href="{{ url('/mediabank') }}"><i class="icon-picture icon-xlarge"></i><span>{{ __('nav.mediabank') }}</span></a></li>
       @endif
-      @if (Auth::user()->can("sponsorprofiles"))
-      <li class="dropdown-submenu">
+      @if (Auth::user()->can("profiles"))
+      <li class="dropdown-submenu {{ URI::segment(2) == 'profiles' ? ' active' : '' }}">
         <a href="{{ url('/profiles') }}"><i class="icon-group icon-xlarge"></i><span>{{ __('nav.profiles') }}</span></a>
         <ul class="dropdown-menu">
-          <li><a href="{{ url('/profiles') }}">{{ __('nav.list_profiles') }}</a></li>
-          <li><a href="{{ url('/profile/add') }}">{{ __('user.add_new_profile') }}</a></li>
+          <li{{ URI::segment(2) == 'profiles' && URI::segment(3) =='' ? ' class="active"' : '' }}>
+            <a href="{{ url('/profiles') }}">{{ __('nav.list_profiles') }}</a>
+          </li>
+          <li{{ URI::segment(2) == 'profile' && URI::segment(3) =='add' ? ' class="active"' : '' }}>
+            <a href="{{ url('/profile/add') }}">{{ __('user.add_new_profile') }}</a>
+          </li>
         </ul>
       </li>
       @endif

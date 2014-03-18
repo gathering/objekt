@@ -540,6 +540,9 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
 
 /*phone*/
 @media (max-width: 767px) {
+  .btn-circle {
+    font-size: 10px;
+  }
     /* .slide-nav from left or right*/
   body{overflow-x: hidden;}
   body.slide-nav{overflow: hidden;}

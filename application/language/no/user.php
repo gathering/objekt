@@ -13,10 +13,12 @@ return array(
 	'pushover_placeholder' => 'dJBftzWsxfxSygDp8mmK4JdffG1E4M',
 	'pushover_success' => 'Nøkkelen er lagret',
 	'aid_title' => 'Øyeblikkelig assistanse',
-	'aid_message' => 'Du er ønsket i resepsjonen snarest!',
+	'aid_message' => 'Brukeren %s ønsker umiddelbar assistanse.',
 	'aid_success' => 'En melding er sendt ut til de som er angitt som kontaktperson.',
+	'air_confirm' => 'Vennligst bekreft at du faktisk behøver øyeblikkelig assistanse. En melding blir sendt ut til ansvarsperson som vil umiddelbart henvende seg hos deg for assistanse.',
+	'aid_no_aid_users' => 'Det er ingen registrerte ansvarspersoner tilgjengelig for hjelp.',
 	'email' => 'E-post',
-	'email_placeholder' => 'caremail@supersponsor.no',
+	'email_placeholder' => 'caremail@obj.no',
 	'phone' => 'Telefon',
 	'role' => 'Rolle',
 	'name' => 'Navn',
@@ -30,6 +32,7 @@ return array(
 	'noreply_name' => 'Objekt',
 	'aid' => 'Øyeblikkelig assistanse',
 	'faq' => 'Ofte stilte spørsmål',
+	'help' => 'Hjelp',
 	'roles' => array(
 			'supersponsoradmin' => 'Administrator',
 			'sponsorsupportmember' => 'Medlem'

@@ -1,8 +1,8 @@
 <section class="toolbar clearfix m-t-large m-b">
 	<a href="{{ url('profile/add') }}" class="btn btn-primary btn-circle"><i class="icon-group"></i> {{ __('user.add_new_profile') }}</a>
-	<a href="{{ url('profile/add-person') }}" class="btn btn-warning btn-circle"><i class="icon-user"></i> {{ __('user.add_new_user') }}</a>
-	<a href="{{ url('/faq') }}" class="btn btn-info btn-circle"><i class="icon-question-sign"></i>{{ __('user.faq') }}</a>
-	<a href="{{ url('/aid') }}" class="btn btn-danger btn-circle active"><i class="icon-warning-sign"></i>{{ __('user.aid') }}</a>
+	<a href="{{ url('profile/add-person') }}" class="btn btn-warning btn-circle"><i class="icon-user"></i> {{ __('profile.add_personel') }}</a>
+	<a href="{{ url('/help') }}" class="btn btn-info btn-circle"><i class="icon-question-sign"></i>{{ __('user.help') }}</a>
+	<a href="{{ url('/aid') }}" onclick="return confirm('{{ __('user.air_confirm') }}')" class="btn btn-danger btn-circle active"><i class="icon-warning-sign"></i>{{ __('user.aid') }}</a>
 </section>
 <br />
 <div class="row">

@@ -17,7 +17,7 @@ Route::group(array('before' => 'auth|event'), function()
 		$push = new Pushover();
 		$push->setToken('aKd8FNuK2gg2bEFidmhqhcsbFk9JTL');
 		$push->setTitle(__('user.aid_title'));
-		$push->setMessage(__('user.aid_message'));
+		$push->setMessage(sprintf(__('user.aid_message'), Auth::user()->username));
 		$push->setPriority(2);
 		$push->setRetry(30);
 		$push->setExpire(3600);
@@ -25,6 +25,8 @@ Route::group(array('before' => 'auth|event'), function()
 		$push->setSound('siren');
 
 		$aid_users = $event->aid();
+		if(empty($aid_users) || count($aid_users) < 0)
+			return Redirect::to(Request::referrer())->with('error', __('user.aid_no_aid_users'));
 		foreach($aid_users as $user){
 			$push->setUser($user->pushover_key);
 			$push->send();

@@ -19,12 +19,12 @@
         <small class="block m-t-mini">{{__('profile.registred_at', array('at' => Date::nice($profile->created_at)))}}</small>
       </div>
       <div class="list-group list-normal m-b-none">
-      	<a href="{{ $profile->url() }}" class="list-group-item active"><i class="icon-calendar"></i> {{ __('profile.activity') }}</a>
-        <a href="#" class="list-group-item"><i class="icon-user"></i> {{ __('profile.profile') }}</a>
-        <a href="{{ url('profile/'.$profile->slug.'/add-person') }}" class="list-group-item"><i class="icon-plus"></i> {{ __('profile.add_personel') }}</a>
+      	<a href="{{ $profile->url() }}" class="list-group-item active"><i class="icon-user"></i> {{ __('profile.profile') }}</a>
+        <a href="{{ url('profile/'.$profile->slug.'/add-person') }}" class="list-group-item active"><i class="icon-plus"></i> {{ __('profile.add_personel') }}</a>
         @if (!empty($profile->website))
-        <a href="{{ $profile->website }}" class="list-group-item"><i class="icon-chevron-right"></i> Gå til nettsiden</a>
+        <a href="{{ $profile->website }}" class="list-group-item active"><i class="icon-chevron-right"></i> Gå til nettsiden</a>
         @endif
+        <a href="{{ url('profile/'.$profile->slug.'/edit') }}" class="list-group-item active"><i class="icon-pencil"></i> {{ __('profile.edit') }}</a>
       </div>
     </aside>
     <!-- /.sidebar -->

@@ -8,7 +8,7 @@ class Profiles_Controller extends Controller {
 	public function action_profile($slug)
 	{
 		$profile = profile::find($slug);
-		if(!$profile) die("This profile was not found, and will not be found - unless its added. (SLUG: {$slug})");
+		#if($profile) die("This profile was not found, and will not be found - unless its added. (SLUG: {$slug})");
 		tplConstructor::set(true);
 		return View::make('profiles.profile')->with("profile", $profile);
 	}
