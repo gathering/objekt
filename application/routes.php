@@ -126,24 +126,27 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 
 /* Profiles */
 Route::group(array('before' => 'auth|superadmin|event'), function(){
+	/* Profile */
+	Route::get('/profile/(:any)/edit', 'profiles@edit');
+	Route::post('/profile/(:any)/edit', 'profiles@post_edit');
+
 	Route::get('/profiles', 'profiles@index');
 	Route::get('/profile/(:any)', 'profiles@profile');
+
 	Route::get('/profile/add-person', 'profiles@add_person');
 	Route::post('/profile/add-person', 'profiles@post_add_person');
+
 	Route::get('/profile/(:any)/add-person', 'profiles@add_person_profile');
 	Route::post('/profile/(:any)/add-person', 'profiles@post_add_person');
+
 	Route::get('/profile/(:any)/(:any)/add-child', 'profiles@add_child');
 	Route::post('/profile/(:any)/(:any)/add-child', 'profiles@post_add_child');
+	
 	Route::get('/profile/(:any)/(:any)', 'profiles@person');
 	Route::get('/profile/(:any)/(:any)/(:any)', 'profiles@child');
+	
 	Route::get('/profile/add', 'profiles@add');
 	Route::post('/profile/add', 'profiles@post_add');
-	
-	/* Profile */
-	Route::get('/profile/(:any)/(:any)/edit', 'profiles@edit');
-	Route::get('/profile/(:any)/(:any)/(:any)/edit', 'profiles@edit');
-	Route::post('/profile/(:any)/(:any)/edit', 'profiles@post_edit');
-	Route::post('/profile/(:any)/(:any)/(:any)/edit', 'profiles@post_edit');
 });
 
 

@@ -5,10 +5,53 @@ class Profiles_Controller extends Controller {
 	{
 		return View::make('profiles.index');
 	}
+
+	public function action_edit($slug)
+	{
+		$profile = profile::find($slug);
+		if(!$profile) die("This profile was not found, and will not be found - unless its added. (SLUG: {$slug})");
+		return View::make('profiles.edit')->with("profile", $profile);
+	}
+
+	public function action_post_edit($slug)
+	{
+		$profile = profile::find($slug);
+		if(!$profile) die("This profile was not found, and will not be found - unless its added. (SLUG: {$slug})");
+
+		$input = Input::all();
+		$rules = array(
+		    'name'  => 'required|max:255',
+		    'email' => 'email'
+		);
+
+		if(!empty($input['website'])){
+			$rules['website'] = 'url';
+		    if(!preg_match("/http/", $input['website'])){
+				$input['website'] = "http://".$input['website'];
+			}
+		}
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		foreach($rules as $field => $rule){
+			$profile->{$field} = $input[$field];
+		}
+
+		$profile->slug = $this->slugname_profile($profile, 0);
+		$profile->save();
+
+		return Redirect::to($profile->url())->with('success', __('user.profile_saved'));
+	}
+
 	public function action_profile($slug)
 	{
 		$profile = profile::find($slug);
-		#if($profile) die("This profile was not found, and will not be found - unless its added. (SLUG: {$slug})");
+		if(!$profile) die("This profile was not found, and will not be found - unless its added. (SLUG: {$slug})");
 		tplConstructor::set(true);
 		return View::make('profiles.profile')->with("profile", $profile);
 	}
@@ -51,12 +94,14 @@ class Profiles_Controller extends Controller {
 			else return $person->slug;
 		} else return $person->slug;
 	}
-	public function slugname_profile($profile, $i=0){
+	public function slugname_profile($profile, $i=0, $id=0){
 		if($i < 1){
 			$profile->slug = Str::slug($profile->name);
 		}
 		$slug_exists = profile::find($profile->slug);
 		if($slug_exists){
+			if($profile->id == $slug_exists->id) return $profile->slug;
+
 			$i++;
 			$profile->slug = Str::slug($profile->name." ".$i);
 			if(!profile::find($profile->slug)) return $profile->slug;

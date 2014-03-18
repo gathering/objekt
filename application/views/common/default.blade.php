@@ -9,6 +9,9 @@
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
   	<link rel="stylesheet" href="{{ asset('css/plugin.css') }}">
   	<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/messenger.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/messenger-theme-flat.css') }}">
 	<!--[if lt IE 9]>
 		<script src="{{ asset('js/ie/respond.min.js') }}"></script>
 		<script src="{{ asset('js/ie/html5.js') }}"></script>
@@ -120,37 +123,6 @@
   <section id="content">
     <section class="main padder">
   @endif
-  	@if ( is_object(Session::get('error')) && isset(Session::get('error')->messages) && is_array(Session::get('error')->messages) )
-  	@foreach (Session::get('error')->messages as $message)
-    <section id="content">
-      <section class="main padder">
-      	<div class="alert alert-danger">
-      		<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
-      		<i class="icon-ban-circle icon-large"></i><strong>{{ __('common.error_title') }}</strong> {{ $message[0] }}.
-      	</div>
-      </section>
-    </section>
-  	@endforeach
-  	@elseif ( Session::get('error') )
-    <section id="content">
-      <section class="main padder">
-      	<div class="alert alert-danger">
-      		<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
-      		<i class="icon-ban-circle icon-large"></i><strong>{{ __('common.error_title') }}</strong> {{ Session::get('error') }}.
-      	</div>
-      </section>
-    </section>
-  	@endif
-  	@if ( Session::get('success') )
-    <section id="content">
-      <section class="main padder">
-      	<div class="alert alert-success">
-            <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
-            <i class="icon-ok-sign icon-large"></i><strong>{{ __('common.success_title') }}</strong> {{ Session::get('success') }}.
-        </div>
-      </section>
-    </section>
-  	@endif
   	{{ $content }}
     @if (!tplConstructor::has())
     </section>
@@ -176,6 +148,40 @@
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script src="{{ asset('js/app.plugin.js') }}"></script>
 	<script src="{{ asset('js/app.data.js') }}"></script>
+
+  @if ( Session::get('error') || Session::get('success') )
+
+  <script src="{{ asset('js/messenger.min.js') }}"></script>
+  <script src="{{ asset('js/messenger-theme-flat.js') }}"></script>
+
+  <script>
+  $(function() {
+    Messenger.options = {
+        extraClasses: 'messenger-fixed messenger-on-bottom',
+        theme: 'flat'
+    }
+    @if ( is_object(Session::get('error')) && isset(Session::get('error')->messages) && is_array(Session::get('error')->messages) )
+    @foreach (Session::get('error')->messages as $message)
+    Messenger().post({
+      message: '{{ $message[0] }}',
+      type: 'error'
+    });
+    @endforeach
+    @elseif ( Session::get('error') )
+    Messenger().post({
+      message: '{{ Session::get('error') }}',
+      type: 'error'
+    });
+    @else
+    Messenger().post({
+      message: '{{ Session::get('success') }}',
+      type: 'success'
+    });
+    @endif
+  });
+  </script>
+
+  @endif
 
   <!-- TODO: Add authentication -->
   <!--<script src="{{ asset('js/strophe.js') }}"></script>
