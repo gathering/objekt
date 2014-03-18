@@ -32,7 +32,19 @@ class BadgeCreator {
 		if(!file_exists(self::getBadgePath($badge))){
 			self::make($badge);
 		}
-		system("lp ".self::getBadgePath($badge));
+
+		$event = Config::get('application.event');
+		if($event->badgeprinter == "0" || $event->badgeprinter == "")
+			return false;
+
+
+		$cloudprint = new GoogleCloudPrint;
+		return $cloudprint->sendPrintToPrinter(
+			$event->badgeprinter,
+			"Badge #".$badge->id,
+			self::getBadgePath($badge),
+			"image/png"
+			);
 	}
 }
 ?>

@@ -8,6 +8,13 @@ return array(
 			'email' => 'e@post.no'
 		),
 	'id' => 'ID',
+	'pushover_api' => 'API-nøkkel',
+	'pushover_description' => 'Objekt er tilknyttet <a href="https://pushover.net/">Pushover</a> for sending av Push-notifikasjoner. I noen roller på enkelte arrangementer er det vitalt å kunne hurtigst mulig motta meldinger. Objekt bruker Push-teknologi for å kommunisere hurtigst mulig.<br /><br />For å benytte seg Pushover sine tjenester, må du ha smart-telefon applikasjonen dems - samt ha en konto. På fremsiden deres får du opp «Your User Key», denne nøkkelen må limes inn i feltet ovenfor for å gi tilgang til å sende notifikasjoner.',
+	'pushover_placeholder' => 'dJBftzWsxfxSygDp8mmK4JdffG1E4M',
+	'pushover_success' => 'Nøkkelen er lagret',
+	'aid_title' => 'Øyeblikkelig assistanse',
+	'aid_message' => 'Du er ønsket i resepsjonen snarest!',
+	'aid_success' => 'En melding er sendt ut til de som er angitt som kontaktperson.',
 	'email' => 'E-post',
 	'email_placeholder' => 'caremail@supersponsor.no',
 	'phone' => 'Telefon',
@@ -21,6 +28,8 @@ return array(
 	'verification_subject' => 'Velkommen til Objekt!',
 	'noreply' => 'caremail@obj.no',
 	'noreply_name' => 'Objekt',
+	'aid' => 'Øyeblikkelig assistanse',
+	'faq' => 'Ofte stilte spørsmål',
 	'roles' => array(
 			'supersponsoradmin' => 'Administrator',
 			'sponsorsupportmember' => 'Medlem'

@@ -12,6 +12,7 @@ return array(
 	'mediabank' => 'Mediebank',
 	'invoices' => 'Fakturering',
 	'events' => 'Arrangementer',
-	'change_event' => 'Endre arrangement'
+	'change_event' => 'Endre arrangement',
+	'pushover' => 'Push-tjenester'
 
 );

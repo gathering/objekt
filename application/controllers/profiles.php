@@ -103,6 +103,8 @@ class Profiles_Controller extends Controller {
 			if(!$profile->exists) return Event::first('404');
 		}
 
+		$event = Config::get('application.event');
+		$person->event_id = $event->id;
 		$person->slug = $this->slugname_person($person, $profile, 0);
 		$person->hash = Str::random(32);
 		unset($person->i);
@@ -179,7 +181,8 @@ class Profiles_Controller extends Controller {
 		foreach($rules as $field => $rule){
 			$person->{$field} = $input[$field];
 		}
-
+		$event = Config::get('application.event');
+		$person->event_id = $event->id;
 		$person->slug = $this->slugname_person($person, $profile, 0);
 		$person->hash = Str::random(32);
 		unset($person->i);

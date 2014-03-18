@@ -27,9 +27,11 @@
           <b class="caret hidden-xs-only"></b>
         </a>
         <ul class="dropdown-menu">
+          <li><a href="{{ url('/pushover') }}">{{ __('nav.pushover') }}</a></li>
+          <li class="divider"></li>
           <li><a href="{{ url('/change_event') }}">{{ __('nav.change_event') }}</a></li>
           <li class="divider"></li>
-          <li><a href="{{ url('logout/') }}">{{ __('nav.logout') }}</a></li>
+          <li><a href="{{ url('/logout') }}">{{ __('nav.logout') }}</a></li>
         </ul>
       </li>
     </ul>
@@ -166,8 +168,8 @@
 	<script src="{{ asset('js/app.data.js') }}"></script>
 
   <!-- TODO: Add authentication -->
-  <script src="{{ asset('js/strophe.js') }}"></script>
-  <script src="{{ asset('js/chat.js') }}"></script>
+  <!--<script src="{{ asset('js/strophe.js') }}"></script>
+  <script src="{{ asset('js/chat.js') }}"></script>-->
 
 	<!-- fuelux -->
 	<script src="{{ asset('js/fuelux/fuelux.js') }}"></script>

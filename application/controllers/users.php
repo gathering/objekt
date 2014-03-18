@@ -2,6 +2,35 @@
 
 class Users_Controller extends Base_Controller {
 
+	public function action_pushover()
+	{
+		return View::make('user.pushover');
+	}
+
+	public function action_post_pushover()
+	{
+		$user = Auth::user();
+		$user = User::find($user->id);
+
+		$input = Input::all();
+		$rules = array(
+		    'pushover_key' => 'required'
+		   	);
+
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		$user->pushover_key = $input['pushover_key'];
+		$user->save();
+
+		return Redirect::to(Request::referrer())->with('success', __('user.pushover_success'));
+	}
+
 	public function action_index()
 	{
 		return View::make('user.index');

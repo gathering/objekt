@@ -8,6 +8,31 @@ Route::group(array('before' => 'auth|event'), function()
 		return View::make('home.index');
 	});
 
+	Route::get('/pushover', 'users@pushover');
+	Route::post('/pushover', 'users@post_pushover');
+
+	Route::get('/aid', function(){
+
+		$event = Config::get('application.event');
+		$push = new Pushover();
+		$push->setToken('aKd8FNuK2gg2bEFidmhqhcsbFk9JTL');
+		$push->setTitle(__('user.aid_title'));
+		$push->setMessage(__('user.aid_message'));
+		$push->setPriority(2);
+		$push->setRetry(30);
+		$push->setExpire(3600);
+		$push->setTimestamp(time());
+		$push->setSound('siren');
+
+		$aid_users = $event->aid();
+		foreach($aid_users as $user){
+			$push->setUser($user->pushover_key);
+			$push->send();
+		}
+
+		return Redirect::to(Request::referrer())->with('success', __('user.aid_success'));
+	});
+
 	Route::get('/logout', function(){
 		Auth::logout();
 		return Redirect::to('/');
@@ -23,6 +48,16 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 
 	Route::get('/admin/event/(:any)', 'admin@event');
 	Route::post('/admin/event/(:any)', 'admin@post_event');
+
+	Route::get('/admin/event/(:any)/deactivate', function($profile_slug){
+		$event = Events::where("slug", "=", $profile_slug)->first();
+		if(!$event) return Redirect::to('/admin/events')->with("error", __('admin.errors.not_found'));
+
+		$event->status = 'deactivated';
+		$event->save();
+
+		return Redirect::to('/admin/events')->with("success", __('admin.deactivated'));
+	});
 });
 
 /* Mediabank */

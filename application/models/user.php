@@ -10,6 +10,20 @@ class User extends Verify\Models\User {
 		return $this->has_many('sms');
 	}
 
+	static function active($event=""){
+		return self::left_join('event_users', 'event_users.user_id', '=', 'users.id')
+					->where(function($query) use(&$event) {
+						$query->where(function($query) use(&$event) {
+							$event = !empty($event) ? $event : Config::get('application.event');
+							$query->where("event_users.event_id", "=", $event->id);
+							$query->where("users.id", "=", DB::Raw('`event_users`.`user_id`'));
+						});
+						$query->or_where("users.role_id", "=", '1');
+					})
+					->where("users.disabled", "=", "0")
+					->where("users.deleted", "=", "0");
+	}
+
 	static function current(){
 		$currentRoles = Role::current();
 

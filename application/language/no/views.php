@@ -15,7 +15,7 @@ return array(
 			'index' => __('nav.profiles'),
 			'profile' => 'Profil',
 			'person_profile' => 'Profil',
-			'add' => __('user.add_new_sponsor'),
+			'add' => __('user.add_new_profile'),
 			'add-person' => 'Legger til person'
 		),
 	'event' =>

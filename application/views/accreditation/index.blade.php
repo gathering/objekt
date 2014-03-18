@@ -1,44 +1,62 @@
+<section class="toolbar clearfix m-t-large m-b">
+	<a href="{{ url('profile/add') }}" class="btn btn-primary btn-circle"><i class="icon-group"></i> {{ __('user.add_new_profile') }}</a>
+	<a href="{{ url('profile/add-person') }}" class="btn btn-warning btn-circle"><i class="icon-user"></i> {{ __('user.add_new_user') }}</a>
+	<a href="{{ url('/faq') }}" class="btn btn-info btn-circle"><i class="icon-question-sign"></i>{{ __('user.faq') }}</a>
+	<a href="{{ url('/aid') }}" class="btn btn-danger btn-circle active"><i class="icon-warning-sign"></i>{{ __('user.aid') }}</a>
+</section>
+<br />
 <div class="row">
 	<div class="col-sm-6">
 		<section class="panel">
+			<header class="panel-heading">
+              <span>{{ __('accreditation.existing_person') }}</span>
+            </header>
 			<div class="panel-body">
 				<div class="form-group">
-					<label class="col-lg-3 control-label">{{ __('accreditation.existing_person') }}</label>
-					<div class="col-lg-8">
-						<form method="post" action="{{ url('accreditation') }}">
-							<div class="input-group">
-						      <input type="text" name="search" placeholder="{{ __('common.search_person') }}" class="accreditationSearch form-control" id="searchField" />
-						      <span class="input-group-btn">
-						        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
-						      </span>
-						    </div><!-- /input-group -->
-						</form>
-					</div>
+					<form method="post" action="{{ url('accreditation') }}">
+						<div class="input-group">
+					      <input type="text" name="search" placeholder="{{ __('common.search_person') }}" class="accreditationSearch form-control" id="searchField" />
+					      <span class="input-group-btn">
+					        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
+					      </span>
+					    </div><!-- /input-group -->
+					</form>
 				</div>
 			</div>
 		</section>
 	</div>
 	<div class="col-sm-6">
 		<section class="panel">
+			<header class="panel-heading">
+              <span>{{ __('accreditation.non_existing_person') }}</span>
+            </header>
 			<div class="panel-body">
 				<div class="form-group">
-					<label class="col-lg-3 control-label">{{ __('accreditation.non_existing_person') }}</label>
-					<div class="col-lg-8">
-						<form method="post" action="{{ url('search/profile') }}">
-							<div class="input-group">
-							  <input type="hidden" name="type" value="accreditiation" />
-						      <input type="text" name="search" placeholder="{{ __('common.search_profiles') }}" class="accreditationSearch form-control" id="searchField" />
-						      <span class="input-group-btn">
-						        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
-						      </span>
-						    </div><!-- /input-group -->
-						</form>
-					</div>
+					<form method="post" action="{{ url('search/profile') }}">
+						<div class="input-group">
+						  <input type="hidden" name="type" value="accreditiation" />
+					      <input type="text" name="search" placeholder="{{ __('common.search_profiles') }}" class="accreditationSearch form-control" id="searchField" />
+					      <span class="input-group-btn">
+					        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
+					      </span>
+					    </div><!-- /input-group -->
+					</form>
 				</div>
 			</div>
 		</section>
 	</div>
 </div>
+<section class="panel">
+	<div class="panel-body text-muted l-h-2x" style="text-align: center;">
+		<span class="badge bg-success">{{ Events::current()->people()->count() }}</span>
+		<span class="m-r-small">{{ __('profile.total') }}</span>
+		<span class="badge bg-warning">{{ Events::current()->people()->where("status", "=", "registred")->count() }}</span>
+		<span class="m-r-small">{{ __('profile.registred') }}</span>
+		<span class="badge bg-info">{{ Events::current()->entries()->where("entries.status", "=", "valid")->count() }}</span>
+		<span class="m-r-small">{{ __('profile.arrived') }}</span>
+		<span class="badge bg-danger">{{ Events::current()->people()->where("status", "=", "departed")->count() }}</span> {{ __('profile.departed') }}
+	</div>
+</section>
 @if (isset($results))
 <section class="panel">
 	<table class="table table-bordered table-striped data-table">
@@ -57,50 +75,3 @@
 	</table>
 </section>
 @endif
-<?
-/*
-********************************************
-THIS FUNCTION IS MOVING IN AT THE DASHBOARD.
-********************************************
-
-Awaiting moving trucks...
-
-<div class="grid-24">
-	<div class="widget">			
-		
-		<div class="widget-header">
-			<h3>{{ __('accreditation.undelivered_badges') }}</h3>
-		</div>
-
-		<div class="widget-content">
-			<div class="field-group">
-				<table class="table">
-					<thead>
-						<tr>
-							<th style="width: 15%;">{{ __('accreditation.delivery_deadline') }}</th>
-							<th style="width: 10%;">{{ __('accreditation.badge_id') }}</th>
-							<th>{{ __('user.name') }}</th>
-							
-					</thead>				
-					<tbody>
-						@foreach (Entry::where("type", "=", "badge")->where("status", "=", "valid")->order_by("created_at", "asc")->get() as $entry)
-						<tr>
-							<td>
-								{{ Date::regular($entry->delivery_date) }}<br />
-								<b>{{ Date::countdown($entry->delivery_date) }}</b>
-							</td>
-							<td>
-								{{ $entry->badge_id }}
-							</td>
-							<td class="description">
-								<a href="{{ $entry->person()->url() }}">{{ $entry->person()->firstname }} {{ $entry->person()->surname }}</a>
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-*/ ?>
