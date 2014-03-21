@@ -12,7 +12,7 @@
       </div>
       <div class="bg-light padder padder-v"
       @if ($profile->color())
-        style="color: {{ colorPalette::getContrast($profile->color()) }}; background: #{{ $profile->color() }};"
+        style="color: {{ colorPalette::getContrast($profile->color()) }}; background: {{ $profile->color() }};"
       @endif
       >
         <span class="h4">{{__('profile.profile_name', array('name' => $profile->name))}}</span>

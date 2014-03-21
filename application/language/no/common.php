@@ -24,7 +24,7 @@ return array(
 	'access_denied' => 'Du har ikke tilgang til denne modulen. ',
 	'error_title' => 'En feil oppsto.',
 	'error_title_login' => 'Du, en ting..',
-	'footer' => 'Laga av folk med noe mellom øreflippene. Alt er beskytta med kopirettigheter, men vi gir ut bruksrett til tider - helt gratis.',
+	'footer' => 'Laga av folk med noe mellom øreflippene. Alt er beskytta med kopirettigheter.',
 	'index' => array(
 		'users' => 'Registrerte brukere',
 		'profiles' => 'Registrerte profiler',

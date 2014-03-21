@@ -18,7 +18,9 @@ return array(
 	'undelivered_badges' => 'Ikke innleverte badger..',
 	'automatic' => 'Automatisk utprint av badge',
 	'person_not_found' => 'Personen du forsøkte å akkredittere ble ikke funnet.',
-	'no_badges_found' => 'Personen har ingen badge registrert.'
+	'no_badges_found' => 'Personen har ingen badge registrert.',
+	'print' => 'Skriv ut akkredittering',
+	'printed' => 'Akkredittering er sendt til utskrift.'
 );
 
 ?>

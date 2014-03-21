@@ -37,6 +37,7 @@ class TG14_Badge extends BadgeTemplate {
 		include(path('app')."libraries/bitly.php");
 		include(path('app')."libraries/phpqrcode/qrlib.php");
 		$bitly = bitly_v3_shorten(url('accreditation/controll/'.$badge->person()->hash));
+		if(!isset($bitly['url'])) $bitly['url'] = url('accreditation/controll/'.$badge->person()->hash);
 		QRcode::png('url:'.$bitly['url'], path('storage')."work/".$badge->id.".png", QR_ECLEVEL_L, 6);
     	$qr = PHPImageWorkshop\ImageWorkshop::initFromPath(path('storage')."work/".$badge->id.".png");
     	unlink(path('storage')."work/".$badge->id.".png");
@@ -59,6 +60,32 @@ class TG14_Badge extends BadgeTemplate {
 		
 		$text = PHPImageWorkshop\ImageWorkshop::initTextLayer($text, $fontPath, $fontSize, $fontColor, $textRotation);
 		$sublayerInfos = $layer->addLayerOnTop($text, 900, 637, 0);
+
+		if(!empty($badge->person()->profile()->logo_url)){
+			$image = imagecreatefromstring(file_get_contents($badge->person()->profile()->logo_url));
+			$img = PHPImageWorkshop\ImageWorkshop::initFromResourceVar($image);
+
+			$thumbWidth = 266; // px		 
+			$img->resizeInPixel($thumbWidth, null, true, 0, 0, 'MM');
+
+			$height = $img->getHeight();
+			$width = $img->getWidth();
+
+			if($height > 160){
+				$img->resizeInPixel(null, 160, true, 0, 0, 'MM');
+				$height = 160;
+				$width = $img->getWidth();
+			}
+			
+			if($height > $width){
+				$fromLeft = 463+((266-$width)/2);
+				$sublayerInfos = $layer->addLayerOnTop($img, $fromLeft, 525, 0);
+			} else {
+				$fromTop = 525+((160-$height)/2);
+				$sublayerInfos = $layer->addLayerOnTop($img, 463, $fromTop, 0);
+			}
+		}
+		#$layer->rotate(90);
 
 		return $layer;
 	}

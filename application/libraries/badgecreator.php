@@ -1,9 +1,8 @@
 <?php
+
 class BadgeCreator {
 	/* Requires ImageWorkShop */
 	static function make($badge, $saveToFile=true){
-
-
 		ini_set('memory_limit', '-1');
 		$event = Config::get('application.event');
 		

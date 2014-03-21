@@ -16,6 +16,8 @@ class BadgeTemplate {
 
 	private static function findClasses(){
 
+		if(count(self::$classes)) return false;
+
 		$finfo = new finfo(FILEINFO_MIME);
 
 		$dir = new RecursiveDirectoryIterator(path('app').'libraries/badgeTemplates/',

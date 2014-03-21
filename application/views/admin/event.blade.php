@@ -160,7 +160,7 @@
 						<select name="badgeprinter" class="form-control">
 						<option {{ $event->badgeprinter == "0" || $event->badgeprinter == "" ? 'selected="selected"' : '' }} value="0">{{ __('admin.field.no_printer') }}</option>
 						@foreach($printers as $printer)
-						<option {{ $event->badgeprinter == $printer['id'] ? 'selected="selected"' : '' }} value="{{ $printer['id'] }}">{{ $printer['displayname'] }}</option>
+						<option {{ $event->badgeprinter == $printer['id'] ? 'selected="selected"' : '' }} value="{{ $printer['id'] }}">{{ $printer['displayname'] }} (Status: {{ $printer['status'] }})</option>
 						@endforeach
 						</select>
 						<br />

@@ -77,6 +77,9 @@ class Accreditation_Controller extends Controller {
 		$entry->type = "badge";
 		$entry->delivery_date = $entry->date." ".$entry->time;
 		unset($entry->date, $entry->time);
+		
+		$person->entries()->update(array('status' => 'denied'));
+
 		$entry = $person->entries()->insert($entry);
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has arrived for a while, equiped with a badge, departing at {$entry->delivery_date}.");
 		$event = Config::get('application.event');
@@ -132,6 +135,33 @@ class Accreditation_Controller extends Controller {
 		$person->save();
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_departed', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
+	}
+	public function action_print($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+
+		$badges = $person->entries()->where("type", "=", "badge")->where("status", "=", "valid")->get();
+		if(count($badges) < 1)
+			return Redirect::to("accreditation")->with("error", __('accreditation.no_badges_found'));
+
+		$event = Config::get('application.event');
+		foreach($badges as $badge){
+			if($child_slug == "debug"){
+					BadgeCreator::make($badge, false);
+					die("……");
+			} else {
+				if($event->has_badge_printer){
+					BadgeCreator::printBadge($badge);
+				} else {
+					BadgeCreator::make($badge);
+				}
+			}
+		}
+
+		return Redirect::to($person->url('accreditation'))->with("success", __('accreditation.printed'));
 	}
 }
 

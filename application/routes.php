@@ -97,6 +97,9 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::get('/accreditation/departed/(:any)/(:any)', 'accreditation@departed');
 	Route::get('/accreditation/departed/(:any)/(:any)/(:any)', 'accreditation@departed');
 
+	Route::get('/accreditation/print/(:any)/(:any)', 'accreditation@print');
+	Route::get('/accreditation/print/(:any)/(:any)/(:any)', 'accreditation@print');
+
 	Route::get('/accreditation/badge/(:any)/(:any)', 'accreditation@badge');
 	Route::get('/accreditation/save-badge/(:any)/(:any)', 'accreditation@save_badge');
 	Route::get('/accreditation/save-badge/(:any)/(:any)/(:any)', 'accreditation@save_badge');

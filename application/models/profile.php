@@ -51,20 +51,21 @@ class Profile extends Eloquent {
 		$logo = $this->logo();
 		if(!$logo) return false;
 
-		if (Cache::has('color_'.$this->slug))
-			return Cache::get('color_'.$this->slug);
+		if(!empty($this->color))
+			return $this->color;
 
 		$color = colorPalette::get($this->logo(), 1);
 		$color = isset($color[0]) ? $color[0] : false;
-		Cache::forever('color_'.$this->slug, $color);
+		$this->color = "#".$color;
+		if($this->color) $this->save();
+
 		return $color;
 	}
 
 	function logo(){
 		if(empty($this->website)) return false;
-		if (Cache::has('logo_'.$this->slug))
-			return Cache::get('logo_'.$this->slug);
-
+		if(!empty($this->logo_url)) return $this->logo_url;
+		
 		$html = httpAsset::get($this->website);
 
 		$doc = new DOMDocument();
@@ -77,8 +78,21 @@ class Profile extends Eloquent {
 			if(preg_match("/logo/", $src)){
 				$host = parse_url($this->website);
 				$src = preg_match("/http/", $src) ? $src : "http://".$host['host'].$src;
-				Cache::forever('logo_'.$this->slug, $src);
-				return $src;
+
+				$ext = substr(strrchr($src,'.'),1);
+				$tmp_path = "/tmp/".$this->slug.".".$ext;
+				file_put_contents($tmp_path, file_get_contents($src));
+
+				$event = Config::get('application.event');
+				$filepath = $event->s3_slug."/profiles/".$this->slug.".".$ext;
+
+				// Upload to S3
+				S3::putObject(S3::inputFile($tmp_path, false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
+				$this->logo_url = "http://s3.obj.no/".$filepath;
+				$this->save();
+				return $this->logo_url;
+				#Cache::forever('logo_'.$this->slug, $src);
+				#return $src;
 			}
 		}
 	}

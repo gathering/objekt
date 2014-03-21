@@ -31,11 +31,28 @@ class Profiles_Controller extends Controller {
 			}
 		}
 
+		if(!empty($input['logo']['name'])) $rules['logo'] = 'mimes:jpg,gif,png';
+		if(!empty($input['color'])) $rules['color'] = 'required';
+
 		$validation = Validator::make($input, $rules);
 
 		if ($validation->fails())
 		{
 		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		if(!empty($input['logo']['name'])){
+			unset($rules['logo']);
+			$ext = substr(strrchr($input['logo']['name'],'.'),1);
+			$filename = $profile->slug.".".$ext;
+			Input::upload('logo', '/tmp/', $filename);
+
+			$event = Config::get('application.event');
+			$filepath = $event->s3_slug."/profiles/".$profile->slug.".".$ext;
+
+			// Upload to S3
+			S3::putObject(S3::inputFile('/tmp/'.$filename, false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
+			$profile->logo_url = "http://s3.obj.no/".$filepath;
 		}
 
 		foreach($rules as $field => $rule){
