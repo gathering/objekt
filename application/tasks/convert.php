@@ -8,7 +8,8 @@ class Convert_Task {
 		$files = Fil3::where("type", "=", "map")->where("converted", "=", "0")->get();
 
 		foreach($files as $file){
-
+			$event = $file->event()->first();
+			
 			system("convert -density 300 {$file->url} /tmp/map-{$file->event_id}.jpg");
 			if(!is_file('/tmp/map.jpg')) continue;
 
