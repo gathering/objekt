@@ -259,7 +259,7 @@
 	                  </div>
 	                </div>
 				</div>
-				@if(isset($map))
+				@if(isset($map) && $map->pdf->converted == '1')
 				<div class="tab-pane in" id="map">
 					<img id="map_img" src="{{ $map->jpg->url }}" />
 				</div>
