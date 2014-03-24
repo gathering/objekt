@@ -51,6 +51,7 @@ return array(
 		'logo' => 'Systemet forsøker å laste ned logoen fra nettsiden til profilen dersom ingen logo er lastet opp her. Dersom du laster opp en logo, vil nåværende logo og eventuelt nedhentet logo fra nettsiden bli erstattet.'
 		),
 	'logo' => 'Logo',
+	'placement' => 'Plassering',
 	'created_at' => 'Opprettet',
 	'updated_at' => 'Oppdatert',
 	'status' => 'Status',
@@ -67,6 +68,7 @@ return array(
 	'reset_password' => 'Resett passord',
 	'non_activated_users' => 'Ikke aktiverte brukere',
 	'activate_user' => 'Aktiver',
+	'delete' => 'Slett',
 	'delete_user' => 'Slett bruker',
 	'delete_are_you_sure' => '<b>Er du sikker på at du vil slette brukeren?</b><br />Det vil ikke være mulig å angre, uten å snakke med Simen selvfølgelig. Fordi det som egentlig bare skjer er at brukeren blir merket med «slettet» og deretter vil brukeren ikke være tilgjengelig noen steder.',
 	'delete_yes' => 'Ja, slett',

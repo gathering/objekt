@@ -86,7 +86,7 @@ class Events extends Eloquent {
 		$map->pdf = $this->files("map")->first();
 		if(!$map->pdf) return false;
 		if($map->pdf->converted == "1"){
-			$map->jpg = $this->files("map")->first();
+			$map->jpg = $map->pdf->childs()->where("type", "=", "jpg-map")->first();
 			if(!$map->jpg) return false;
 		}
 

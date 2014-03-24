@@ -1,13 +1,11 @@
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/datepicker3.css') }}">
 <link rel="stylesheet" href="{{ asset('js/select2/select2.css') }}">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/css/jquery.Jcrop.min.css">
 @endsection
 @section('scripts')
 <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/locales/bootstrap-datepicker.nb.js') }}" charset="UTF-8"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/js/jquery.Jcrop.min.js"></script>
 <script>
 	$( document ).ready(function() {
 		$('#date').datepicker({
@@ -39,8 +37,6 @@
           multiple: true,
           tokenSeparators: [",", " "]
       	});
-
-      	$('#map_img').Jcrop();
 	});
 </script>
 @endsection

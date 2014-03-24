@@ -19,6 +19,10 @@ class Profile extends Eloquent {
 		return $this->has_many('person')->where("parent_id", "=", "0");
 	}
 
+	public function event(){
+		return $this->belongs_to('events', 'event_id');
+	}
+
 	public function logs(){
 		return $this->has_many('logg', 'related_id')->where("type", "=", "sponsor")->order_by("created_at", "desc");
 	}
