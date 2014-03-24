@@ -7,8 +7,14 @@ return array(
 	'delete_file' => 'Slett fil',
 	'events_description' => 'Klikk på et av arrangementene nedenfor for å sette innstillingene for arrangementet',
 	'errors' => array(
-		'not_found' => 'Kunne ikke finne arrangementet.'
+		'not_found' => 'Kunne ikke finne arrangementet.',
+		'file_not_found' => 'Filen ble ikke funnet.'
 		),
+	'file_deleted' => 'Filen ble slettet.',
+	'map_is_uploaded' => 'Kart er lastet opp.',
+	'delete_map' => 'Slett kart',
+	'show_map' => 'Vis kart',
+	'map' => 'Kart',
 	'field' => array(
 		'name' => 'Navn',
 		'features' => 'Funksjoner',

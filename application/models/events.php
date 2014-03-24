@@ -19,6 +19,13 @@ class Events extends Eloquent {
 		}
 	}
 
+	public function files($type=""){
+		if(empty($type))
+			return $this->has_many('fil3', 'event_id');
+
+		return $this->has_many('fil3', 'event_id')->where("type", "=", $type);
+	}
+
 	public function get_s3_slug(){
 		return $this->s3_slug();
 	}

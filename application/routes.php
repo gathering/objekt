@@ -51,6 +51,8 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::get('/admin/event/(:any)', 'admin@event');
 	Route::post('/admin/event/(:any)', 'admin@post_event');
 
+	Route::get('/admin/event/(:any)/delete_file/(:num)', 'admin@delete_file');
+
 	Route::get('/admin/event/(:any)/deactivate', function($profile_slug){
 		$event = Events::where("slug", "=", $profile_slug)->first();
 		if(!$event) return Redirect::to('/admin/events')->with("error", __('admin.errors.not_found'));

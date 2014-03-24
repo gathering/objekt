@@ -1,6 +1,6 @@
 <?php
 
-class BadgeTemplate {
+class badgeTemplate {
 	
 	private static $classes = array();
 

@@ -6,7 +6,7 @@ class BadgeCreator {
 		ini_set('memory_limit', '-1');
 		$event = Config::get('application.event');
 		
-		$layer = BadgeTemplate::findTemplate($event->id, $badge);
+		$layer = badgeTemplate::findTemplate($event->id, $badge);
 		if(!$layer) die("There is something wrong with this template. Please consult Objekt-staff. ({$event->id})");
 
 		$dirPath = path('storage')."badge/";

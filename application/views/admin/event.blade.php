@@ -58,6 +58,14 @@
 					<i class="icon-file-text icon-large text-default"></i>{{ __('admin.files') }}
 				</a>
 			</li>
+			@if($event->files("map")->first())
+	        <? $map = $event->files("map")->first(); ?>
+			<li>
+				<a href="#map" data-toggle="tab">
+					<i class="icon-map-marker icon-large text-default"></i>{{ __('admin.map') }}
+				</a>
+			</li>
+			@endif
 		</ul>
 		<span class="hidden-sm">{{ sprintf(__('admin.settings_for'), $event->name) }}</span>
 	</header>
@@ -209,10 +217,12 @@
 									</tr>
 								</thead>
 								<tbody>
+									@foreach ($event->files("welcomeletter")->get() as $file)
 									<tr>                    
-										<td>TheGatheringVelkommen.pdf</td>
-										<td style="width: 5%"><a href="{{ url('admin/event/'.$event->slug.'/delete_file/1') }}" class="btn btn-xs">{{ __('admin.delete_file') }}</a></td>
+										<td><a href="{{ $file->url }}" target="_blank">{{ $file->filename }}</a></td>
+										<td style="width: 5%"><a href="{{ url('admin/event/'.$event->slug.'/delete_file/'.$file->id) }}" class="btn btn-xs">{{ __('admin.delete_file') }}</a></td>
 									</tr>
+									@endforeach
 								</tbody>
 							</table>
 						</div>
@@ -226,6 +236,14 @@
 							<i class="icon-info-sign icon-large"></i>
 							{{ __('admin.description.map') }}
 						</div>
+						<p>
+	                    	@if(isset($map))
+	                    	{{ __('admin.map_is_uploaded') }}
+	                    	<a href="{{ url('admin/event/'.$event->slug.'/delete_file/'.$map->id) }}" class="btn btn-xs">{{ __('admin.delete_map') }}</a>
+	                    	<a target="_blank" href="{{ $map->url }}" class="btn btn-xs btn-primary">{{ __('admin.show_map') }}</a>
+	                    	<br />
+	                    	@endif
+	                    </p>
 	                  </div>
 	                </div>
 				</div>
