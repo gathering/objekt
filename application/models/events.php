@@ -81,6 +81,18 @@ class Events extends Eloquent {
 		return isset($features[$feature]) ? $features[$feature] : false;
 	}
 
+	public function map(){
+		$map = new StdClass;
+		$map->pdf = $this->files("map")->first();
+		if(!$map->pdf) return false;
+		if($map->pdf->converted == "1"){
+			$map->jpg = $this->files("map")->first();
+			if(!$map->jpg) return false;
+		}
+
+		return $map;
+	}
+
 }
 
 ?>

@@ -1,11 +1,13 @@
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/datepicker3.css') }}">
 <link rel="stylesheet" href="{{ asset('js/select2/select2.css') }}">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/css/jquery.Jcrop.min.css">
 @endsection
 @section('scripts')
 <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/locales/bootstrap-datepicker.nb.js') }}" charset="UTF-8"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/js/jquery.Jcrop.min.js"></script>
 <script>
 	$( document ).ready(function() {
 		$('#date').datepicker({
@@ -37,6 +39,8 @@
           multiple: true,
           tokenSeparators: [",", " "]
       	});
+
+      	$('#map_img').Jcrop();
 	});
 </script>
 @endsection
@@ -58,13 +62,15 @@
 					<i class="icon-file-text icon-large text-default"></i>{{ __('admin.files') }}
 				</a>
 			</li>
-			@if($event->files("map")->first())
-	        <? $map = $event->files("map")->first(); ?>
+			@if($event->map())
+	        <? $map = $event->map(); ?>
+	        @if($map->pdf->converted == '1')
 			<li>
 				<a href="#map" data-toggle="tab">
 					<i class="icon-map-marker icon-large text-default"></i>{{ __('admin.map') }}
 				</a>
 			</li>
+			@endif
 			@endif
 		</ul>
 		<span class="hidden-sm">{{ sprintf(__('admin.settings_for'), $event->name) }}</span>
@@ -239,14 +245,25 @@
 						<p>
 	                    	@if(isset($map))
 	                    	{{ __('admin.map_is_uploaded') }}
-	                    	<a href="{{ url('admin/event/'.$event->slug.'/delete_file/'.$map->id) }}" class="btn btn-xs">{{ __('admin.delete_map') }}</a>
-	                    	<a target="_blank" href="{{ $map->url }}" class="btn btn-xs btn-primary">{{ __('admin.show_map') }}</a>
+	                    	<a href="{{ url('admin/event/'.$event->slug.'/delete_file/'.$map->pdf->id) }}" class="btn btn-xs">{{ __('admin.delete_map') }}</a>
+	                    	<a target="_blank" href="{{ $map->pdf->url }}" class="btn btn-xs btn-primary">{{ __('admin.show_map') }}</a>
 	                    	<br />
+	                    	@if($map->pdf->converted != '1')
+	                    	<div class="alert alert-danger">
+								<i class="icon-info-sign icon-large"></i>
+								{{ __('admin.description.not_converted') }}
+							</div>
+	                    	@endif
 	                    	@endif
 	                    </p>
 	                  </div>
 	                </div>
 				</div>
+				@if(isset($map))
+				<div class="tab-pane in" id="map">
+					<img id="map_img" src="{{ $map->jpg->url }}" />
+				</div>
+				@endif
 			</div>
 		</div>
 		<div class="form-group" style="margin-bottom: 40px;">

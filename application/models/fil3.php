@@ -6,6 +6,10 @@ class Fil3 extends Eloquent {
 	function event(){
 		return $this->belongs_to('events', 'event_id');
 	}
+
+	function childs(){
+		return $this->has_many('files', 'parent_id');
+	}
 }
 
 ?>
