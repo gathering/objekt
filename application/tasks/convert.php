@@ -10,7 +10,7 @@ class Convert_Task {
 		foreach($files as $file){
 			$fp_pdf = fopen($file->url, 'r');
 
-			$img = new imagick(); // [0] can be used to set page number
+			$img = new imagick('[0]'); // [0] can be used to set page number
 			$img->readImageFile($fp_pdf);
 			$img->setImageFormat( "jpg" );
 			$img->setImageCompression(imagick::COMPRESSION_JPEG); 

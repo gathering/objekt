@@ -108,7 +108,7 @@ class Admin_Controller extends Base_Controller {
 
 			$event = Config::get('application.event');
 			$filepath = $event->s3_slug."/".$filename;
-			
+
 			// Upload to S3
 			S3::putObject(S3::inputFile($input['map']['tmp_name'], false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
 
@@ -118,6 +118,7 @@ class Admin_Controller extends Base_Controller {
 			if(!$file) $file = new Fil3;
 
 			$file->type = "map";
+			$file->converted = "0";
 			$file->event_id = $event->id;
 			$file->filename = $filename;
 			$file->s3_path = $filepath;
