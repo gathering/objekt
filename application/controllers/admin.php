@@ -109,7 +109,7 @@ class Admin_Controller extends Base_Controller {
 			$event = Config::get('application.event');
 			$filepath = $event->s3_slug."/".$filename;
 			$filepath_jpeg = $event->s3_slug."/map.jpg";
-			
+
 			$fp_pdf = fopen($input['map']['tmp_name'], 'rb');
 
 		    $img = new imagick(); // [0] can be used to set page number
@@ -121,7 +121,7 @@ class Admin_Controller extends Base_Controller {
 		    $img->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
 
 			// Upload to S3
-			S3::putObject(S3::inputResource($img->getImageBlob(), $img->getSize()), "s3.obj.no", $filepath_jpeg, S3::ACL_PUBLIC_READ);
+			S3::putObject(S3::inputResource(imagecreatefromstring($img->getImageBlob()), $img->getSize()), "s3.obj.no", $filepath_jpeg, S3::ACL_PUBLIC_READ);
 			S3::putObject(S3::inputFile($input['map']['tmp_name'], false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
 
 			$file = $event->files()
