@@ -55,7 +55,7 @@ return array(
 		'welcomeletter' => 'Velkomstbrev kan lastes opp i PDF-format, som deretter kan printes ut sammen med profil-spesifik informasjon. Det er mulig å laste opp flere velkomstbrev, om ønskelig.',
 		'map' => 'Dersom arrangementskart er lastet opp, vil det være mulig å pinpunkte hvor en gitt profil har tilhørlighet på kartet. Dette vil være synlig via profilen - samt at dette kan skrives ut sammen med skreddersydd velkomstbrev med arrangementspesifike opplysninger.',
 		'aid' => 'Velg de brukere som skal motta varsel om øyeblikkelig hjelp. Brukerene er selv ansvarlige for å sette opp Pushover.',
-		'not_converted' => 'Kartet er ikke konvert enda. Dette blir automatisk gjort innen ét til to minutter, hvis ikke «Kart»-fanen dukker opp etter dette og denne meldinger forsvinner har en feil forekommet. Forsøk derfor å laste opp en annen utgave av kartet, om det ikke skulle fungere - ta kontakt med systemadministrator.'
+		'not_converted' => 'Kartet er ikke konvertert enda. Dette blir automatisk gjort innen ét til to minutter, hvis ikke «Kart»-fanen dukker opp etter dette og denne meldinger forsvinner har en feil forekommet. Forsøk derfor å laste opp en annen utgave av kartet, om det ikke skulle fungere - ta kontakt med systemadministrator.'
 		),
 	'settings_for' => 'Innstillinger for <b>%s</b>',
 	'general_settings' => 'Generelt',

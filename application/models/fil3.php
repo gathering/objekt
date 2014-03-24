@@ -8,7 +8,7 @@ class Fil3 extends Eloquent {
 	}
 
 	function childs(){
-		return $this->has_many('files', 'parent_id');
+		return $this->has_many('fil3', 'parent_id');
 	}
 }
 

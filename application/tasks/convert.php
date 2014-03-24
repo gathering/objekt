@@ -18,6 +18,8 @@ class Convert_Task {
 			S3::putObject(S3::inputFile("/tmp/map-{$file->event_id}.jpg", false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
 			unlink("/tmp/map-{$file->event_id}.jpg");
 
+			$file->childs()->delete();
+
 			$child = new Fil3;
 			$child->type = "jpg-map";
 			$child->converted = '1';
