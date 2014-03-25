@@ -26,8 +26,9 @@ class Convert_Task {
 			$child->event_id = $event->id;
 			$child->filename = "map.jpg";
 			$child->s3_path = $filepath;
+			$child->parent_id = $file->id;
 			$child->url = "http://s3.obj.no/".$filepath;
-			$file->childs()->insert($child);
+			$child->save();
 
 			Bundle::start('imageworkshop');
 
@@ -39,14 +40,15 @@ class Convert_Task {
 			$filepath = $event->s3_slug."/map-759.jpg";
 			S3::putObject(S3::inputFile("/tmp/map-{$file->event_id}-759.jpg", false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
 
-			$child2 = new Fil3;
-			$child2->type = "jpg-759-map";
-			$child2->converted = '1';
-			$child2->event_id = $event->id;
-			$child2->filename = "map-759.jpg";
-			$child2->s3_path = $filepath;
-			$child2->url = "http://s3.obj.no/".$filepath;
-			$file->childs()->insert($child2);
+			$child = new Fil3;
+			$child->type = "jpg-759-map";
+			$child->converted = '1';
+			$child->event_id = $event->id;
+			$child->filename = "map-759.jpg";
+			$child->s3_path = $filepath;
+			$child->parent_id = $file->id;
+			$child->url = "http://s3.obj.no/".$filepath;
+			$child->save();
 
 			$file->converted = '1';
 			$file->save();
