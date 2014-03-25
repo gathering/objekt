@@ -55,6 +55,25 @@ class Profiles_Controller extends Controller {
 			$profile->logo_url = "http://s3.obj.no/".$filepath;
 		}
 
+		if(!empty($input['hiddenpin']) || !empty($input['map_location'])){
+			if((!empty($input['hiddenpin']) && empty($input['map_location'])) || (empty($input['hiddenpin']) && !empty($input['map_location'])))
+				return Redirect::to(Request::referrer())->with('error', 'Missing pin location or map location');
+			$pin_location = explode("#", $input['hiddenpin']);
+			$location['pin']['x'] = @$pin_location[0]-8;
+			$location['pin']['y'] = @$pin_location[1]-28;
+
+			$map_location = explode("#", $input['map_location']);
+			$location['map']['w'] = @$map_location[0];
+			$location['map']['h'] = @$map_location[1];
+			$location['map']['x'] = @$map_location[2];
+			$location['map']['y'] = @$map_location[3];
+			$location['map']['x2'] = @$map_location[4];
+			$location['map']['y2'] = @$map_location[5];
+
+			$profile->location = serialize($location);
+		}
+
+
 		foreach($rules as $field => $rule){
 			$profile->{$field} = $input[$field];
 		}
@@ -253,6 +272,64 @@ class Profiles_Controller extends Controller {
 		$profile->person()->insert($person);
 		return Redirect::to("profile/".$profile->slug."/".$parent->slug)->with("success", "Informasjonen ble lagret!");
 	}
+	public function action_profile_map($profile_slug)
+	{
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
 
+		header('Content-type: image/jpeg');
+		header('Content-Disposition: filename="map-'.$profile->slug.'.jpg"');
+		echo Cache::remember('profile-map-'.$profile->id, function() use ($profile) {
+			$event = $profile->event()->first();
+			$contents = file_get_contents($event->map()->jpg_759->url);
+			$map = imagecreatefromstring($contents);
+			$map_width = imagesx($map);
+ 			$map_height = imagesy($map);
 
+			$map = PHPImageWorkshop\ImageWorkshop::initFromResourceVar($map);
+
+			$location = $profile->location();
+			$rx = (200 / $location->w);
+			$ry = (200 / $location->h);
+			$width = $rx * $map_width;
+			$height = $ry * $map_height;
+			$map->resizeInPixel($width, $height, false, 0, 0, 'MM');
+			
+			$layer = PHPImageWorkshop\ImageWorkshop::initVirginLayer(200, 200, "000000");
+			$layer->addLayerOnTop($map, -($rx * $location->x), -($rx * $location->y), 0);
+
+			// Pin
+			$pin = PHPImageWorkshop\ImageWorkshop::initFromPath(path('public').'img/map-pin.png');
+			$layer->addLayerOnTop($pin, $location->pin_x, $location->pin_y); 
+			
+			$image = $layer->getResult();
+			ob_start();
+			imagejpeg($image, null, 95); // We choose to show a JPEG (quality of 95%)
+			$return = ob_get_contents();
+			ob_end_clean();
+			return $return;
+		}, 10);
+		
+		exit;
+	}
+	public function action_delete($profile_slug){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+
+		return View::make('profiles.delete')->with("profile", $profile);
+	}
+	public function action_post_delete($profile_slug){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+
+		$password = Input::get('password');
+		$user = Auth::user();
+		if(!Hash::check($user->salt . $password, $user->password))
+			return Redirect::to(Request::referrer())->with("error", __('profile.incorrect_password'));
+		
+		$profile->person_x()->delete();
+		$profile->delete();
+
+		return Redirect::to("/")->with("success", __('profile.deleted'));
+	}
 }

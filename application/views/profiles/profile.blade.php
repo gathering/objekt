@@ -26,6 +26,11 @@
         @endif
         <a href="{{ url('profile/'.$profile->slug.'/edit') }}" class="list-group-item active"><i class="icon-pencil"></i> {{ __('profile.edit') }}</a>
       </div>
+      @if ($profile->location()->w > 0)
+      <div class="text-center clearfix bg-white">
+        <img src="{{ url('profile/'.$profile->slug.'/map.jpg') }}">
+      </div>
+      @endif
     </aside>
     <!-- /.sidebar -->
 

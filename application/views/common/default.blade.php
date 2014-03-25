@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/messenger.css') }}">
     <link rel="stylesheet" href="{{ asset('css/messenger-theme-flat.css') }}">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}"/>
 	<!--[if lt IE 9]>
 		<script src="{{ asset('js/ie/respond.min.js') }}"></script>
 		<script src="{{ asset('js/ie/html5.js') }}"></script>
@@ -149,8 +150,6 @@
 	<script src="{{ asset('js/app.plugin.js') }}"></script>
 	<script src="{{ asset('js/app.data.js') }}"></script>
 
-  @if ( Session::get('error') || Session::get('success') )
-
   <script src="{{ asset('js/messenger.min.js') }}"></script>
   <script src="{{ asset('js/messenger-theme-flat.js') }}"></script>
 
@@ -160,6 +159,15 @@
         extraClasses: 'messenger-fixed messenger-on-bottom',
         theme: 'flat'
     }
+  });
+  </script>
+
+  @if ( Session::get('error') || Session::get('success') )
+
+  
+
+  <script>
+  $(function() {
     @if ( is_object(Session::get('error')) && isset(Session::get('error')->messages) && is_array(Session::get('error')->messages) )
     @foreach (Session::get('error')->messages as $message)
     Messenger().post({

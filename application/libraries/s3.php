@@ -37,4 +37,46 @@ class S3
 	{
 		return lcfirst(preg_replace('/(^|_)(.)/e', "strtoupper('\\2')", strval($word)));
 	}
+
+	static function uploadS3($filepath){
+		global $s3;
+
+	    $upload = Input::file('files') ? Input::file('files') : null;
+	    $info = array();
+	    if ($upload && is_array($upload['tmp_name'])) {
+
+	        foreach($upload['tmp_name'] as $index => $value) {
+
+	            $fileTempName = $upload['tmp_name'][$index];
+	            $fileName = Request::server('HTTP_X_FILE_NAME') ? Request::server('HTTP_X_FILE_NAME') : $upload['name'][$index];
+	            $fileName = $filepath."/".str_replace(" ", "_", $fileName);
+	            $response = S3::putObject(S3::inputFile($fileTempName, false), "s3.obj.no", $fileName, S3::ACL_PUBLIC_READ);
+	            if ($response){
+	            	$exif = exif_read_data($fileTempName, 0, true);
+	            	$xmp = XMP::read($fileTempName);
+	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp);
+	            }
+	        }
+
+	    } else {
+	        if ($upload || Request::server('HTTP_X_FILE_NAME')) {
+	            $fileTempName = $upload['tmp_name'];
+	            $fileName = Request::server('HTTP_X_FILE_NAME') ? Request::server('HTTP_X_FILE_NAME') : $upload['name'];
+	            $fileName = $filepath."/".str_replace(" ", "_", $fileName);
+	            $response = S3::putObject(S3::inputFile($fileTempName, false), "s3.obj.no", $fileName, S3::ACL_PUBLIC_READ);
+	            if ($response){
+	            	$exif = exif_read_data($fileTempName, 0, true);
+	            	$xmp = XMP::read($fileTempName);
+	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp);
+	            }
+	        }
+	    }
+	    header('Vary: Accept');
+	    if (Request::server('HTTP_ACCEPT') && (strpos(Request::server('HTTP_ACCEPT'), 'application/json') !== false)) {
+	        header('Content-type: application/json');
+	    } else {
+	        header('Content-type: text/plain');
+	    }
+	    return $files;
+	}
 }

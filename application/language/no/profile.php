@@ -10,6 +10,11 @@ return array(
 		'arrived' => 'Ankommet',
 		'departed' => 'Dratt'
 	),
+	'delete' => 'Sletting av «%s»',
+	'delete_confirm' => 'Bekreft sletting',
+	'description' => array(
+		'delete' => 'Ved å skrive inn ditt passord her bekrefter du at du ønsker å slette «%s». All personell blir også slettet.'
+	),
 	'edit' => 'Rediger',
 	'person_read_more' => 'Gå til «:name»…',
 	'associated' => 'Tilknyttet',
@@ -31,6 +36,9 @@ return array(
 	'timeline' => 'Titslinje',
 	'attached_to' => 'Tilknyttet til',
 	'back_to_parent' => 'Tilbake til <b>%s</b>',
+	'confirm_delete' => 'Jeg bekrefter at «%s» skal slettes.',
+	'deleted' => 'Profilen ble slettet',
+	'incorrect_password' => 'Feil passord.',
 	'placeholder' => array(
 			'name' => 'Profilens navn',
 			'surname' => 'Normann',
@@ -38,6 +46,7 @@ return array(
 			'phone' => '95308087',
 			'website' => 'Nettadresse',
 			'contact_person' => 'La denne personen stå som kontaktperson mot profilen',
-			'email' => 'e@post.no'
+			'email' => 'e@post.no',
+			'delete' => 'Ditt passord'
 			)
 );

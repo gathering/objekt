@@ -68,6 +68,7 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 Route::group(array('before' => 'auth|superadmin|event'), function()
 {
 	Route::get('/mediabank', 'mediabank@index');
+	Route::post('/mediabank', 'mediabank@upload');
 });
 
 
@@ -135,8 +136,13 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 	Route::get('/profile/(:any)/edit', 'profiles@edit');
 	Route::post('/profile/(:any)/edit', 'profiles@post_edit');
 
+	Route::get('/profile/(:any)/delete', 'profiles@delete');
+	Route::post('/profile/(:any)/delete', 'profiles@post_delete');
+
 	Route::get('/profiles', 'profiles@index');
 	Route::get('/profile/(:any)', 'profiles@profile');
+
+	Route::get('/profile/(:any)/map.jpg', 'profiles@profile_map');
 
 	Route::get('/profile/add-person', 'profiles@add_person');
 	Route::post('/profile/add-person', 'profiles@post_add_person');

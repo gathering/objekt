@@ -23,6 +23,39 @@ class Profile extends Eloquent {
 		return $this->belongs_to('events', 'event_id');
 	}
 
+	var $locationClass;
+
+	public function location(){
+		if(!empty($this->locationClass)) return $this->locationClass;
+
+		$return = new stdClass;
+		$return->w = 0;
+		$return->h = 0;
+		$return->x = 0;
+		$return->y = 0;
+		$return->x2 = 0;
+		$return->y2 = 0;
+		$return->pin_x = 0;
+		$return->pin_y = 0;
+
+		if(empty($this->location)) return $return;
+
+		$location = unserialize($this->location);
+
+		$return->w = @$location['map']['w'];
+		$return->h = @$location['map']['h'];
+		$return->x = @$location['map']['x'];
+		$return->y = @$location['map']['y'];
+		$return->x2 = @$location['map']['x2'];
+		$return->y2 = @$location['map']['y2'];
+		$return->pin_x = @$location['pin']['x'];
+		$return->pin_y = @$location['pin']['y'];
+
+		$this->locationClass = $return;
+
+		return $return;
+	}
+
 	public function logs(){
 		return $this->has_many('logg', 'related_id')->where("type", "=", "sponsor")->order_by("created_at", "desc");
 	}
