@@ -20,6 +20,8 @@ class Convert_Task {
 			$filepath = $event->s3_slug."/map.jpg";
 			S3::putObject(S3::inputFile("/tmp/map-{$file->event_id}.jpg", false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
 
+			echo "Uploaded map.jpg.";
+
 			$child = new Fil3;
 			$child->type = "jpg-map";
 			$child->converted = '1';
@@ -29,6 +31,8 @@ class Convert_Task {
 			$child->parent_id = $file->id;
 			$child->url = "http://s3.obj.no/".$filepath;
 			$child->save();
+
+			unset($child);
 
 			Bundle::start('imageworkshop');
 
@@ -40,6 +44,8 @@ class Convert_Task {
 			$filepath = $event->s3_slug."/map-759.jpg";
 			S3::putObject(S3::inputFile("/tmp/map-{$file->event_id}-759.jpg", false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
 
+			echo "Uploaded map-759.";
+
 			$child = new Fil3;
 			$child->type = "jpg-759-map";
 			$child->converted = '1';
@@ -50,12 +56,16 @@ class Convert_Task {
 			$child->url = "http://s3.obj.no/".$filepath;
 			$child->save();
 
-			$file->converted = '1';
-			$file->save();
-
 			unlink("/tmp/map-{$file->event_id}.jpg");
 			unlink("/tmp/map-{$file->event_id}-759.jpg");
 			unlink("/tmp/map-{$file->event_id}.pdf");
+
+			echo "Deleted temp-files.";
+
+			$file->converted = '1';
+			$file->save();
+
+			echo "File converted.";
 		}
 
 		return true;
