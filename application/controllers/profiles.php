@@ -55,9 +55,7 @@ class Profiles_Controller extends Controller {
 			$profile->logo_url = "http://s3.obj.no/".$filepath;
 		}
 
-		if(!empty($input['hiddenpin']) || !empty($input['map_location'])){
-			if((!empty($input['hiddenpin']) && empty($input['map_location'])) || (empty($input['hiddenpin']) && !empty($input['map_location'])))
-				return Redirect::to(Request::referrer())->with('error', 'Missing pin location or map location');
+		if(!empty($input['hiddenpin']) && !empty($input['map_location'])){			
 			$pin_location = explode("#", $input['hiddenpin']);
 			$location['pin']['x'] = @$pin_location[0]-8;
 			$location['pin']['y'] = @$pin_location[1]-28;
@@ -80,6 +78,8 @@ class Profiles_Controller extends Controller {
 
 		$profile->slug = $this->slugname_profile($profile, 0);
 		$profile->save();
+
+		$profile->sendNotification(__('profile.notification.profile_edited'));
 
 		return Redirect::to($profile->url())->with('success', __('user.profile_saved'));
 	}
@@ -190,6 +190,8 @@ class Profiles_Controller extends Controller {
 		$person->hash = Str::random(32);
 		unset($person->i);
 
+		$profile->sendNotification(sprintf(__('profile.notification.new_person'), $person->firstname." ".$person->surname));
+
 		$profile->person()->insert($person);
 		return Redirect::to("profile/".$profile->slug)->with("success", "Informasjonen ble lagret!");
 	}
@@ -269,6 +271,8 @@ class Profiles_Controller extends Controller {
 		unset($person->i);
 		$person->parent_id = $parent->id;
 
+		$profile->sendNotification(sprintf(__('profile.notification.new_child'), $person->firstname." ".$person->surname));
+
 		$profile->person()->insert($person);
 		return Redirect::to("profile/".$profile->slug."/".$parent->slug)->with("success", "Informasjonen ble lagret!");
 	}
@@ -326,10 +330,58 @@ class Profiles_Controller extends Controller {
 		$user = Auth::user();
 		if(!Hash::check($user->salt . $password, $user->password))
 			return Redirect::to(Request::referrer())->with("error", __('profile.incorrect_password'));
+
+		$profile->sendNotification(sprintf(__('profile.notification.deleted_profile'), $user->username));
 		
 		$profile->person_x()->delete();
 		$profile->delete();
 
 		return Redirect::to("/")->with("success", __('profile.deleted'));
+	}
+	public function action_post_comment($profile_slug)
+	{
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+
+		$commentContent = Input::get('comment');
+		if(empty($commentContent)) return Redirect::to($profile->url())->with("error", __('profile.comment_empty'));
+
+		$comment = new Comment;
+		$comment->comment = $commentContent;
+		$comment->user_id = Auth::user()->id;
+		$comment->type = "profile";
+		$profile->comments()->insert($comment);
+
+		$profile->sendNotification(__('profile.notification.new_comment'));
+
+		return Redirect::to($profile->url())->with("success", __('profile.comment_posted'));
+	}
+	public function action_person_follow($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+
+		$user = User::find(Auth::user()->id);
+		$user->following()->where("type", "=", "person")->where("belongs_to", "=", $person->id)->delete();
+		$follow = new Following;
+		$follow->type = "person";
+		$follow->belongs_to = $person->id;
+		$user->following()->insert($follow);
+		die("true");
+	}
+	public function action_person_not_follow($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+
+		$user = User::find(Auth::user()->id);
+		$user->following()->where("type", "=", "person")->where("belongs_to", "=", $person->id)->delete();
+		die("true");
 	}
 }

@@ -407,7 +407,7 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
 .navbar-fixed{padding-top: 51px}
 .navbar-nav.pull-right{width: auto;}
 /*content*/
-#content{position: relative;}
+#content{position: relative; min-height: 500px;}
 .page-title{background: #eaedef;border-bottom: 1px solid #d3d6d9;padding: 10px 15px}
 
 /* Footer*/
@@ -477,6 +477,8 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
 .the-icons a:hover i{font-size:28px;vertical-align:middle}
 
 .h{font-size: 180px;font-weight: 700;text-shadow: 0 1px 0 #d9d9d9, 0 2px 0 #d0d0d0, 0 5px 10px rgba(0,0,0,.125), 0 10px 20px rgba(0,0,0,.2);}
+.new{background:#ff5f5f; color: #FFFFFF;}
+.new .text-muted {color: #FFFFFF;}
 
 /*desktop*/
 @media (min-width: 992px) {

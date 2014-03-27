@@ -47,17 +47,13 @@
 	<header class="panel-heading"> Logg </header>
 	<ul class="list-group">
 		@foreach ($person->logs()->get() as $log)
-		<li class="list-group-item" data-toggle="class:active" data-target="#todo-1">
+		<li class="list-group-item">
 			<div class="media">
 				<span class="pull-left thumb-small m-t-mini">
 					<i class="icon-bookmark icon-xlarge text-default"></i>
 				</span>
-				<div id="todo-1" class="pull-right text-primary m-t-small">
-					<i class="icon-circle icon-large text text-default"></i>
-					<i class="icon-ok-sign icon-large text-active text-primary"></i>
-				</div>
 				<div class="media-body">
-					<div><a href="#" class="h5">{{ $log->message }}</a></div>
+					<div>{{ $log->message }}</div>
 					<small class="text-muted">{{ Date::nice($log->created_at) }}</small>
 				</div>
 			</div>

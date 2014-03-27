@@ -1,3 +1,20 @@
+@section('scripts')
+<script>
+$(function() {
+  $("#follow").click(function(){
+    if($(this).hasClass('active')){
+      var status = 'not_follow';
+    } else {
+      var status = 'follow';
+    }
+    $.ajax({
+      url: '{{ url('profile/'.$profile->slug.'/') }}' + status
+    });
+    
+  });
+});
+</script>
+@endsection
 <section id="content" class="content-sidebar bg-white">
  <!-- .sidebar -->
     <aside class="sidebar bg-lighter sidebar">
@@ -17,6 +34,15 @@
       >
         <span class="h4">{{__('profile.profile_name', array('name' => $profile->name))}}</span>
         <small class="block m-t-mini">{{__('profile.registred_at', array('at' => Date::nice($profile->created_at)))}}</small>
+        
+        <button id="follow" class="btn btn-primary btn-sm {{ User::find(Auth::user()->id)->isFollowing('profile', $profile->id) ? 'active' : '' }}" data-toggle="button">
+          <span class="text">
+            <i class="icon-eye-open"></i> {{ __('profile.get_notifications') }}
+          </span>
+          <span class="text-active">
+            <i class="icon-eye-open"></i> {{ __('profile.gets_notifications') }}
+          </span>
+        </button>
       </div>
       <div class="list-group list-normal m-b-none">
       	<a href="{{ $profile->url() }}" class="list-group-item active"><i class="icon-user"></i> {{ __('profile.profile') }}</a>
@@ -98,6 +124,36 @@
               @endforeach
             </ul>
           </section>
+          <hr />
+          <section class="comment-list block">
+            <!-- comment form -->
+            <article class="comment-item media" id="comment-form">
+              <a class="pull-left thumb-small avatar"><img src="http://www.gravatar.com/avatar/{{ md5( strtolower( trim( Auth::user()->email ) ) ) }}&s=32" class="img-circle"></a>
+              <section class="media-body">
+                <form action="" method="post" class="m-b-none">
+                  <div class="input-group">
+                    <input type="text" name="comment" placeholder="{{ __('profile.placeholder.comment') }}" class="form-control">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary" type="button">{{ __('profile.post') }}</button>
+                    </span>
+                  </div>
+                </form>
+              </section>
+            </article>
+            @foreach($profile->comments()->order_by('created_at', 'desc')->get() as $comment)
+            <article id="comment-id-1" class="comment-item media arrow arrow-left">
+              <a class="pull-left thumb-small avatar"><img src="http://www.gravatar.com/avatar/{{ md5( strtolower( trim( $comment->user()->email ) ) ) }}&s=32" class="img-circle"></a>
+              <section class="media-body panel">
+                <header class="panel-heading clearfix">
+                  <a href="#">{{ $comment->user()->username }}</a>
+                  <span class="text-muted m-l-small pull-right"><i class="icon-time"></i>{{ date::nice($comment->created_at) }}</span>
+                </header>
+                <div class="panel-body">
+                  <div>{{ $comment->comment }}</div>
+                </div>
+              </section>
+            </article>
+            @endforeach
         </div>
       </div>
     </section>

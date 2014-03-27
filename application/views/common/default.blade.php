@@ -43,37 +43,44 @@
     <button type="button" class="btn btn-link pull-left nav-toggle visible-xs" data-toggle="class:slide-nav slide-nav-left" data-target="body">
       <i class="icon-reorder icon-xlarge text-default"></i>
     </button>
-    <!--<ul class="nav navbar-nav hidden-xs">
+    <? $user = User::find(Auth::user()->id); $notifications = $user->notifications()->order_by('created_at', 'desc')->where("status", "=", "unread"); $notification_count = $notifications->count(); ?> 
+    <ul class="nav navbar-nav hidden-xs">
       <li>
-        <div class="m-t m-b-small" id="panel-notifications">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-comment-alt icon-xlarge text-default"></i><b class="badge badge-notes bg-danger count-n">2</b></a>
+        <div class="m-t m-b-small" id="notifications">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-comment-alt icon-xlarge text-default"></i><b id="notification-badge" class="badge badge-notes bg-danger count-n {{ $notification_count > 0 ? '' : 'hide' }}">{{ $notification_count }}</b>
+          </a>
           <section class="dropdown-menu m-l-small m-t-mini">
             <section class="panel panel-large arrow arrow-top">
-              <header class="panel-heading bg-white"><span class="h5"><strong>You have <span class="count-n">2</span> notifications</strong></span></header>
-              <div class="list-group">
-                <a href="#" class="media list-group-item">
-                  <span class="pull-left thumb-small"><img src="images/avatar.jpg" alt="John said" class="img-circle"></span>
+              <header class="panel-heading bg-white"><span class="h5"><strong>{{ sprintf(__('notification.you_have'), $notification_count) }}</strong></span></header>
+              <div class="list-group" id="notification_list">
+                @foreach ($notifications->get() as $notification)
+                @if(!empty($notification->url))
+                <a href="{{ $notification->url }}" class="media list-group-item">
+                @else
+                <div class="media list-group-item">
+                @endif
                   <span class="media-body block m-b-none">
-                    Moved to Bootstrap 3.0<br>
-                    <small class="text-muted">23 June 13</small>
+                    <b>{{ $notification->title }}</b><br>
+                    {{ $notification->message }}
+                    <br />
+                    <small class="text-muted">{{ date::nice($notification->created_at) }}</small>
                   </span>
+                @if(!empty($notification->url))
                 </a>
-                <a href="#" class="media list-group-item">
-                  <span class="media-body block m-b-none">
-                    first v.1 (Bootstrap 2.3 based) released<br>
-                    <small class="text-muted">19 June 13</small>
-                  </span>
-                </a>
+                @else
+                </div>
+                @endif
+                @endforeach
               </div>
               <footer class="panel-footer text-small">
-                <a href="#" class="pull-right"><i class="icon-cog"></i></a>
-                <a href="#">See all the notifications</a>
+                <a href="{{ url('notifications') }}">{{ __('notification.see_all') }}</a>
               </footer>
             </section>
           </section>
         </div>
       </li>
-    </ul>-->
+    </ul>
     <form action="{{ url('search') }}" method="post" class="navbar-form pull-left shift">
       <i class="icon-search text-muted"></i>
       <input type="text" name="search" class="input-sm form-control" placeholder="{{ __('common.search') }}">
@@ -207,6 +214,51 @@
 	<!-- Easy Pie Chart -->
 	<script src="{{ asset('js/charts/easypiechart/jquery.easy-pie-chart.js') }}"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/retina.js/1.0.1/retina.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pusher/2.1.6/pusher.min.js"></script>
+  <script>
+  $(function() {
+    var num_notifications = {{ $notification_count }};
+    function add_notification(data){
+        if(data.url){
+          var $div = $("<a class='media list-group-item new' />");
+          $div.attr("href", url);
+        } else {
+         var $div = $("<div class='media list-group-item new' />");
+        }
+        var $message = $("<span class='media-body block m-b-none' />");
+        var $title = $("<b/>");
+        var $date = $("<small class='text-muted'/>").html('{{ __('notification.just_now') }}');
+
+        $title.html(data.title);
+        $message.append($title);
+        $message.append('<br>'+data.message+'<br>');
+        $message.append($date);
+        $div.append($message);
+
+        $("#notification-badge").removeClass('hide');
+        $("#notification-badge").show();
+
+        num_notifications += 1;
+        $(".count-n").html(num_notifications);
+        $("#notification_list").prepend($div);
+    }
+
+    $("#notifications").on('hidden.bs.dropdown', function () {
+      $(".new").removeClass('.new');
+      $("#notification-badge").hide();
+      $("#notification_list").empty();
+      num_notifications = 0;
+      $(".count-n").html(num_notifications);
+      $.ajax({
+        url: '{{ url('notifications/readall') }}'
+      });
+    });
+
+    var pusher = new Pusher('{{ Config::get('pusher.app_key') }}');
+      var channel = pusher.subscribe('{{ md5('user_'.Auth::user()->id) }}');
+      channel.bind('notification', add_notification);
+  });
+  </script>
 
   @yield('scripts')
   @yield('custom_scripts')

@@ -23,6 +23,22 @@ class Profile extends Eloquent {
 		return $this->belongs_to('events', 'event_id');
 	}
 
+	public function comments(){
+		return $this->has_many('comment', 'belongs_to')->where("type", "=", "profile");
+	}
+
+	public function followers(){
+		return $this->has_many('following', 'belongs_to')->where("type", "=", "profile");
+	}
+
+	public function sendNotification($message){
+		$followers = $this->followers()->get();
+		foreach($followers as $follower){
+			#if(Auth::user()->id != $follower->user_id)
+				Notification::send($follower->user_id, $this->name, $message, $this->url());
+		}
+	}
+
 	var $locationClass;
 
 	public function location(){

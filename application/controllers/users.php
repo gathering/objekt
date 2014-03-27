@@ -14,7 +14,7 @@ class Users_Controller extends Base_Controller {
 
 		$input = Input::all();
 		$rules = array(
-		    'pushover_key' => 'required'
+		    'pushover_key' => 'required',
 		   	);
 
 
@@ -26,6 +26,7 @@ class Users_Controller extends Base_Controller {
 		}
 
 		$user->pushover_key = $input['pushover_key'];
+		$user->pushover_status = isset($input['pushover_status']) ? "activate" : "deactivate";
 		$user->save();
 
 		return Redirect::to(Request::referrer())->with('success', __('user.pushover_success'));

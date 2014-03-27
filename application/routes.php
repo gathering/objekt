@@ -8,6 +8,11 @@ Route::group(array('before' => 'auth|event'), function()
 		return View::make('home.index');
 	});
 
+	Route::get('/test', function()
+	{
+		Notification::send(69, "Hei!", "Hvordan går det?");
+	});
+
 	Route::get('/pushover', 'users@pushover');
 	Route::post('/pushover', 'users@post_pushover');
 
@@ -71,6 +76,19 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::post('/mediabank', 'mediabank@upload');
 });
 
+/* Notifications */
+Route::group(array('before' => 'auth|superadmin|event'), function()
+{
+	Route::get('/notifications', function(){
+		$user = User::find(Auth::user()->id);
+		return View::make('user.notifications')->with("notifications", $user->notifications()->order_by("created_at", "desc")->get());
+	});
+	Route::get('/notifications/readall', function(){
+		$user = User::find(Auth::user()->id);
+		$notifications = $user->notifications()->update(array("status" => "read"));
+		die("Done!");
+	});
+});
 
 /* Users */
 Route::group(array('before' => 'auth|superadmin|event'), function()
@@ -141,6 +159,29 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 
 	Route::get('/profiles', 'profiles@index');
 	Route::get('/profile/(:any)', 'profiles@profile');
+	Route::post('/profile/(:any)', 'profiles@post_comment');
+
+	Route::get('/profile/(:any)/follow', function($profile_slug){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+
+		$user = User::find(Auth::user()->id);
+		$user->following()->where("type", "=", "profile")->where("belongs_to", "=", $profile->id)->delete();
+		$follow = new Following;
+		$follow->type = "profile";
+		$follow->belongs_to = $profile->id;
+		$user->following()->insert($follow);
+		die("true");
+	});
+
+	Route::get('/profile/(:any)/not_follow', function($profile_slug){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+
+		$user = User::find(Auth::user()->id);
+		$user->following()->where("type", "=", "profile")->where("belongs_to", "=", $profile->id)->delete();
+		die("true");
+	});
 
 	Route::get('/profile/(:any)/map.jpg', 'profiles@profile_map');
 
@@ -153,6 +194,11 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 	Route::get('/profile/(:any)/(:any)/add-child', 'profiles@add_child');
 	Route::post('/profile/(:any)/(:any)/add-child', 'profiles@post_add_child');
 	
+	Route::get('/profile/(:any)/(:any)/follow', 'profiles@person_follow');
+	Route::get('/profile/(:any)/(:any)/(:any)/follow', 'profiles@person_follow');
+	Route::get('/profile/(:any)/(:any)/not_follow', 'profiles@person_not_follow');
+	Route::get('/profile/(:any)/(:any)/(:any)/not_follow', 'profiles@person_not_follow');	
+
 	Route::get('/profile/(:any)/(:any)', 'profiles@person');
 	Route::get('/profile/(:any)/(:any)/(:any)', 'profiles@child');
 	

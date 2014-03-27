@@ -39,6 +39,18 @@ return array(
 	'confirm_delete' => 'Jeg bekrefter at «%s» skal slettes.',
 	'deleted' => 'Profilen ble slettet',
 	'incorrect_password' => 'Feil passord.',
+	'post' => 'Post',
+	'comment_empty' => 'Vennligst skriv inn kommentar.',
+	'comment_posted' => 'Kommentaren er lagt inn.',
+	'get_notifications' => 'Følg',
+	'gets_notifications' => 'Følger',
+	'notification' => array(
+			'new_comment' => 'En ny kommentar er lagt til.',
+			'deleted_profile' => '%s slettet profilen.',
+			'new_child' => '%s har blitt registrert inn.',
+			'new_person' => '%s har blitt registrert inn.',
+			'profile_edited' => 'Profilen er endret.'
+			),
 	'placeholder' => array(
 			'name' => 'Profilens navn',
 			'surname' => 'Normann',
@@ -47,6 +59,7 @@ return array(
 			'website' => 'Nettadresse',
 			'contact_person' => 'La denne personen stå som kontaktperson mot profilen',
 			'email' => 'e@post.no',
-			'delete' => 'Ditt passord'
+			'delete' => 'Ditt passord',
+			'comment' => 'Skriv inn kommentar'
 			)
 );

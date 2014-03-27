@@ -1,4 +1,20 @@
-<div style="padding: 20px;">Her kjem det eit sabla dæsjbord..</div>
+<section class="panel">
+	<div class="panel-body">
+		<img src="{{ asset('images/clockwork.png') }}" alt="" /><br /><br />
+		SMS-kontoen har <? $clockwork = new Clockwork; $balance = $clockwork->checkBalance(); echo $balance['balance']." ".$balance['code']; ?> igjen. Det tilsvarer <?=$clockwork->checkCredit()?> meldinger.
+	</div>
+</section>
+<section class="panel">
+	<div class="panel-body text-muted l-h-2x" style="text-align: center;">
+		<span class="badge bg-success">{{ Events::current()->people()->count() }}</span>
+		<span class="m-r-small">{{ __('profile.total') }}</span>
+		<span class="badge bg-warning">{{ Events::current()->people()->where("status", "=", "registred")->count() }}</span>
+		<span class="m-r-small">{{ __('profile.registred') }}</span>
+		<span class="badge bg-info">{{ Events::current()->entries()->where("entries.status", "=", "valid")->count() }}</span>
+		<span class="m-r-small">{{ __('profile.arrived') }}</span>
+		<span class="badge bg-danger">{{ Events::current()->people()->where("status", "=", "departed")->count() }}</span> {{ __('profile.departed') }}
+	</div>
+</section>
 <?
 /*
 ********************************************

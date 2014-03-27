@@ -1,3 +1,20 @@
+@section('scripts')
+<script>
+$(function() {
+  $("#follow").click(function(){
+    if($(this).hasClass('active')){
+      var status = 'not_follow';
+    } else {
+      var status = 'follow';
+    }
+    $.ajax({
+      url: '{{ $person->url() }}/' + status
+    });
+    
+  });
+});
+</script>
+@endsection
 <section id="content" class="content-sidebar bg-white">
 	<aside class="sidebar bg-lighter sidebar">
 		<div class="text-center clearfix bg-white">
@@ -8,6 +25,15 @@
 			@if ($person->contact_person == '1')
 			<span class="block"><i class="icon-user"></i> {{ __('profile.contactperson') }}</span><br />
 			@endif
+      <br /><br />
+      <button id="follow" class="btn btn-primary btn-sm {{ User::find(Auth::user()->id)->isFollowing('person', $person->id) ? 'active' : '' }}" data-toggle="button">
+        <span class="text">
+          <i class="icon-eye-open"></i> {{ __('profile.get_notifications') }}
+        </span>
+        <span class="text-active">
+          <i class="icon-eye-open"></i> {{ __('profile.gets_notifications') }}
+        </span>
+      </button>
 		</div>
 		<div class="list-group list-normal m-b-none">
 			<a href="{{ $person->url() }}" class="list-group-item{{ URI::segment(2) != 'profile' ? ' active' : '' }}"><i class="icon-user"></i> Profil</a>

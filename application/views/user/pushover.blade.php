@@ -15,6 +15,19 @@
 	    </div>
 
 	    <div class="form-group">
+	      <label class="col-lg-3 control-label">{{ __('user.pushover_activate') }}</label>
+	      <div class="col-lg-8">
+	        <div class="checkbox">
+				<label class="checkbox-custom">
+					<input type="checkbox" name="pushover_status" {{ Auth::user()->pushover_status == "activate" ? 'checked="checked"' : '' }}>
+					<i class="icon-unchecked checked"></i>
+					{{ __('user.pushover_activate_2') }}
+				</label>
+			</div>
+	      </div>
+	    </div>
+
+	    <div class="form-group">
 	      <div class="col-lg-9 col-lg-offset-3">                      
 	        <button type="submit" class="btn btn-primary">{{ __('admin.field.save_changes') }}</button>
 	      </div>

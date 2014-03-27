@@ -78,6 +78,8 @@ Autoloader::directories(array(
 	path('app').'libraries',
 ));
 
+require(path('vendor').'autoload.php');
+
 /*
 |--------------------------------------------------------------------------
 | Laravel View Loader

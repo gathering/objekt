@@ -68,7 +68,7 @@ class Search_Controller extends Controller {
 		$results = array();
 		$event = Config::get('application.event');
 
-		if($search_for_person){
+		/*if($search_for_person){
 			$folks = Person::raw_where("match (`firstname` ,  `surname` ,  `phone` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
 						->where("event_id", "=", $event->id)->get();
 			foreach($folks as $dude){
@@ -79,10 +79,11 @@ class Search_Controller extends Controller {
 					array_push($results, $data);
 				}
 			}
-		}
+		}*/
 
 		if($search_for_profile){
-			$profiles = profile::raw_where("match (`name` ,  `website` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
+
+			/*$profiles = profile::raw_where("match (`name` ,  `website` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
 						->where("event_id", "=", $event->id)->get();
 			foreach($profiles as $profile){
 				if($profile->is_current_event()){
@@ -91,13 +92,21 @@ class Search_Controller extends Controller {
 					$data->url = $profile->url();
 					array_push($results, $data);
 				}
-			}
+			}*/
+
+			$params['index'] = 'profiles';
+			$params['type']  = 'obj';
+			$params['body']['query']['wildcard']['name'] = $search;
+			$params['body']['filter']['term']['event_id'] = $event->id;
+
+			$results = Elastisk::search($params);
+			#die(var_dump($results));
 		}
 
-		if(count($results) == 1){
-			return Redirect::to($results[0]->url);
+		if($results['hits']['total'] == 1){
+			return Redirect::to(url('profile/'.$results['hits']['hits'][0]['_source']['slug']));
 		}
-		if(count($results) == 0){
+		if($results['hits']['total'] == 0){
 			return Redirect::to(Request::referrer())->with('error',  __('common.nothing_found'));
 		}
 

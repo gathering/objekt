@@ -10,6 +10,18 @@ class User extends Verify\Models\User {
 		return $this->has_many('sms');
 	}
 
+	public function notifications(){
+		return $this->has_many('notification');
+	}
+
+	public function following(){
+		return $this->has_many('following');
+	}
+
+	public function isFollowing($what, $id){
+		return $this->following()->where("type", "=", $what)->where("belongs_to", "=", $id)->count() > 0 ? true : false;
+	}
+
 	static function active($event=""){
 		return self::left_join('event_users', 'event_users.user_id', '=', 'users.id')
 					->where(function($query) use(&$event) {
