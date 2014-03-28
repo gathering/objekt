@@ -50,9 +50,13 @@ class Mediabank_Controller extends Base_Controller {
 				
 			$tags = array_merge($tags, $event->tags()); // Add event-tags.
 
+			foreach($tags as $int => $tag) if(empty($tag)) unset($tags[$int]); // Clean empty tags.
+			$tags = array_values($tags);
+
 			$fil3 = new Fil3;
 			$fil3->type = "mediabank";
 			$fil3->event_id = $event->id;
+			$fil3->filename = $file['filename'];
 			$fil3->s3_path = $file['path'];
 			$fil3->url = "http://s3.obj.no/".$file['path'];
 			$fil3->tags = implode(",", $tags);
@@ -61,6 +65,7 @@ class Mediabank_Controller extends Base_Controller {
 
 			$params = array();
 			$params['body']  = array(
+				'filename' => $file['filename'],
 				'event_id' => $event->id,
 				'url' => "http://s3.obj.no/".$file['path'],
 				'tags' => $tags,
