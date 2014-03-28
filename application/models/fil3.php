@@ -24,7 +24,7 @@ class Fil3 extends Eloquent {
 	}
 
 	function camera(){
-		if(isset(@$this->meta['exif']['IFD0'])){
+		if(isset($this->meta['exif']['IFD0'])){
 			return @$this->meta['exif']['IFD0']['Model'];
 		}
 	}
