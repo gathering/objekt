@@ -5,7 +5,7 @@
 	<title>{{ $title }} (<? $event = Config::get('application.event'); echo $event->name; ?>) Objekt - Transolini</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
 	<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-  	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css">
+  	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
   	<link rel="stylesheet" href="{{ asset('css/plugin.css') }}">
   	<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
@@ -41,14 +41,14 @@
     </ul>
     <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('images/logo_transolini.png') }}" alt="" /></a>
     <button type="button" class="btn btn-link pull-left nav-toggle visible-xs" data-toggle="class:slide-nav slide-nav-left" data-target="body">
-      <i class="icon-reorder icon-xlarge text-default"></i>
+      <i class="fa fa-reorder fa-xlarge text-default"></i>
     </button>
     <? $user = User::find(Auth::user()->id); $notifications = $user->notifications()->order_by('created_at', 'desc')->where("status", "=", "unread"); $notification_count = $notifications->count(); ?> 
     <ul class="nav navbar-nav hidden-xs">
       <li>
         <div class="m-t m-b-small" id="notifications">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-comment-alt icon-xlarge text-default"></i><b id="notification-badge" class="badge badge-notes bg-danger count-n {{ $notification_count > 0 ? '' : 'hide' }}">{{ $notification_count }}</b>
+            <i class="fa fa-comment-alt fa-xlarge text-default"></i><b id="notification-badge" class="badge badge-notes bg-danger count-n {{ $notification_count > 0 ? '' : 'hide' }}">{{ $notification_count }}</b>
           </a>
           <section class="dropdown-menu m-l-small m-t-mini">
             <section class="panel panel-large arrow arrow-top">
@@ -82,7 +82,7 @@
       </li>
     </ul>
     <form action="{{ url('search') }}" method="post" class="navbar-form pull-left shift">
-      <i class="icon-search text-muted"></i>
+      <i class="fa fa-search text-muted"></i>
       <input type="text" name="search" class="input-sm form-control" placeholder="{{ __('common.search') }}">
     </form>
 	</header>
@@ -90,10 +90,10 @@
   <!-- nav -->
   <nav id="nav" class="nav-primary hidden-xs nav-vertical">
     <ul class="nav" data-spy="affix" data-offset-top="50">
-      <li {{ URI::segment(2) == '' ? 'class="active"' : '' }}><a href="{{ url('/') }}"><i class="icon-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span></a></li>
+      <li {{ URI::segment(2) == '' ? 'class="active"' : '' }}><a href="{{ url('/') }}"><i class="fa fa-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span></a></li>
       @if (Auth::user()->is("superSponsorAdmin"))
       <li class="dropdown-submenu {{ URI::segment(2) == 'admin' ? ' active' : '' }}">
-        <a href="{{ url('/admin/events') }}"><i class="icon-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+        <a href="{{ url('/admin/events') }}"><i class="fa fa-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
         <ul class="dropdown-menu">
           <li{{ URI::segment(2) == 'admin' && URI::segment(3) =='events' ? ' class="active"' : '' }}>
             <a href="{{ url('/admin/events') }}">{{ __('nav.events') }}</a>
@@ -108,11 +108,11 @@
       </li>
       @endif
       @if (Auth::user()->can("mediabank"))
-      <li {{ URI::segment(2) == 'mediabank' ? 'class="active"' : '' }}><a href="{{ url('/mediabank') }}"><i class="icon-picture icon-xlarge"></i><span>{{ __('nav.mediabank') }}</span></a></li>
+      <li {{ URI::segment(2) == 'mediabank' ? 'class="active"' : '' }}><a href="{{ url('/mediabank') }}"><i class="fa fa-picture-o icon-xlarge"></i><span>{{ __('nav.mediabank') }}</span></a></li>
       @endif
       @if (Auth::user()->can("profiles"))
       <li class="dropdown-submenu {{ URI::segment(2) == 'profiles' ? ' active' : '' }}">
-        <a href="{{ url('/profiles') }}"><i class="icon-group icon-xlarge"></i><span>{{ __('nav.profiles') }}</span></a>
+        <a href="{{ url('/profiles') }}"><i class="fa fa-group icon-xlarge"></i><span>{{ __('nav.profiles') }}</span></a>
         <ul class="dropdown-menu">
           <li{{ URI::segment(2) == 'profiles' && URI::segment(3) =='' ? ' class="active"' : '' }}>
             <a href="{{ url('/profiles') }}">{{ __('nav.list_profiles') }}</a>
@@ -123,7 +123,7 @@
         </ul>
       </li>
       @endif
-      <li {{ URI::segment(2) == 'accreditation' ? 'class="active"' : '' }}><a href="{{ url('/accreditation') }}"><i class="icon-tags icon-xlarge"></i><span>{{ __('nav.accreditation') }}</span></a></li>
+      <li {{ URI::segment(2) == 'accreditation' ? 'class="active"' : '' }}><a href="{{ url('/accreditation') }}"><i class="fa fa-tags icon-xlarge"></i><span>{{ __('nav.accreditation') }}</span></a></li>
     </ul>
   </nav>
   <!-- / nav -->
@@ -141,9 +141,9 @@
 	<div class="text-center padder clearfix">
 	  <p>
 	    <small>{{__('common.footer')}}</small><br><br>
-	    <a href="#" class="btn btn-xs btn-circle btn-twitter"><i class="icon-twitter"></i></a>
-	    <a href="#" class="btn btn-xs btn-circle btn-facebook"><i class="icon-facebook"></i></a>
-	    <a href="#" class="btn btn-xs btn-circle btn-gplus"><i class="icon-google-plus"></i></a>
+	    <a href="#" class="btn btn-xs btn-circle btn-twitter"><i class="fa fa-twitter"></i></a>
+	    <a href="#" class="btn btn-xs btn-circle btn-facebook"><i class="fa fa-facebook"></i></a>
+	    <a href="#" class="btn btn-xs btn-circle btn-gplus"><i class="fa fa-google-plus"></i></a>
 	  </p>
 	</div>
 	</footer>

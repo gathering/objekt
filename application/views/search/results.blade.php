@@ -15,9 +15,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach ($results['hits']['hits'] as $result)
+					@foreach ($results as $result)
 					<tr>
-						<td><a href="{{ url('profile/'.$result['_source']['slug']) }}">{{ $result['_source']['name'] }}</a></td>
+						<td><a href="{{ $result->url }}">{{ $result->name }}</a></td>
 					</tr>
 					@endforeach
 				</tbody>

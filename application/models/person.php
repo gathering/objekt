@@ -13,6 +13,24 @@ class Person extends Eloquent {
 	public function followers(){
 		return $this->has_many('following', 'belongs_to')->where("type", "=", "profile");
 	}
+
+	public function save(){
+		$event = Config::get('application.event');
+		$this->event_id = $event->id;
+		$return = parent::save();
+
+		$params['body']  = $this->to_array();
+		unset($params['body']['updated_at']); // Not needed.
+		unset($params['body']['created_at']); // Not needed.
+
+		$params['index'] = 'people';
+		$params['type']  = 'obj';
+		$params['id']    = $this->id;
+		Elastisk::index($params);
+
+		return $return;
+	}
+
 	public function sendNotification($message){
 
 		$sentTo = array();

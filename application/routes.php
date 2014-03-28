@@ -69,11 +69,22 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	});
 });
 
+/* Generic Admin */
+Route::group(array('before' => 'auth|superadmin|event'), function()
+{
+	Route::get('/elastisk', function(){
+		$indexParams['index']  = 'mediabank';
+		Elastisk::indices()->create($indexParams);
+	});
+});
+
 /* Mediabank */
 Route::group(array('before' => 'auth|superadmin|event'), function()
 {
 	Route::get('/mediabank', 'mediabank@index');
 	Route::post('/mediabank', 'mediabank@upload');
+
+	Route::get('/mediabank/tag/(:any)', 'mediabank@tag');
 });
 
 /* Notifications */

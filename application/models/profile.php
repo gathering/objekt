@@ -97,7 +97,19 @@ class Profile extends Eloquent {
 	function save(){
 		$event = Config::get('application.event');
 		$this->event_id = $event->id;
-		parent::save();
+		$return = parent::save();
+
+		$params['body']  = $this->to_array();
+		unset($params['body']['updated_at']); // Not needed.
+		unset($params['body']['created_at']); // Not needed.
+		unset($params['body']['location']); // Not needed. (SPECIFIC)
+
+		$params['index'] = 'profiles';
+		$params['type']  = 'obj';
+		$params['id']    = $this->id;
+		Elastisk::index($params);
+
+		return $return;
 	}
 
 	function color(){

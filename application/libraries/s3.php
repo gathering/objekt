@@ -48,15 +48,15 @@ class S3
 	        foreach($upload['tmp_name'] as $index => $value) {
 
 	            $fileTempName = $upload['tmp_name'][$index];
-	            $fileName = Request::server('HTTP_X_FILE_NAME') ? Request::server('HTTP_X_FILE_NAME') : $upload['name'][$index];
-	            $ext = substr(strrchr($fileName,'.'),1);
+	            $real_fileName = Request::server('HTTP_X_FILE_NAME') ? Request::server('HTTP_X_FILE_NAME') : $upload['name'][$index];
+	            $ext = substr(strrchr($real_fileName,'.'),1);
 	            $hash = Str::random(32, 'alpha');
 	            $fileName = $filepath."/".$hash.".".$ext;
 	            $response = S3::putObject(S3::inputFile($fileTempName, false), "s3.obj.no", $fileName, S3::ACL_PUBLIC_READ);
 	            if ($response){
 	            	$exif = exif_read_data($fileTempName, 0, true);
 	            	$xmp = XMP::read($fileTempName);
-	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $fileName, 'hash' => $hash
+	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $real_fileName, 'hash' => $hash
 	            		);
 	            }
 	        }
@@ -64,15 +64,15 @@ class S3
 	    } else {
 	        if ($upload || Request::server('HTTP_X_FILE_NAME')) {
 	            $fileTempName = $upload['tmp_name'];
-	            $fileName = Request::server('HTTP_X_FILE_NAME') ? Request::server('HTTP_X_FILE_NAME') : $upload['name'];
-	            $ext = substr(strrchr($fileName,'.'),1);
+	            $real_fileName = Request::server('HTTP_X_FILE_NAME') ? Request::server('HTTP_X_FILE_NAME') : $upload['name'][$index];
+	            $ext = substr(strrchr($real_fileName,'.'),1);
 	           	$hash = Str::random(32, 'alpha');
 	            $fileName = $filepath."/".$hash.".".$ext;
 	            $response = S3::putObject(S3::inputFile($fileTempName, false), "s3.obj.no", $fileName, S3::ACL_PUBLIC_READ);
 	            if ($response){
 	            	$exif = exif_read_data($fileTempName, 0, true);
 	            	$xmp = XMP::read($fileTempName);
-	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $fileName, 'hash' => $hash
+	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $real_fileName, 'hash' => $hash
 	            		);
 	            }
 	        }

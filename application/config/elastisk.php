@@ -4,7 +4,7 @@ return array(
 
 	'hosts' =>
 		array(
-			'98b9b9f25997597f000.qbox.io'
+			'http://obj.no:9200/'
 		),
 	'connectionParams' =>
 		array(

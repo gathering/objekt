@@ -8,6 +8,27 @@ class Mediabank_Controller extends Base_Controller {
 		return View::make('mediabank.index')->with("event", $event);
 	}
 
+	public function action_tag($tag)
+	{
+		$event = Config::get('application.event');
+		$params['index'] = 'mediabank';
+		$params['type']  = 'image';
+		$params['body']['query']['wildcard']['tags'] = "2013";
+		
+		tplConstructor::set(true);
+		$elastisk = Elastisk::search($params);
+		$results = array();
+
+		if($elastisk['hits']['total'] == 0)
+			return Redirect::to(Request::referrer())->with('error', __('mediabank.nothing_found'));
+
+		foreach($elastisk['hits']['hits'] as $result){
+			$model = Fil3::find($result['_id']);
+			array_push($results, $model);
+		}
+		return View::make('mediabank.tag')->with("results", $results);
+	}
+
 	public function action_upload()
 	{
 		header('Pragma: no-cache');
@@ -26,7 +47,8 @@ class Mediabank_Controller extends Base_Controller {
 			$tags = array();
 			if(isset($file['xmp']['Keywords']) && is_array($file['xmp']['Keywords']) && count($file['xmp']['Keywords']))
 				foreach($file['xmp']['Keywords'] as $int => $keyword) array_push($tags, strtolower($keyword));
-			
+				
+			$tags = array_merge($tags, $event->tags()); // Add event-tags.
 
 			$fil3 = new Fil3;
 			$fil3->type = "mediabank";
@@ -41,14 +63,15 @@ class Mediabank_Controller extends Base_Controller {
 			$params['body']  = array(
 				'event_id' => $event->id,
 				'url' => "http://s3.obj.no/".$file['path'],
-				'tags' => $tags
+				'tags' => $tags,
+				'hash' => $file['hash'],
+				'uploaded_at' => date("Y-m-d H:i:s")
 				);
 
 			$params['index'] = 'mediabank';
 			$params['type']  = 'image';
-			$params['id']    = $file['hash'];
+			$params['id']    = $fil3->id;
 
-			// Document will be indexed to my_index/my_type/my_id
 			$ret = Elastisk::index($params);
 		}
 		die("true");

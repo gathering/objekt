@@ -8,6 +8,11 @@ return array(
 	'fileuploadfail' => 'En feil oppsto ved opplasting av filen.',
 	'not_supported' => 'Filen er ikke støttet. Kun JPEG-filer støttes. Filen må også være under 35mb.',
 	'profile_tags' => 'Profil-merkelapper',
+	'search' => 'Søk i mediebanken',
+	'nothing_found' => 'Ingen filer ble funnet.',
+	'placeholder' => array(
+		'search' => 'Tag, filnavn eller hva som helst.'
+		),
 	'description' => array(
 		'profile_tags' => 'Merkelappene for profiler brukes ved tagging i ekstern program, slik som Adobe Lightroom. For å sikre at merkelappene blir tilknyttet en gitt sponsor, påse at navnet på sponsoren fremkommer, helst med navnet sammensatt med bindestrek i stedenfor mellomrom. (Se over for eksempel). Alle merkelapper blir automatisk omgjort til små bokstaver.',
 		'user_tag' => 'Hvis du ønsker å tilknytte dine bilder til din profil her på Objekt, så må du bruke merkelappen <span class="badge">user-%s</span>.',

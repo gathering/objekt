@@ -4,7 +4,49 @@
 class Convert_Task {
 
 	function run(){
+		$this->maps();
+		$this->mediabank();
+		return true;
+	}
 
+	function mediabank(){
+		$files = Fil3::where("type", "=", "mediabank")->where("converted", "=", "0")->get();
+
+		foreach($files as $file){
+			$event = $file->event()->first();
+			$file->childs()->delete();
+
+			$meta = $file->meta;
+
+			$tmpFile = "/tmp/{$meta['hash']}.jpg";
+			file_put_contents($tmpFile, file_get_contents($file->url));
+
+			Bundle::start('imageworkshop');
+
+			$layer = PHPImageWorkshop\ImageWorkshop::initFromPath($tmpFile);
+			$layer->resizeInPixel(500, null, true, 0, 0, 'MM');
+			$layer->save("/tmp", "{$meta['hash']}.jpg", false, null, 100);
+			$filepath = $event->s3_slug."/mediabank/{$meta['hash']}-500px.jpg";
+			S3::putObject(S3::inputFile($tmpFile, false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
+
+			unlink($tmpFile);
+
+			$child = new Fil3;
+			$child->type = "mediabank-thumbnail";
+			$child->converted = '1';
+			$child->event_id = $event->id;
+			$child->filename = $file->filename;
+			$child->s3_path = $filepath;
+			$child->parent_id = $file->id;
+			$child->url = "http://s3.obj.no/".$filepath;
+			$child->save();
+
+			$file->converted = '1';
+			$file->save();
+		}
+	}
+
+	function maps(){
 		$files = Fil3::where("type", "=", "map")->where("converted", "=", "0")->get();
 
 		foreach($files as $file){
@@ -67,7 +109,5 @@ class Convert_Task {
 
 			echo "File converted.";
 		}
-
-		return true;
 	}
 }

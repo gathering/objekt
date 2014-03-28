@@ -68,47 +68,50 @@ class Search_Controller extends Controller {
 		$results = array();
 		$event = Config::get('application.event');
 
-		/*if($search_for_person){
-			$folks = Person::raw_where("match (`firstname` ,  `surname` ,  `phone` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
-						->where("event_id", "=", $event->id)->get();
-			foreach($folks as $dude){
-				if($dude->is_current_event()){
-					$data = new StdClass;
-					$data->name = $dude->firstname." ".$dude->surname;
-					$data->url = $dude->url();
-					array_push($results, $data);
-				}
+		if($search_for_person){
+
+			$params['index'] = 'people';
+			$params['type']  = 'obj';
+			#$params['body']['query']['multi_match']['query'] = $search;
+			#$params['body']['query']['multi_match']['fields'] = array('firstname', 'surname', 'phone', 'email');
+			$params['body']['query']['query_string']['query'] = $search;
+			$params['body']['filter']['term']['event_id'] = $event->id;
+			$elastisk = Elastisk::search($params);
+
+			foreach($elastisk['hits']['hits'] as $result){
+				$person = new stdClass;
+				$model = Person::find($result['_source']['id']);
+				$person->name = $model->firstname." ".$model->surname;
+				$person->url = $model->url();
+				array_push($results, $person);
 			}
-		}*/
+		}
 
 		if($search_for_profile){
 
-			/*$profiles = profile::raw_where("match (`name` ,  `website` ,  `email`) against (? IN BOOLEAN MODE)", array($search))
-						->where("event_id", "=", $event->id)->get();
-			foreach($profiles as $profile){
-				if($profile->is_current_event()){
-					$data = new StdClass;
-					$data->name = $profile->name;
-					$data->url = $profile->url();
-					array_push($results, $data);
-				}
-			}*/
-
 			$params['index'] = 'profiles';
 			$params['type']  = 'obj';
-			$params['body']['query']['wildcard']['name'] = $search;
+			$params['body']['query']['query_string']['query'] = $search;
 			$params['body']['filter']['term']['event_id'] = $event->id;
 
-			$results = Elastisk::search($params);
-			#die(var_dump($results));
+			$elastisk = Elastisk::search($params);
+			foreach($elastisk['hits']['hits'] as $result){
+				$profile = new stdClass;
+				$profile->name = $result['_source']['name'];
+				$profile->url = url('profile/'.$result['_source']['slug']);
+				array_push($results, $profile);
+			}
+
 		}
 
-		if($results['hits']['total'] == 1){
-			return Redirect::to(url('profile/'.$results['hits']['hits'][0]['_source']['slug']));
+		if(count($results) == 1){
+			return Redirect::to($results[0]->url);
 		}
-		if($results['hits']['total'] == 0){
+
+		if(count($results) == 0){
 			return Redirect::to(Request::referrer())->with('error',  __('common.nothing_found'));
 		}
+
 
 		$type = isset($_POST['type']) ? $_POST['type'] : "";
 
