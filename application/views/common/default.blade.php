@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>{{ $title }} (<? $event = Config::get('application.event'); echo $event->name; ?>) SuperSponsor - Transolini</title>
+	<title>{{ $title }} (<? $event = Config::get('application.event'); echo $event->name; ?>) Objekt - Transolini</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
 	<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
   	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css">

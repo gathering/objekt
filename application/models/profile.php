@@ -34,7 +34,7 @@ class Profile extends Eloquent {
 	public function sendNotification($message){
 		$followers = $this->followers()->get();
 		foreach($followers as $follower){
-			#if(Auth::user()->id != $follower->user_id)
+			if(Auth::user()->id != $follower->user_id)
 				Notification::send($follower->user_id, $this->name, $message, $this->url());
 		}
 	}
@@ -101,11 +101,12 @@ class Profile extends Eloquent {
 	}
 
 	function color(){
-		$logo = $this->logo();
-		if(!$logo) return false;
 
-		if(!empty($this->color))
+		if(!empty($this->color) && $this->color != "#")
 			return $this->color;
+
+		$logo = $this->logo();
+		if(empty($this->logo_url)) return "#000000";
 
 		$color = colorPalette::get($this->logo(), 1);
 		$color = isset($color[0]) ? $color[0] : false;
@@ -116,7 +117,7 @@ class Profile extends Eloquent {
 	}
 
 	function logo(){
-		if(empty($this->website)) return false;
+		if(empty($this->website)) return asset('images/firmahval.png');
 		if(!empty($this->logo_url)) return $this->logo_url;
 		
 		$html = httpAsset::get($this->website);
@@ -148,6 +149,8 @@ class Profile extends Eloquent {
 				#return $src;
 			}
 		}
+
+		return asset('images/firmahval.png');
 	}
 
 	static function find($any){

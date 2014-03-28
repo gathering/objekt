@@ -34,6 +34,9 @@ $(function() {
           <i class="icon-eye-open"></i> {{ __('profile.gets_notifications') }}
         </span>
       </button>
+      @if($person->contact_person == '0')
+      <br /><a href="{{ $person->url() }}/make_contactperson" class="btn btn-sm">{{ __('profile.make_contactperson') }}</a>
+      @endif
 		</div>
 		<div class="list-group list-normal m-b-none">
 			<a href="{{ $person->url() }}" class="list-group-item{{ URI::segment(2) != 'profile' ? ' active' : '' }}"><i class="icon-user"></i> Profil</a>

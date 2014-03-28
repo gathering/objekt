@@ -130,6 +130,7 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	
 	Route::get('/accreditation/(:any)/(:any)', 'accreditation@person');
 	Route::get('/accreditation/(:any)/(:any)/(:any)', 'accreditation@child');
+
 });
 
 /* SMS */
@@ -198,6 +199,9 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 	Route::get('/profile/(:any)/(:any)/(:any)/follow', 'profiles@person_follow');
 	Route::get('/profile/(:any)/(:any)/not_follow', 'profiles@person_not_follow');
 	Route::get('/profile/(:any)/(:any)/(:any)/not_follow', 'profiles@person_not_follow');	
+
+	Route::get('/profile/(:any)/(:any)/make_contactperson', 'profiles@make_contactperson');
+	Route::get('/profile/(:any)/(:any)/(:any)/make_contactperson', 'profiles@make_contactperson');
 
 	Route::get('/profile/(:any)/(:any)', 'profiles@person');
 	Route::get('/profile/(:any)/(:any)/(:any)', 'profiles@child');

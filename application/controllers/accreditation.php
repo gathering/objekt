@@ -35,6 +35,7 @@ class Accreditation_Controller extends Controller {
 		$entry->type = "wristband";
 		$person->entries()->insert($entry);
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has arrived to stay, equiped with a wristband.");
+		$person->sendNotification(__('accreditation.notification.wristband'));
 
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_arrived', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
@@ -90,6 +91,7 @@ class Accreditation_Controller extends Controller {
 				BadgeCreator::make($entry);
 			}
 		}
+		$person->sendNotification(__('accreditation.notification.badge'));
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_arrived', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
 	public function action_save_badge($profile_slug, $person_slug, $child_slug=""){
@@ -134,6 +136,7 @@ class Accreditation_Controller extends Controller {
 		$person->status = "departed";
 		$person->save();
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
+		$person->sendNotification(__('accreditation.notification.departed'));
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_departed', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
 	public function action_print($profile_slug, $person_slug, $child_slug=""){
@@ -160,7 +163,7 @@ class Accreditation_Controller extends Controller {
 				}
 			}
 		}
-
+		$person->sendNotification(__('accreditation.notification.printed'));
 		return Redirect::to($person->url('accreditation'))->with("success", __('accreditation.printed'));
 	}
 }

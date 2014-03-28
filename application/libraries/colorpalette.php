@@ -38,6 +38,7 @@ class colorPalette {
 		return array_slice(array_keys($colors), 0, $numColors);
 	}
 	static function getContrast($hexcolor){
+		$hexcolor = str_replace("#", "", $hexcolor);
 	    $r = hexdec(substr($hexcolor,0,2));
 		$g = hexdec(substr($hexcolor,2,2));
 		$b = hexdec(substr($hexcolor,4,2));

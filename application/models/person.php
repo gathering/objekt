@@ -10,6 +10,27 @@ class Person extends Eloquent {
 	function child(){
 		return $this->has_many("person", "parent_id");
 	}
+	public function followers(){
+		return $this->has_many('following', 'belongs_to')->where("type", "=", "profile");
+	}
+	public function sendNotification($message){
+
+		$sentTo = array();
+
+		$followers = $this->followers()->get();
+		foreach($followers as $follower){
+			if(Auth::user()->id != $follower->user_id){
+				Notification::send($follower->user_id, $this->firstname." ".$this->surname, $message, $this->url());
+				$sentTo[$follower->user_id] = true;
+			}
+		}
+
+		$followers = $this->profile()->followers()->get();
+		foreach($followers as $follower){
+			if(Auth::user()->id != $follower->user_id && !$sentTo[$follower->user_id])
+				Notification::send($follower->user_id, $this->firstname." ".$this->surname, $message, $this->url());
+		}
+	}
 	function is_current_event(){
 		$profile = $this->profile();
 		$event = Config::get('application.event');

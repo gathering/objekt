@@ -69,6 +69,8 @@ class Profiles_Controller extends Controller {
 			$location['map']['y2'] = @$map_location[5];
 
 			$profile->location = serialize($location);
+
+			Cache::forget('profile-map-'.$profile->id);
 		}
 
 
@@ -189,10 +191,9 @@ class Profiles_Controller extends Controller {
 		$person->slug = $this->slugname_person($person, $profile, 0);
 		$person->hash = Str::random(32);
 		unset($person->i);
+		$profile->person()->insert($person);
 
 		$profile->sendNotification(sprintf(__('profile.notification.new_person'), $person->firstname." ".$person->surname));
-
-		$profile->person()->insert($person);
 		return Redirect::to("profile/".$profile->slug)->with("success", "Informasjonen ble lagret!");
 	}
 
@@ -383,5 +384,20 @@ class Profiles_Controller extends Controller {
 		$user = User::find(Auth::user()->id);
 		$user->following()->where("type", "=", "person")->where("belongs_to", "=", $person->id)->delete();
 		die("true");
+	}
+	public function action_make_contactperson($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+
+		$person->contact_person = 1;
+		$person->save();
+
+		$person->sendNotification(sprintf(__('profile.notification.person_made_contactperson'), $profile->name));
+
+		return Redirect::to($person->url())->with("success", __('profile.made_contactperson'));
 	}
 }

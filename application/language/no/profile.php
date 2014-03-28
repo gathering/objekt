@@ -44,12 +44,15 @@ return array(
 	'comment_posted' => 'Kommentaren er lagt inn.',
 	'get_notifications' => 'Følg',
 	'gets_notifications' => 'Følger',
+	'make_contactperson' => 'Gjør til kontaktperson',
+	'made_contactperson' => 'Personen ble merket som kontaktperson',
 	'notification' => array(
 			'new_comment' => 'En ny kommentar er lagt til.',
 			'deleted_profile' => '%s slettet profilen.',
 			'new_child' => '%s har blitt registrert inn.',
 			'new_person' => '%s har blitt registrert inn.',
-			'profile_edited' => 'Profilen er endret.'
+			'profile_edited' => 'Profilen er endret.',
+			'person_made_contactperson' => 'Er gjort kontaktperson for %s'
 			),
 	'placeholder' => array(
 			'name' => 'Profilens navn',

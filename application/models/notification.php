@@ -37,7 +37,7 @@ class Notification extends Eloquent {
 			'url' => $url
 			);
 
-		Push::trigger('user_'.$user->id, 'notification', $pushData);
+		Push::trigger(md5('user_'.$user->id), 'notification', $pushData);
 
 		return $notification;
 	}

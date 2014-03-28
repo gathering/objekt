@@ -20,7 +20,13 @@ return array(
 	'person_not_found' => 'Personen du forsøkte å akkredittere ble ikke funnet.',
 	'no_badges_found' => 'Personen har ingen badge registrert.',
 	'print' => 'Skriv ut akkredittering',
-	'printed' => 'Akkredittering er sendt til utskrift.'
+	'printed' => 'Akkredittering er sendt til utskrift.',
+	'notification' => array(
+		'wristband' => 'Akkreditert med et bånd.',
+		'badge' => 'Akkreditert med en badge.',
+		'departed' => 'Har forlatt arrangementet',
+		'printed' => 'Har skrevet ut en ekstra badge.'
+		)
 );
 
 ?>

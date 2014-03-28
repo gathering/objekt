@@ -134,7 +134,7 @@ $(function() {
                   <div class="input-group">
                     <input type="text" name="comment" placeholder="{{ __('profile.placeholder.comment') }}" class="form-control">
                     <span class="input-group-btn">
-                      <button class="btn btn-primary" type="button">{{ __('profile.post') }}</button>
+                      <button class="btn btn-primary" type="submit">{{ __('profile.post') }}</button>
                     </span>
                   </div>
                 </form>

@@ -1,7 +1,7 @@
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('js/minicolors/jquery.minicolors.css') }}">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/css/jquery.Jcrop.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/imgareaselect/0.9.10/css/imgareaselect-default.css">
 <link rel="stylesheet" href="{{ asset('js/dropPin.css') }}">
 <style>
 #placement {
@@ -12,18 +12,29 @@
 @section('scripts')
 <script src="{{ asset('js/dropPin.js') }}"></script>
 <script src="{{ asset('js/minicolors/jquery.minicolors.min.js') }}"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/js/jquery.Jcrop.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/imgareaselect/0.9.10/js/jquery.imgareaselect.min.js"></script>
 <script>
 	$( document ).ready(function() {
 		$('.minicolors').minicolors({
 			control: 'wheel'
 		});
-		$('#map_img').Jcrop({
+		<? /* $('#map_img').Jcrop({
 			onChange: showPreview,
 			onSelect: showPreview,
 			aspectRatio: 1,
 			setSelect:   [ {{ $profile->location()->x }}, {{ $profile->location()->y }}, {{ $profile->location()->x2 }}, {{ $profile->location()->y2 }} ],
-		});
+		}); */ ?>
+		$("#map_img").imgAreaSelect({
+			aspectRatio: '1:1',
+			handles: true,
+			fadeSpeed: 200,
+			onSelectChange: showPreview,
+			x1: {{ $profile->location()->x }},
+			y1: {{ $profile->location()->y }},
+			x2: {{ $profile->location()->x2 }},
+			y2: {{ $profile->location()->y2 }},
+			show: true
+		})
 		var $preview = $('#placement');
 		$("#placement_div").dropPin({
 	        pin: '{{ asset('img/map-pin.png') }}'
@@ -43,32 +54,29 @@
 		    marginTop: '-' + Math.round(ry * {{ $profile->location()->y }}) + 'px'
 		});
 
+		$("#placement_div").dropPin('showPin', {
+		    pin: '{{ asset('img/map-pin.png') }}',
+		    pinX: {{ $profile->location()->pin_x }},
+		    pinY: {{ $profile->location()->pin_y }}
+		});
+
 		// Our simple event handler, called from onChange and onSelect
 		// event handlers, as per the Jcrop invocation above
-		function showPreview(coords)
+		function showPreview(img, selection)
 		{
-			if (parseInt(coords.w) > 0)
-			{
-			  var rx = 200 / coords.w;
-			  var ry = 200 / coords.h;
+			if (!selection.width || !selection.height)
+        	return;
+			var rx = 200 / selection.width;
+			var ry = 200 / selection.height;
 
-			  $("#map_location").val(coords.w + "#" + coords.h + "#" +coords.x + "#" + coords.y + "#" + coords.x2 + "#" + coords.y2);
+			$("#map_location").val(selection.width + "#" + selection.height + "#" +selection.x1 + "#" + selection.y1 + "#" + selection.x2 + "#" + selection.y2);
 
-			  $preview.css({
-			    width: Math.round(rx * width) + 'px',
-			    height: Math.round(ry * height) + 'px',
-			    marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-			    marginTop: '-' + Math.round(ry * coords.y) + 'px'
-			  }).show();
-			}
-			if(!isPinSet){
-				$("#placement_div").dropPin('showPin', {
-			        pin: '{{ asset('img/map-pin.png') }}',
-			        pinX: {{ $profile->location()->pin_x }},
-			        pinY: {{ $profile->location()->pin_y }}
-			    });
-			    isPinSet = true;
-			}
+			$preview.css({
+				width: Math.round(rx * width) + 'px',
+				height: Math.round(ry * height) + 'px',
+				marginLeft: '-' + Math.round(rx * selection.x1) + 'px',
+				marginTop: '-' + Math.round(ry * selection.y1) + 'px'
+			}).show();
 		}
 	});
 </script>
