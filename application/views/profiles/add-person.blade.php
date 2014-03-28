@@ -59,7 +59,7 @@
           <div class="col-lg-8">
             <div class="checkbox">
               <label>
-                <input name="agree" name="contact_person" tabindex="7" type="checkbox"> {{ __('profile.placeholder.contact_person') }}
+                <input name="contact_person" tabindex="7" type="checkbox"> {{ __('profile.placeholder.contact_person') }}
               </label>
             </div>
           </div>
@@ -68,7 +68,7 @@
 
 	    <div class="form-group">
 	      <div class="col-lg-9 col-lg-offset-3">                      
-	        <button type="submit" class="btn btn-primary">Legg til ny bruker</button>
+	        <button type="submit" class="btn btn-primary">{{ __('profile.add_person') }}</button>
 	      </div>
 	    </div>
 	  </form>

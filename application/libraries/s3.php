@@ -49,12 +49,15 @@ class S3
 
 	            $fileTempName = $upload['tmp_name'][$index];
 	            $fileName = Request::server('HTTP_X_FILE_NAME') ? Request::server('HTTP_X_FILE_NAME') : $upload['name'][$index];
-	            $fileName = $filepath."/".str_replace(" ", "_", $fileName);
+	            $ext = substr(strrchr($fileName,'.'),1);
+	            $hash = Str::random(32, 'alpha');
+	            $fileName = $filepath."/".$hash.".".$ext;
 	            $response = S3::putObject(S3::inputFile($fileTempName, false), "s3.obj.no", $fileName, S3::ACL_PUBLIC_READ);
 	            if ($response){
 	            	$exif = exif_read_data($fileTempName, 0, true);
 	            	$xmp = XMP::read($fileTempName);
-	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp);
+	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $fileName, 'hash' => $hash
+	            		);
 	            }
 	        }
 
@@ -62,12 +65,15 @@ class S3
 	        if ($upload || Request::server('HTTP_X_FILE_NAME')) {
 	            $fileTempName = $upload['tmp_name'];
 	            $fileName = Request::server('HTTP_X_FILE_NAME') ? Request::server('HTTP_X_FILE_NAME') : $upload['name'];
-	            $fileName = $filepath."/".str_replace(" ", "_", $fileName);
+	            $ext = substr(strrchr($fileName,'.'),1);
+	           	$hash = Str::random(32, 'alpha');
+	            $fileName = $filepath."/".$hash.".".$ext;
 	            $response = S3::putObject(S3::inputFile($fileTempName, false), "s3.obj.no", $fileName, S3::ACL_PUBLIC_READ);
 	            if ($response){
 	            	$exif = exif_read_data($fileTempName, 0, true);
 	            	$xmp = XMP::read($fileTempName);
-	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp);
+	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $fileName, 'hash' => $hash
+	            		);
 	            }
 	        }
 	    }

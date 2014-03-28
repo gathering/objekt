@@ -123,8 +123,10 @@ class Profiles_Controller extends Controller {
 		if($i < 1){
 			$person->slug = Str::slug($person->firstname." ".$person->surname);
 		}
-		$slug_exists = Person::where("slug", "=", $person->slug)->where("profile_id", "=", $profile->id)->count();
-		if($slug_exists > 0){
+		$slug_exists = Person::where("slug", "=", $person->slug)->where("profile_id", "=", $profile->id)->first();
+		if($slug_exists){
+			if(@$person->id == $slug_exists->id) return $person->slug;
+
 			$i++;
 			$person->slug = Str::slug($person->firstname." ".$person->surname." ".$i);
 			$slugy = Person::where("slug", "=", $person->slug)->where("profile_id", "=", $profile->id)->count();
@@ -138,7 +140,7 @@ class Profiles_Controller extends Controller {
 		}
 		$slug_exists = profile::find($profile->slug);
 		if($slug_exists){
-			if($profile->id == $slug_exists->id) return $profile->slug;
+			if(@$profile->id == $slug_exists->id) return $profile->slug;
 
 			$i++;
 			$profile->slug = Str::slug($profile->name." ".$i);
@@ -166,8 +168,6 @@ class Profiles_Controller extends Controller {
 		{
 		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
 		}
-		if(isset($input['contact_person']))
-			$rules['contact_person'] = true;
 		if(isset($input['note']))
 			$rules['note'] = true;
 
@@ -177,6 +177,11 @@ class Profiles_Controller extends Controller {
 		foreach($rules as $field => $rule){
 			$person->{$field} = $input[$field];
 		}
+
+		if(isset($input['contact_person']))
+			$person->contact_person = '1';
+		else
+			$person->contact_person = '0';
 
 		if(!empty($profile_id)){
 			$profile = profile::find($profile_id);
@@ -353,7 +358,7 @@ class Profiles_Controller extends Controller {
 		$comment->type = "profile";
 		$profile->comments()->insert($comment);
 
-		$profile->sendNotification(__('profile.notification.new_comment'));
+		$profile->sendNotification(sprintf(__('profile.notification.new_comment'), Auth::user()->username));
 
 		return Redirect::to($profile->url())->with("success", __('profile.comment_posted'));
 	}
@@ -399,5 +404,98 @@ class Profiles_Controller extends Controller {
 		$person->sendNotification(sprintf(__('profile.notification.person_made_contactperson'), $profile->name));
 
 		return Redirect::to($person->url())->with("success", __('profile.made_contactperson'));
+	}
+	public function action_delete_comment($profile_slug, $comment_id){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+
+		$comment = Comment::find($comment_id);
+		if(!$comment->exists) return Event::first('404');
+
+		$comment->delete();
+		$profile->sendNotification(__('profile.notification.deleted_comment'));
+
+		return Redirect::to($profile->url())->with("success", __('profile.deleted_comment'));
+	}
+	public function action_person_edit($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+		tplConstructor::set(true);
+		return View::make('profiles.person_edit')->with("profile", $profile)->with("person", $person);
+	}
+	public function action_post_person_edit($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+
+		$input = Input::all();
+		$rules = array(
+		    'firstname'  => 'required|max:255',
+		    'surname'  => 'required|max:255',
+		    'phone' => 'numeric',
+		    'email' => 'email',
+		);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		if(isset($input['note']))
+			$rules['note'] = true;
+
+		foreach($rules as $field => $rule){
+			$person->{$field} = $input[$field];
+		}
+
+		if(isset($input['contact_person']))
+			$person->contact_person = '1';
+		else
+			$person->contact_person = '0';
+
+		$person->slug = $this->slugname_person($person, $profile, 0);
+		unset($person->i);
+		$person->save();
+
+		$person->sendNotification(__('profile.notifications.person_edited'));
+		return Redirect::to($person->url())->with("success", "Informasjonen ble lagret!");
+	}
+
+	public function action_person_delete($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+		return View::make('profiles.person_delete')->with("person", $person);
+	}
+	public function action_post_person_delete($profile_slug, $person_slug, $child_slug=""){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+
+		$password = Input::get('password');
+		$user = Auth::user();
+		if(!Hash::check($user->salt . $password, $user->password))
+			return Redirect::to(Request::referrer())->with("error", __('profile.incorrect_password'));
+
+		$person->sendNotification(sprintf(__('profile.notification.deleted_person'), $user->username));
+
+		$person->delete();
+
+		return Redirect::to($profile->url())->with("success", __('profile.person_deleted'));
 	}
 }

@@ -34,7 +34,7 @@ class Profile extends Eloquent {
 	public function sendNotification($message){
 		$followers = $this->followers()->get();
 		foreach($followers as $follower){
-			#if(Auth::user()->id != $follower->user_id)
+			if(Auth::user()->id != $follower->user_id)
 				Notification::send($follower->user_id, $this->name, $message, $this->url());
 		}
 	}

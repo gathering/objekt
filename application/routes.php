@@ -158,6 +158,8 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 	Route::get('/profile/(:any)/delete', 'profiles@delete');
 	Route::post('/profile/(:any)/delete', 'profiles@post_delete');
 
+	Route::get('/profile/(:any)/delete_comment/(:num)', 'profiles@delete_comment');
+
 	Route::get('/profiles', 'profiles@index');
 	Route::get('/profile/(:any)', 'profiles@profile');
 	Route::post('/profile/(:any)', 'profiles@post_comment');
@@ -202,6 +204,17 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 
 	Route::get('/profile/(:any)/(:any)/make_contactperson', 'profiles@make_contactperson');
 	Route::get('/profile/(:any)/(:any)/(:any)/make_contactperson', 'profiles@make_contactperson');
+
+	Route::get('/person-edit/(:any)/(:any)', 'profiles@person_edit');
+	Route::get('/person-edit/(:any)/(:any)/(:any)', 'profiles@person_edit');
+	Route::post('/person-edit/(:any)/(:any)', 'profiles@post_person_edit');
+	Route::post('/person-edit/(:any)/(:any)/(:any)', 'profiles@post_person_edit');
+
+	Route::get('/delete-person/(:any)/(:any)', 'profiles@person_delete');
+	Route::get('/delete-person/(:any)/(:any)/(:any)', 'profiles@person_delete');
+	Route::post('/delete-person/(:any)/(:any)', 'profiles@post_person_delete');
+	Route::post('/delete-person/(:any)/(:any)/(:any)', 'profiles@post_person_delete');
+
 
 	Route::get('/profile/(:any)/(:any)', 'profiles@person');
 	Route::get('/profile/(:any)/(:any)/(:any)', 'profiles@child');

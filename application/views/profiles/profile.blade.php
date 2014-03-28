@@ -146,10 +146,17 @@ $(function() {
               <section class="media-body panel">
                 <header class="panel-heading clearfix">
                   <a href="#">{{ $comment->user()->username }}</a>
-                  <span class="text-muted m-l-small pull-right"><i class="icon-time"></i>{{ date::nice($comment->created_at) }}</span>
+                  <span class="text-muted m-l-small pull-right">
+                    <i class="icon-time"></i>{{ date::nice($comment->created_at) }}
+                  </span>
                 </header>
                 <div class="panel-body">
-                  <div>{{ $comment->comment }}</div>
+                  <div>
+                    {{ $comment->comment }}
+                    @if(Auth::user()->can('delete_comments'))
+                    <a href="{{ url('profiled/'.$profile->slug.'/elete_comment/'.$comment->id) }}" class="pull-right btn btn-danger btn-xs">{{ __('profile.delete_comment') }}</a>
+                    @endif
+                  </div>
                 </div>
               </section>
             </article>

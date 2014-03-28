@@ -13,7 +13,8 @@ return array(
 	'delete' => 'Sletting av «%s»',
 	'delete_confirm' => 'Bekreft sletting',
 	'description' => array(
-		'delete' => 'Ved å skrive inn ditt passord her bekrefter du at du ønsker å slette «%s». All personell blir også slettet.'
+		'delete' => 'Ved å skrive inn ditt passord her bekrefter du at du ønsker å slette «%s». All personell blir også slettet.',
+		'delete_person' => 'Ved å skrive inn ditt passord her bekrefter du at du ønsker å slette «%s».'
 	),
 	'edit' => 'Rediger',
 	'person_read_more' => 'Gå til «:name»…',
@@ -46,13 +47,22 @@ return array(
 	'gets_notifications' => 'Følger',
 	'make_contactperson' => 'Gjør til kontaktperson',
 	'made_contactperson' => 'Personen ble merket som kontaktperson',
+	'delete_comment' => 'Slett',
+	'deleted_comment' => 'Kommentaren ble slettet',
+	'add_person' => 'Legg til personell',
+	'edit_person' => 'Endre person',
+	'person_delete' => 'Sletting av «%s»',
+	'confirm_person_delete' => 'Jeg bekrefter at «%s» skal slettes.',
+	'person_deleted' => 'Personen ble slettet',
 	'notification' => array(
-			'new_comment' => 'En ny kommentar er lagt til.',
+			'new_comment' => 'En ny kommentar er lagt til av %s.',
 			'deleted_profile' => '%s slettet profilen.',
 			'new_child' => '%s har blitt registrert inn.',
 			'new_person' => '%s har blitt registrert inn.',
 			'profile_edited' => 'Profilen er endret.',
-			'person_made_contactperson' => 'Er gjort kontaktperson for %s'
+			'person_made_contactperson' => 'Er gjort kontaktperson for %s',
+			'deleted_comment' => 'Kommentar slettet',
+			'person_edited' => 'Personen ble endret'
 			),
 	'placeholder' => array(
 			'name' => 'Profilens navn',
