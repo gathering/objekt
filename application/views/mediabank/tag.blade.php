@@ -11,7 +11,7 @@
                 <div class="input-group" style="margin-top: 5px;">
                     <input type="text" name="comment" placeholder="{{ __('mediabank.placeholder.search') }}" class="form-control">
                     <span class="input-group-btn">
-                      <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                      <button class="btn btn-primary" onclick="alert('Søk i topbaren så lenge. Fungerer ikke enda.'); return false;" type="submit"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
             </form>
@@ -21,13 +21,13 @@
                 @foreach($results as $result)
                 @if($result->thumbnail())
                 <div class="item">
-                    <a href="{{ $result->url }}" rel="prettyPhoto[gallery]" class="item-media"><img src="{{ $result->thumbnail()->url }}"></a>
+                    <a href="{{ $result->url }}" target="_blank" class="item-media"><img src="{{ $result->thumbnail()->url }}"></a>
                     <div class="desc">
-                        <h4>{{ $result->filename }}</h4>
+                        <h4 title="{{ $result->filename }}">{{ Str::limit($result->filename, 15) }}</h4>
                         <p class="text-muted">
                             {{ $result->camera() ? $result->camera()."<br />" : "" }}
                             @foreach($result->tags() as $tag)
-                            <div class="badge">{{ $tag }}</div>
+                            <div class="badge"><a href="{{ url('mediabank/tag/'.strtolower($tag)) }}" style="color: inherit">{{ strtolower($tag) }}</a></div>
                             @endforeach
                         </p>
                     </div>
