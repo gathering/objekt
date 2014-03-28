@@ -32,9 +32,9 @@ class Notification extends Eloquent {
 		}
 
 		$pushData = array(
-			'title' => $title,
-			'message' => $message,
-			'url' => $url
+			'title' => (string) $title,
+			'message' => (string) $message,
+			'url' => (string) $url
 			);
 
 		Push::trigger(md5('user_'.$user->id), 'notification', $pushData);

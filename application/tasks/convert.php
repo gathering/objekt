@@ -36,7 +36,7 @@ class Convert_Task {
 
 			Bundle::start('imageworkshop');
 
-			$layer = PHPImageWorkshop\ImageWorkshop::initFromPath('/tmp/map.jpg');
+			$layer = PHPImageWorkshop\ImageWorkshop::initFromPath("/tmp/map-{$file->event_id}.jpg");
 			$layer->resizeInPixel(759, null, true, 0, 0, 'MM');			 
 			$layer->save("/tmp", "map-{$file->event_id}-759.jpg", false, null, 100);
 			if(!is_file("/tmp/map-{$file->event_id}-759.jpg")) continue;

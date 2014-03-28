@@ -27,7 +27,7 @@ class Person extends Eloquent {
 
 		$followers = $this->profile()->followers()->get();
 		foreach($followers as $follower){
-			if(Auth::user()->id != $follower->user_id && !$sentTo[$follower->user_id])
+			if(Auth::user()->id != $follower->user_id && isset($sentTo[$follower->user_id]))
 				Notification::send($follower->user_id, $this->firstname." ".$this->surname, $message, $this->url());
 		}
 	}

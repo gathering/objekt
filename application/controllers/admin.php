@@ -145,6 +145,10 @@ class Admin_Controller extends Base_Controller {
 		if(!$file) return Redirect::to(Request::referrer())->with('error',__('admin.errors.file_not_found'));
 
 		S3::deleteObject("s3.obj.no", $file->s3_path);
+		foreach($file->childs()->get() as $child){
+			S3::deleteObject("s3.obj.no", $child->s3_path);
+			$child->delete();
+		}
 		$file->delete();
 
 		return Redirect::to(Request::referrer())->with('success', __('admin.file_deleted'));
