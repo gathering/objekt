@@ -41,14 +41,14 @@
     </ul>
     <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('images/logo_transolini.png') }}" alt="" /></a>
     <button type="button" class="btn btn-link pull-left nav-toggle visible-xs" data-toggle="class:slide-nav slide-nav-left" data-target="body">
-      <i class="fa fa-reorder fa-xlarge text-default"></i>
+      <i class="fa fa-reorder icon-xlarge text-default"></i>
     </button>
     <? $user = User::find(Auth::user()->id); $notifications = $user->notifications()->order_by('created_at', 'desc')->where("status", "=", "unread"); $notification_count = $notifications->count(); ?> 
     <ul class="nav navbar-nav hidden-xs">
       <li>
         <div class="m-t m-b-small" id="notifications">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-comment-alt fa-xlarge text-default"></i><b id="notification-badge" class="badge badge-notes bg-danger count-n {{ $notification_count > 0 ? '' : 'hide' }}">{{ $notification_count }}</b>
+            <i class="fa fa-comment-o icon-xlarge text-default"></i><b id="notification-badge" class="badge badge-notes bg-danger count-n {{ $notification_count > 0 ? '' : 'hide' }}">{{ $notification_count }}</b>
           </a>
           <section class="dropdown-menu m-l-small m-t-mini">
             <section class="panel panel-large arrow arrow-top">
