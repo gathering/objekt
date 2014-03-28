@@ -13,7 +13,7 @@ class Mediabank_Controller extends Base_Controller {
 		$event = Config::get('application.event');
 		$params['index'] = 'mediabank';
 		$params['type']  = 'image';
-		$params['body']['query']['wildcard']['tags'] = "2013";
+		$params['body']['query']['wildcard']['tags'] = $tag;
 		
 		tplConstructor::set(true);
 		$elastisk = Elastisk::search($params);
