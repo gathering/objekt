@@ -19,6 +19,7 @@
         <div class="m-t">
             <div id="gallery" class="gallery hide">
                 @foreach($results as $result)
+                @if($result->thumbnail())
                 <div class="item">
                     <a href="{{ $result->url }}" rel="prettyPhoto[gallery]" class="item-media"><img src="{{ $result->thumbnail()->url }}"></a>
                     <div class="desc">
@@ -31,6 +32,7 @@
                         </p>
                     </div>
                 </div>
+                @endif
                 @endforeach
             </div>
         </div>
