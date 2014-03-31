@@ -140,7 +140,8 @@
 	<footer id="footer">
 	<div class="text-center padder clearfix">
 	  <p>
-	    <small>{{__('common.footer')}}</small><br><br>
+	    <small>{{__('common.footer')}}<br>
+      <? echo shell_exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit"); ?></small><br><br>
 	    <a href="#" class="btn btn-xs btn-circle btn-twitter"><i class="fa fa-twitter"></i></a>
 	    <a href="#" class="btn btn-xs btn-circle btn-facebook"><i class="fa fa-facebook"></i></a>
 	    <a href="#" class="btn btn-xs btn-circle btn-gplus"><i class="fa fa-google-plus"></i></a>

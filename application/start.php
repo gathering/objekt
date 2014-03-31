@@ -14,6 +14,7 @@
 
 ini_set('display_errors', 'On');
 
+
 /*
 |--------------------------------------------------------------------------
 | Laravel Configuration Loader
