@@ -338,7 +338,7 @@ class Profiles_Controller extends Controller {
 			return Redirect::to(Request::referrer())->with("error", __('profile.incorrect_password'));
 
 		$profile->sendNotification(sprintf(__('profile.notification.deleted_profile'), $user->username));
-		
+
 		$profile->person_x()->delete();
 		$profile->delete();
 

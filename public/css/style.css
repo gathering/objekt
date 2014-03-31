@@ -479,6 +479,101 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
 .h{font-size: 180px;font-weight: 700;text-shadow: 0 1px 0 #d9d9d9, 0 2px 0 #d0d0d0, 0 5px 10px rgba(0,0,0,.125), 0 10px 20px rgba(0,0,0,.2);}
 .new{background:#ff5f5f; color: #FFFFFF;}
 .new .text-muted {color: #FFFFFF;}
+.modal-title {
+  outline: none;
+}
+
+.modal .preview {
+  position: relative;
+  height: 200px;
+  margin: -20px;
+  margin-bottom: 20px;
+  background: no-repeat center center; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  text-align: right;
+  padding-top: 130px;
+  padding-right: 20px;
+}
+.preview:before {
+  margin-top: -130px;
+  background-image: linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+        background-image: -moz-linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+        background-image: -ms-linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+        background-image: -o-linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+        background-image: -webkit-linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+    content: "\00a0";
+    height: 100%;
+    left: 0px;
+    position: absolute;
+    width: 100%; 
+}
+.infobox_tags {
+  max-height: 80px;
+  overflow: hidden;
+  position: relative;
+}
+.infobox {
+  z-index: 99;
+  color: #000000;
+  background: #FFF;
+  border-radius: 2px;
+  padding: 5px;
+  position: absolute;
+  left:20px;
+  top: 130px;
+  width: auto;
+  text-align: left;
+}
+.infobox_tags:before {
+  background-image: linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+        background-image: -moz-linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+        background-image: -ms-linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+        background-image: -o-linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+        background-image: -webkit-linear-gradient( top, 
+            rgba( 255, 255, 255, 0 ) 0%, 
+            rgba( 255, 255, 255, 1 ) 100% );
+    content: "\00a0";
+    height: 50%;
+    left: 0px;
+    bottom: 0px;
+    position: absolute;
+    width: 100%; 
+}
+.infobox_tags .badge {
+  margin: 2px;
+}
+
+.filename {
+  font-size: 18px;
+  font-family: 'Open Sans',"HelveticaNeue", "Helvetica Neue", Helvetica, Arial,sans-serif;
+  outline: none;
+  text-align: center;
+  width: auto;
+  background: none;
+  border: none;
+  color: #656565;
+}
 
 /*desktop*/
 @media (min-width: 992px) {
@@ -538,6 +633,14 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
     -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
   }
+}
+.mediaboard {
+  height: 80px;
+  background: no-repeat center center; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 /*phone*/

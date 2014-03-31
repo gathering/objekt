@@ -1,8 +1,8 @@
 <section class="toolbar clearfix m-t-large m-b">
-	<a href="{{ url('profile/add') }}" class="btn btn-primary btn-circle"><i class="icon-group"></i> {{ __('user.add_new_profile') }}</a>
-	<a href="{{ url('profile/add-person') }}" class="btn btn-warning btn-circle"><i class="icon-user"></i> {{ __('profile.add_personel') }}</a>
-	<a href="{{ url('/help') }}" class="btn btn-info btn-circle"><i class="icon-question-sign"></i>{{ __('user.help') }}</a>
-	<a href="{{ url('/aid') }}" onclick="return confirm('{{ __('user.air_confirm') }}')" class="btn btn-danger btn-circle active"><i class="icon-warning-sign"></i>{{ __('user.aid') }}</a>
+	<a href="{{ url('profile/add') }}" class="btn btn-primary btn-circle"><i class="fa fa-group"></i> {{ __('user.add_new_profile') }}</a>
+	<a href="{{ url('profile/add-person') }}" class="btn btn-warning btn-circle"><i class="fa fa-user"></i> {{ __('profile.add_personel') }}</a>
+	<a href="{{ url('/help') }}" class="btn btn-info btn-circle"><i class="fa fa-question-circle"></i>{{ __('user.help') }}</a>
+	<a href="{{ url('/aid') }}" onclick="return confirm('{{ __('user.air_confirm') }}')" class="btn btn-danger btn-circle active"><i class="fa fa-warning"></i>{{ __('user.aid') }}</a>
 </section>
 <br />
 <div class="row">
@@ -17,7 +17,7 @@
 						<div class="input-group">
 					      <input type="text" name="search" placeholder="{{ __('common.search_person') }}" class="accreditationSearch form-control" id="searchField" />
 					      <span class="input-group-btn">
-					        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
+					        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
 					      </span>
 					    </div><!-- /input-group -->
 					</form>
@@ -37,7 +37,7 @@
 						  <input type="hidden" name="type" value="accreditiation" />
 					      <input type="text" name="search" placeholder="{{ __('common.search_profiles') }}" class="accreditationSearch form-control" id="searchField" />
 					      <span class="input-group-btn">
-					        <button class="btn btn-default" type="button"><i class="icon-search"></i></button>
+					        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
 					      </span>
 					    </div><!-- /input-group -->
 					</form>

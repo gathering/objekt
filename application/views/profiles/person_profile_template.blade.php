@@ -39,12 +39,12 @@ $(function() {
       @endif
 		</div>
 		<div class="list-group list-normal m-b-none">
-			<a href="{{ $person->url() }}" class="list-group-item{{ URI::segment(2) != 'profile' ? ' active' : '' }}"><i class="icon-user"></i> Profil</a>
-			<a href="{{ $person->url('accreditation') }}" class="list-group-item{{ URI::segment(2) != 'accreditation' ? ' active' : '' }}"><i class="icon-tag"></i> {{ __('accreditation.accredit') }}</a>
-			<a href="{{ $person->url('sms') }}" class="list-group-item{{ URI::segment(2) != 'sms' ? ' active' : '' }}"><i class="icon-mobile-phone"></i> {{ __('sms.send_to_person') }}</a>
-			<a href="{{ $person->url('person-edit') }}" class="list-group-item{{ URI::segment(2) != 'person-edit' ? ' active' : '' }}"><i class="icon-pencil"></i> {{ __('profile.edit') }}</a>
+			<a href="{{ $person->url() }}" class="list-group-item{{ URI::segment(2) != 'profile' ? ' active' : '' }}"><i class="fa fa-user"></i> Profil</a>
+			<a href="{{ $person->url('accreditation') }}" class="list-group-item{{ URI::segment(2) != 'accreditation' ? ' active' : '' }}"><i class="fa fa-tag"></i> {{ __('accreditation.accredit') }}</a>
+			<a href="{{ $person->url('sms') }}" class="list-group-item{{ URI::segment(2) != 'sms' ? ' active' : '' }}"><i class="fa fa-mobile-phone"></i> {{ __('sms.send_to_person') }}</a>
+			<a href="{{ $person->url('person-edit') }}" class="list-group-item{{ URI::segment(2) != 'person-edit' ? ' active' : '' }}"><i class="fa fa-pencil"></i> {{ __('profile.edit') }}</a>
 			@if ($person->is_child())
-			<a href="{{ $person->parent()->url() }}" class="list-group-item{{ URI::segment(5) != 'add-child' ? ' active' : '' }}"><i class="icon-arrow-left"></i> {{ sprintf(__('profile.back_to_parent'), $person->parent()->firstname) }}</a>
+			<a href="{{ $person->parent()->url() }}" class="list-group-item{{ URI::segment(5) != 'add-child' ? ' active' : '' }}"><i class="fa fa-arrow-left"></i> {{ sprintf(__('profile.back_to_parent'), $person->parent()->firstname) }}</a>
 			@endif
 		</div>
 	</aside>

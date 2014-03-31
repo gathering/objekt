@@ -85,6 +85,9 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::post('/mediabank', 'mediabank@upload');
 
 	Route::get('/mediabank/tag/(:any)', 'mediabank@tag');
+	Route::post('/mediabank/update_file/(:num)', 'mediabank@update_file');
+	Route::post('/mediabank/search', 'mediabank@search');
+	Route::post('/mediabank/delete_file/(:num)', 'mediabank@delete_file');
 });
 
 /* Notifications */

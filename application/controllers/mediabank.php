@@ -5,6 +5,7 @@ class Mediabank_Controller extends Base_Controller {
 	public function action_index()
 	{
 		$event = Config::get('application.event');
+		tplConstructor::set(true);
 		return View::make('mediabank.index')->with("event", $event);
 	}
 
@@ -26,7 +27,7 @@ class Mediabank_Controller extends Base_Controller {
 
 		foreach($elastisk['hits']['hits'] as $result){
 			$model = Fil3::find($result['_id']);
-			array_push($results, $model);
+			if($model) array_push($results, $model);
 		}
 		return View::make('mediabank.tag')->with("results", $results);
 	}
@@ -82,6 +83,76 @@ class Mediabank_Controller extends Base_Controller {
 			$ret = Elastisk::index($params);
 		}
 		die("true");
+	}
+
+	public function action_update_file($id){
+		$file = Fil3::find($id);
+		if(!$file) return Event::first('404');
+
+		$file->tags = Input::get('tags');
+		$tag_array = explode(",", $file->tags);
+		$file->filename = Input::get('filename');
+
+		if(empty($file->filename)) return Event::first('404');
+		$file->save();
+
+		$meta = $file->meta();
+
+		$params = array();
+		$params['body']  = array(
+			'filename' => $file->filename,
+			'event_id' => $file->event_id,
+			'url' => $file->url,
+			'tags' => $tag_array,
+			'hash' => $meta['hash'],
+			'uploaded_at' => date("Y-m-d H:i:s")
+			);
+
+		$params['index'] = 'mediabank';
+		$params['type']  = 'image';
+		$params['id']    = $file->id;
+
+		$ret = Elastisk::index($params);
+
+		return "true";
+	}
+
+	public function action_delete_file($id){
+		$file = Fil3::find($id);
+		if(!$file) return Event::first('404');
+
+		$id = $file->id;
+		if($file->remove()){
+			$params['index'] = 'mediabank';
+			$params['type']  = 'image';
+			$params['id']    = $id;
+			Elastisk::delete($params);
+			return true;
+		}
+		
+		return Event::first('505');
+	}
+
+	public function action_search(){
+		$term = Input::get('search');
+		$params['index'] = 'mediabank';
+		$params['type']  = 'image';
+		$event = Config::get('application.event');
+		$params['body']['query']['query_string']['query'] = "*".$term."*";
+		$params['body']['filter']['term']['event_id'] = $event->id;
+
+		$elastisk = Elastisk::search($params);
+		tplConstructor::set(true);
+		$results = array();
+
+		if($elastisk['hits']['total'] == 0)
+			return Redirect::to(Request::referrer())->with('error', __('mediabank.nothing_found'));
+
+		foreach($elastisk['hits']['hits'] as $result){
+			$model = Fil3::find($result['_id']);
+			if($model) array_push($results, $model);
+		}
+		return View::make('mediabank.tag')->with("results", $results)->with("term", $term);
 	}
 
 }

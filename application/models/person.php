@@ -14,6 +14,14 @@ class Person extends Eloquent {
 		return $this->has_many('following', 'belongs_to')->where("type", "=", "profile");
 	}
 
+	public function delete(){
+		$params['index'] = 'people';
+		$params['type']  = 'obj';
+		$params['id']    = $this->id;
+		Elastisk::delete($params);
+		return parent::delete();
+	}
+
 	public function save(){
 		$event = Config::get('application.event');
 		$this->event_id = $event->id;

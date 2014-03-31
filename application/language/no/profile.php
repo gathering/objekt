@@ -54,6 +54,7 @@ return array(
 	'person_delete' => 'Sletting av «%s»',
 	'confirm_person_delete' => 'Jeg bekrefter at «%s» skal slettes.',
 	'person_deleted' => 'Personen ble slettet',
+	'go_to_website' => 'Gå til nettsiden',
 	'notification' => array(
 			'new_comment' => 'En ny kommentar er lagt til av %s.',
 			'deleted_profile' => '%s slettet profilen.',

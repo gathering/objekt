@@ -45,17 +45,17 @@
 		<ul class="nav nav-tabs pull-left">
 			<li class="active">
 				<a href="#general_settings" data-toggle="tab">
-					<i class="icon-cog icon-large text-default"></i>{{ __('admin.general_settings') }}
+					<i class="fa fa-cog icon-large text-default"></i>{{ __('admin.general_settings') }}
 				</a>
 			</li>
 			<li>
 				<a href="#technical_settings" data-toggle="tab">
-					<i class="icon-hdd icon-large text-default"></i>{{ __('admin.technical_settings') }}
+					<i class="fa fa-hdd-o icon-large text-default"></i>{{ __('admin.technical_settings') }}
 				</a>
 			</li>
 			<li>
 				<a href="#files" data-toggle="tab">
-					<i class="icon-file-text icon-large text-default"></i>{{ __('admin.files') }}
+					<i class="fa fa-file-text icon-large text-default"></i>{{ __('admin.files') }}
 				</a>
 			</li>
 			@if($event->map())
@@ -63,7 +63,7 @@
 	        @if($map->pdf->converted == '1')
 			<li>
 				<a href="#map" data-toggle="tab">
-					<i class="icon-map-marker icon-large text-default"></i>{{ __('admin.map') }}
+					<i class="fa fa-map-marker icon-large text-default"></i>{{ __('admin.map') }}
 				</a>
 			</li>
 			@endif
@@ -123,7 +123,7 @@
 	                    <div class="checkbox">
 							<label class="checkbox-custom">
 								<input type="checkbox" name="features[{{ $feature }}]" {{ $event->hasFeature($feature) ? 'checked="checked"' : '' }}>
-								<i class="icon-unchecked checked"></i>
+								<i class="fa fa-check-square-o checked"></i>
 								{{ __('admin.field.'.$feature) }}
 							</label>
 						</div>

@@ -13,12 +13,12 @@
 .spinner .input-sm + .input-group-btn .btn+.btn{height: 16px;}
 .select{position: relative;display: inline-block;}
 
-.pillbox{border: 1px solid #e0e4e8;padding: 10px;border-radius: 4px}
+.pillbox{padding: 10px;border-radius: 4px}
 .pillbox ul{margin: 0;list-style: none;padding:0;}
 .pillbox li{display: inline-block;font-size:12px;color: #fff;;padding: 6px 8px;cursor: pointer;margin:2px;float: left;}
 .pillbox li:after{content: " x";font-size: 11px;font-weight: normal;opacity: 0.6;filter: alpha(opacity=60);}
 .pillbox li:hover:after{opacity: 0.9;filter: alpha(opacity=90);}
-.pillbox input{border:none;outline:0;min-height: 24px;width: auto;display: inline-block;box-shadow: none;background: transparent;}
+.pillbox input{border:none;outline:0;min-height: 24px;width: auto;display: inline-block;box-shadow: none;background: transparent;float: left;}
 
 .datagrid tfoot th{font-weight: normal;}
 .datagrid tfoot .grid-pager .combobox{max-width: 80px;position: relative;top: 10px}
@@ -1091,7 +1091,7 @@ table.fc-border-separate {
   z-index: 2;
 }
 .gallery .item-media:after{
-  content: "\f067";
+  content: "\f05a";
   font-family: FontAwesome;
   font-size: 28px;
   color: #fff;

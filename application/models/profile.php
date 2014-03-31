@@ -15,6 +15,35 @@ class Profile extends Eloquent {
 		return parent::all();
 	}
 
+	public function tags(){
+		return array_unique(array_map('strtolower', array_merge(array($this->slug), explode(" ", $this->name))), SORT_REGULAR);
+	}
+
+	public function media($take=0){
+
+		$tags = $this->tags();
+
+		$event = Config::get('application.event');
+		$params['index'] = 'mediabank';
+		$params['type']  = 'image';
+		$params['body']['query']['query_string']['query'] = implode(" OR", $tags);
+		if($take > 0) $params['body']['filter']['limit']['value'] = $take;
+		
+		tplConstructor::set(true);
+		$elastisk = Elastisk::search($params);
+		$results = array();
+
+		if($elastisk['hits']['total'] == 0)
+			return array();
+
+		foreach($elastisk['hits']['hits'] as $result){
+			$model = Fil3::find($result['_id']);
+			if($model) array_push($results, $model);
+		}
+
+		return $results;
+	}
+
 	public function person(){
 		return $this->has_many('person')->where("parent_id", "=", "0");
 	}
@@ -22,6 +51,7 @@ class Profile extends Eloquent {
 	public function event(){
 		return $this->belongs_to('events', 'event_id');
 	}
+
 
 	public function comments(){
 		return $this->has_many('comment', 'belongs_to')->where("type", "=", "profile");
@@ -93,6 +123,14 @@ class Profile extends Eloquent {
 	public function contactpersons(){
 		return $this->person()->where("contact_person", "=", "1")->get();
 	}
+	
+	function delete(){
+		$params['index'] = 'profiles';
+		$params['type']  = 'obj';
+		$params['id']    = $this->id;
+		Elastisk::delete($params);
+		return parent::delete();
+	}
 
 	function save(){
 		$event = Config::get('application.event');
@@ -147,13 +185,30 @@ class Profile extends Eloquent {
 
 				$ext = substr(strrchr($src,'.'),1);
 				$tmp_path = "/tmp/".$this->slug.".".$ext;
-				file_put_contents($tmp_path, file_get_contents($src));
+
+				$curl_handle=curl_init();
+				curl_setopt($curl_handle, CURLOPT_URL, $src);
+				curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
+				curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($curl_handle, CURLOPT_USERAGENT, 'Objekt');
+				$hostFile = curl_exec($curl_handle);
+				curl_close($curl_handle);
+
+				if(!$hostFile) return asset('images/firmahval.png');
+				file_put_contents($tmp_path, $hostFile);
+				if(!exif_imagetype($tmp_path)) {
+					unlink($tmp_path);
+					return asset('images/firmahval.png');
+				}
 
 				$event = Config::get('application.event');
 				$filepath = $event->s3_slug."/profiles/".$this->slug.".".$ext;
 
 				// Upload to S3
 				S3::putObject(S3::inputFile($tmp_path, false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
+
+				unlink($tmp_path);
+
 				$this->logo_url = "http://s3.obj.no/".$filepath;
 				$this->save();
 				return $this->logo_url;

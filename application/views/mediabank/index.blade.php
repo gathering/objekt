@@ -74,49 +74,64 @@ $(function () {
 });
 </script>
 @endsection
-<div class="row">
-    <div class="col-lg-2">
-        <span class="btn btn-primary btn-lg fileinput-button" style="width: 100%">
-            <i class="icon-plus"></i>
-            <span>{{ __('mediabank.upload') }}</span>
-            <!-- The file input field used as target for the file upload widget -->
-            <input id="fileupload" type="file" name="files[]" multiple="">
-        </span><br /><br />
-        <div class="alert alert-success">
-            {{ sprintf(__('mediabank.description.amount_files'), Fil3::where("type", "=", "mediabank")->count()) }}
+<section id="content">
+    <section class="main">
+        <div class="page-title">
+            <form method="post" action="{{ url('mediabank/search') }}">
+                {{ __('mediabank.search') }}
+                <div class="input-group" style="margin-top: 5px;">
+                    <input type="text" name="search" placeholder="{{ __('mediabank.placeholder.search') }}" class="form-control">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
         </div>
-        <br />
-        @foreach($event->tags() as $tag)
-        @if(!empty($tag))
-        <span class="badge"><a href="{{ url('mediabank/tag/'.strtolower($tag)) }}" style="color: inherit">{{ strtolower($tag) }}</a></span>
-        @endif
-        @endforeach
-    </div>
-    <div class="col-lg-10">
-        <section class="panel">
-            <header class="panel-heading bg bg-inverse">
-              {{ __('mediabank.profile_tags') }}
-            </header>
-            <div class="list-group">
-                @foreach(Profile::all() as $profile)
-                <span class="list-group-item bg-lighter">
-                    <span class="badge"><a href="{{ url('mediabank/tag/'.$profile->slug) }}" style="color: inherit">{{ $profile->slug }}</a></span><? $tags = explode(" ", $profile->name); ?>
-                    @foreach($tags as $tag)
+        <div class="padder">
+            <div class="row">
+                <div class="col-lg-2">
+                    <span class="btn btn-primary btn-lg fileinput-button" style="width: 100%">
+                        <i class="icon-plus"></i>
+                        <span>{{ __('mediabank.upload') }}</span>
+                        <!-- The file input field used as target for the file upload widget -->
+                        <input id="fileupload" type="file" name="files[]" multiple="">
+                    </span><br /><br />
+                    <div class="alert alert-success">
+                        {{ sprintf(__('mediabank.description.amount_files'), Fil3::where("type", "=", "mediabank")->count()) }}
+                    </div>
+                    <br />
+                    @foreach($event->tags() as $tag)
+                    @if(!empty($tag))
                     <span class="badge"><a href="{{ url('mediabank/tag/'.strtolower($tag)) }}" style="color: inherit">{{ strtolower($tag) }}</a></span>
+                    @endif
                     @endforeach
-                    {{ $profile->name }}
-                </span>
-                @endforeach
+                </div>
+                <div class="col-lg-10">
+                    <section class="panel">
+                        <header class="panel-heading bg bg-inverse">
+                          {{ __('mediabank.profile_tags') }}
+                        </header>
+                        <div class="list-group">
+                            @foreach(Profile::all() as $profile)
+                            <span class="list-group-item bg-lighter">
+                                @foreach($profile->tags() as $tag)
+                                <span class="badge"><a href="{{ url('mediabank/tag/'.$tag) }}" style="color: inherit">{{ $tag }}</a></span>
+                                @endforeach
+                                {{ $profile->name }}
+                            </span>
+                            @endforeach
+                        </div>
+                  </section>
+                  <div class="alert alert-info">
+                    <i class="icon-info-sign icon-large"></i>
+                    {{ __('mediabank.description.profile_tags') }}
+                </div>
+                <div class="alert alert-info">
+                    <i class="icon-info-sign icon-large"></i>
+                    {{ sprintf(__('mediabank.description.user_tag'), Auth::user()->username) }}
+                </div>
+                </div>
             </div>
-      </section>
-      <div class="alert alert-info">
-        <i class="icon-info-sign icon-large"></i>
-        {{ __('mediabank.description.profile_tags') }}
-    </div>
-    <div class="alert alert-info">
-        <i class="icon-info-sign icon-large"></i>
-        {{ sprintf(__('mediabank.description.user_tag'), Auth::user()->username) }}
-    </div>
-    </div>
-</div>
-<hr />
+        </div>
+    </section>
+</section>

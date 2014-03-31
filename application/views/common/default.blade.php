@@ -149,9 +149,9 @@
 	</footer>
 	<a href="#" class="hide slide-nav-block" data-toggle="class:slide-nav slide-nav-left" data-target="body"></a>
 	<!-- / footer -->
-	<script src="{{ asset('js/jquery.min.js') }}"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<!-- Bootstrap -->
-	<script src="{{ asset('js/bootstrap.js') }}"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<!-- app -->
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script src="{{ asset('js/app.plugin.js') }}"></script>
@@ -204,11 +204,8 @@
 
 	<!-- fuelux -->
 	<script src="{{ asset('js/fuelux/fuelux.js') }}"></script>
-	<script src="{{ asset('js/underscore-min.js') }}"></script>
-	<!-- datatables -->
-	<script src="{{ asset('js/datatables/jquery.dataTables.min.js') }}"></script>
-
-
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  
 	<!-- Sparkline Chart -->
 	<script src="{{ asset('js/charts/sparkline/jquery.sparkline.min.js') }}"></script>  
 	<!-- Easy Pie Chart -->

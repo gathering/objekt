@@ -45,12 +45,12 @@ $(function() {
         </button>
       </div>
       <div class="list-group list-normal m-b-none">
-      	<a href="{{ $profile->url() }}" class="list-group-item active"><i class="icon-user"></i> {{ __('profile.profile') }}</a>
-        <a href="{{ url('profile/'.$profile->slug.'/add-person') }}" class="list-group-item active"><i class="icon-plus"></i> {{ __('profile.add_personel') }}</a>
+      	<a href="{{ $profile->url() }}" class="list-group-item active"><i class="fa fa-user"></i> {{ __('profile.profile') }}</a>
+        <a href="{{ url('profile/'.$profile->slug.'/add-person') }}" class="list-group-item active"><i class="fa fa-plus"></i> {{ __('profile.add_personel') }}</a>
         @if (!empty($profile->website))
-        <a href="{{ $profile->website }}" class="list-group-item active"><i class="icon-chevron-right"></i> Gå til nettsiden</a>
+        <a href="{{ $profile->website }}" class="list-group-item active"><i class="fa fa-chevron-right"></i> {{ __('profile.go_to_website') }}</a>
         @endif
-        <a href="{{ url('profile/'.$profile->slug.'/edit') }}" class="list-group-item active"><i class="icon-pencil"></i> {{ __('profile.edit') }}</a>
+        <a href="{{ url('profile/'.$profile->slug.'/edit') }}" class="list-group-item active"><i class="fa fa-pencil"></i> {{ __('profile.edit') }}</a>
       </div>
       @if ($profile->location()->w > 0)
       <div class="text-center clearfix bg-white">
@@ -62,7 +62,7 @@ $(function() {
 
     <!-- .sidebar -->
     <section class="main">
-      <div class="padder">
+      <div class="padder" style="padding-top: 0px;">
         <div class="row">
           <div class="col-xs-3 bg-primary padder-v">
             <div class="h2">{{ $profile->person_x()->count() }}</div>
@@ -80,6 +80,13 @@ $(function() {
             <div class="h2">{{ $profile->person_x()->where("status", "=", "departed")->count() }}</div>
             {{ __('profile.departed') }}
           </div>
+        </div>
+        <div class="row">
+          @foreach($profile->media(6) as $media)
+          @if($media->thumbnail())
+          <div class="col-xs-2 mediaboard" style="background-image: url('{{ $media->thumbnail()->url }}');"></div>
+          @endif
+          @endforeach
         </div>
       </div>
       <!--<ul class="nav nav-tabs m-b-none no-radius">
