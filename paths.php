@@ -8,6 +8,10 @@
  * @link     http://laravel.com
  */
 
+/* Added to controll auto-commit hook */
+/* Added to controll auto-commit hook #2 */
+/* Added to controll auto-commit hook #3 */
+
 /*
 |----------------------------------------------------------------
 | Application Environments

@@ -41,7 +41,7 @@
     </ul>
     <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('images/logo_transolini.png') }}" alt="" /></a>
     <button type="button" class="btn btn-link pull-left nav-toggle visible-xs" data-toggle="class:slide-nav slide-nav-left" data-target="body">
-      <i class="fa fa-reorder icon-xlarge text-default"></i>
+      <i class="fa fa-bars icon-xlarge text-default"></i>
     </button>
     <? $user = User::find(Auth::user()->id); $notifications = $user->notifications()->order_by('created_at', 'desc')->where("status", "=", "unread"); $notification_count = $notifications->count(); ?> 
     <ul class="nav navbar-nav hidden-xs">

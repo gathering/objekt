@@ -194,18 +194,30 @@ class GoogleCloudPrint {
 	 * @param $jsonobj // Json response object
 	 * 
 	 */
+	private function parseTags($wrongly_tags){
+		$tags = array();
+		foreach($wrongly_tags as $wrongTag){
+			$allmostCorrectTag = explode("=", $wrongTag);
+			if(count($allmostCorrectTag) == 2)
+				$tags[$allmostCorrectTag[0]] = $allmostCorrectTag[1];
+		}
+		return $tags;
+	}
 	private function parsePrinters($jsonobj) {
 		
 		$printers = array();
 		if (isset($jsonobj->printers)) {
 			foreach ($jsonobj->printers as $gcpprinter) {
 				if($gcpprinter->id == "__google__docs") continue;
-				$printers[] = array(
+				$printer = array(
 					'name' =>$gcpprinter->name,
 					'displayname' => empty($gcpprinter->defaultDisplayName) ? $gcpprinter->name : $gcpprinter->defaultDisplayName,
 					'id' =>$gcpprinter->id,
 					'status' =>$gcpprinter->status
 					);
+				$tags = $this->parseTags($gcpprinter->tags);
+				if(isset($tags['__cp__printer-location']) && strlen($tags['__cp__printer-location']) > 0) $printer['displayname'] .= " @ ".$tags['__cp__printer-location'];
+				$printers[] = $printer;
 			}
 		}
 		return $printers;
