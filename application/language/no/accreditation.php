@@ -12,7 +12,7 @@ return array(
 	'registred_departed' => 'Da er <a href=":url">«:name»</a> registrert som forlatt.',
 	'delivery_deadline' => 'Leveringstidspunkt',
 	'already_done' => 'Denne personen er allerede akkreditert.',
-	'departed' => 'Merk forlatt',
+	'departed' => 'Merk som forlatt',
 	'has_departed' => 'Personen har forlatt arrangementet, og er ikke forventet å returnere. Dette objektet er derfor ugyldig.',
 	'confirm' => 'Bekreft.',
 	'undelivered_badges' => 'Ikke innleverte badger..',
@@ -22,10 +22,10 @@ return array(
 	'print' => 'Skriv ut akkredittering',
 	'printed' => 'Akkredittering er sendt til utskrift.',
 	'notification' => array(
-		'wristband' => 'Akkreditert med et bånd.',
-		'badge' => 'Akkreditert med en badge.',
-		'departed' => 'Har forlatt arrangementet',
-		'printed' => 'Har skrevet ut en ekstra badge.'
+		'wristband' => 'akkreditert med et bånd.',
+		'badge' => 'akkreditert med et badge.',
+		'departed' => 'har forlatt arrangementet',
+		'printed' => 'har skrevet ut et ekstra badge.'
 		)
 );
 
