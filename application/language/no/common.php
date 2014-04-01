@@ -33,7 +33,8 @@ return array(
 	'success_title' => 'Suksess!',
 	'nothing_found' => 'Fant ingenting..',
 	'search_person' => 'Søk på person…',
-	'search_profiles' => 'Søk på profiler…'
+	'search_profiles' => 'Søk på profiler…',
+	'invite_non_existant' => 'Invitasjon er ikke tilgjengelig på dette arrangementet'
 );
 
 ?>

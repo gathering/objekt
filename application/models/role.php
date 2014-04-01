@@ -16,6 +16,11 @@ class Role extends Eloquent {
 		return parent::where("event_id", "!=", $event->id)->get();
 	}
 
+	static function findByName($name){
+		$event = Config::get('application.event');
+		return self::where("event_id", "=", $event->id)->where("name", "=", $name);
+	}
+
 }
 
 ?>

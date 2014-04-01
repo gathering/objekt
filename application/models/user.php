@@ -30,7 +30,6 @@ class User extends Verify\Models\User {
 							$query->where("event_users.event_id", "=", $event->id);
 							$query->where("users.id", "=", DB::Raw('`event_users`.`user_id`'));
 						});
-						$query->or_where("users.role_id", "=", '1');
 					})
 					->where("users.disabled", "=", "0")
 					->where("users.deleted", "=", "0");

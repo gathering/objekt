@@ -96,6 +96,38 @@ class Events extends Eloquent {
 		return $map;
 	}
 
+	private $specialClass;
+
+	function special(){
+
+		if(isset($this->specialClass)) return $this->specialClass;
+
+		$finfo = new finfo(FILEINFO_MIME);
+		$dir = new RecursiveDirectoryIterator(path('app').'libraries/events/',
+		    FilesystemIterator::SKIP_DOTS);
+
+		// Flatten the recursive iterator, folders come before their files
+		$it  = new RecursiveIteratorIterator($dir,
+		    RecursiveIteratorIterator::SELF_FIRST);
+
+		// Maximum depth is 1 level deeper than the base folder
+		$it->setMaxDepth(2);
+
+		include(path('app').'libraries/events/eventTemplate.php');
+
+		foreach ($it as $fileinfo) {
+		   	if ($fileinfo->isFile()
+		   		&& $fileinfo->getExtension() == "php"
+		   		&& $fileinfo->getFilename() == $this->slug.".php") {
+		        include($fileinfo->getPathname());
+		    	$reflection_class = new ReflectionClass($this->slug);
+    			return $this->specialClass = $reflection_class->newInstance();
+		    }
+		}
+
+		return false;
+	}
+
 }
 
 ?>

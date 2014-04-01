@@ -8,11 +8,6 @@ Route::group(array('before' => 'auth|event'), function()
 		return View::make('home.index');
 	});
 
-	Route::get('/test', function()
-	{
-		Notification::send(69, "Hei!", "Hvordan går det?");
-	});
-
 	Route::get('/pushover', 'users@pushover');
 	Route::post('/pushover', 'users@post_pushover');
 
@@ -274,6 +269,18 @@ Route::get('/login', function(){
 	return View::make('common.login');
 });
 
+Route::group(array('before' => 'event'), function(){
+	Route::any('/invite', function()
+	{
+		$event = Config::get('application.event');
+		if(!$event->special()->hasInvite()){
+			return Redirect::to('/')->with("error", __('common.invite_non_existant'));
+		}
+
+		return $event->special()->invite();
+	});
+});
+
 Route::post('/login', function(){
 
 	$credentials = array('username' => Input::get('username'), 'password' => Input::get('password'));
@@ -354,7 +361,7 @@ Route::filter('after', function($response)
 	// Redirects have no content and errors handle their own layout.
     if (($response->status() == 200 or (isset($response->layout) and $response->layout === true))
     	&& (@$response->content->view != "common.login"
-    	&& @$response->content->view != ""))
+    	&& @$response->content->view != "" && !defined('EVENT_SPECIALITY')))
     {
         list($type) = explode(';', array_get($response->headers(), 'Content-Type', 'text/html'), 2);
         switch ($type)
