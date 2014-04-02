@@ -43,7 +43,7 @@ Route::group(array('before' => 'auth|event'), function()
 });
 
 /* Admin */
-Route::group(array('before' => 'auth|superadmin|event'), function()
+Route::group(array('before' => 'auth|is_superadmin|event'), function()
 {
 	Route::get('/admin', 'admin@index');
 	Route::get('/admin/events', 'admin@events');
@@ -65,7 +65,7 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 });
 
 /* Generic Admin */
-Route::group(array('before' => 'auth|superadmin|event'), function()
+Route::group(array('before' => 'auth|can_admin|event'), function()
 {
 	Route::get('/elastisk', function(){
 		$indexParams['index']  = 'mediabank';
@@ -74,7 +74,7 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 });
 
 /* Mediabank */
-Route::group(array('before' => 'auth|superadmin|event'), function()
+Route::group(array('before' => 'auth|can_mediabank|event'), function()
 {
 	Route::get('/mediabank', 'mediabank@index');
 	Route::post('/mediabank', 'mediabank@upload');
@@ -86,7 +86,7 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 });
 
 /* Notifications */
-Route::group(array('before' => 'auth|superadmin|event'), function()
+Route::group(array('before' => 'auth|event'), function()
 {
 	Route::get('/notifications', function(){
 		$user = User::find(Auth::user()->id);
@@ -100,23 +100,23 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 });
 
 /* Users */
-Route::group(array('before' => 'auth|superadmin|event'), function()
+Route::group(array('before' => 'auth|can_users|event'), function()
 {
 	Route::get('/users', 'users@index');
-	Route::get('/users/add', 'users@add');
-	Route::post('/users/add', 'users@post_add');
+	Route::get('/users/add', array('before' => 'can_add_users', 'uses' => 'users@add'));
+	Route::post('/users/add', array('before' => 'can_add_users', 'uses' => 'users@post_add'));
 
-	Route::get('/user/(:num)/reset-password', 'users@reset_password');
-	Route::post('/user/(:num)/reset-password', 'users@post_reset_password');
+	Route::get('/user/(:num)/reset-password', array('before' => 'can_reset_user_password', 'uses' => 'users@reset_password'));
+	Route::post('/user/(:num)/reset-password', array('before' => 'can_reset_user_password', 'uses' => 'users@post_reset_password'));
 
-	Route::get('/user/(:num)/delete-user', 'users@delete_user');
-	Route::post('/user/(:num)/delete-user', 'users@post_delete_user');
+	Route::get('/user/(:num)/delete-user', array('before' => 'can_delete_user', 'uses' => 'users@delete_user'));
+	Route::post('/user/(:num)/delete-user', array('before' => 'can_delete_user', 'uses' => 'users@post_delete_user'));
 });
 
 
 /* Accreditation */
 Route::get('/accreditation/controll/(:any)/(:any)', array('uses' => 'accreditation@controll', 'before' => 'event'));
-Route::group(array('before' => 'auth|superadmin|event'), function()
+Route::group(array('before' => 'auth|can_accreditation|event'), function()
 {
 	Route::get('/accreditation', 'accreditation@index');
 	Route::post('/accreditation', 'search@search_accreditation');
@@ -127,15 +127,15 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 	Route::get('/accreditation/departed/(:any)/(:any)', 'accreditation@departed');
 	Route::get('/accreditation/departed/(:any)/(:any)/(:any)', 'accreditation@departed');
 
-	Route::get('/accreditation/print/(:any)/(:any)', 'accreditation@print');
-	Route::get('/accreditation/print/(:any)/(:any)/(:any)', 'accreditation@print');
+	Route::get('/accreditation/print/(:any)/(:any)', array('before' => 'can_accreditation_print_badge', 'uses' => 'accreditation@print'));
+	Route::get('/accreditation/print/(:any)/(:any)/(:any)', array('before' => 'can_accreditation_print_badge', 'uses' => 'accreditation@print'));
 
-	Route::get('/accreditation/badge/(:any)/(:any)', 'accreditation@badge');
+	Route::get('/accreditation/badge/(:any)/(:any)', array('before' => 'can_accreditation_badge', 'uses' => 'accreditation@badge'));
 	Route::get('/accreditation/save-badge/(:any)/(:any)', 'accreditation@save_badge');
 	Route::get('/accreditation/save-badge/(:any)/(:any)/(:any)', 'accreditation@save_badge');
-	Route::get('/accreditation/badge/(:any)/(:any)/(:any)', 'accreditation@badge');
-	Route::post('/accreditation/badge/(:any)/(:any)', 'accreditation@post_badge');
-	Route::post('/accreditation/badge/(:any)/(:any)/(:any)', 'accreditation@post_badge');
+	Route::get('/accreditation/badge/(:any)/(:any)/(:any)', array('before' => 'can_accreditation_badge', 'uses' => 'accreditation@badge'));
+	Route::post('/accreditation/badge/(:any)/(:any)', array('before' => 'can_accreditation_badge', 'uses' => 'accreditation@post_badge'));
+	Route::post('/accreditation/badge/(:any)/(:any)/(:any)', array('before' => 'can_accreditation_badge', 'uses' => 'accreditation@post_badge'));
 	
 	Route::get('/accreditation/(:any)/(:any)', 'accreditation@person');
 	Route::get('/accreditation/(:any)/(:any)/(:any)', 'accreditation@child');
@@ -143,7 +143,7 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 });
 
 /* SMS */
-Route::group(array('before' => 'auth|superadmin|event'), function()
+Route::group(array('before' => 'auth|can_sms|event'), function()
 {
 	Route::get('/sms/(:any)/(:any)', 'sms@person');
 	Route::post('/sms/(:any)/(:any)', 'sms@post_person');
@@ -152,22 +152,22 @@ Route::group(array('before' => 'auth|superadmin|event'), function()
 });
 
 /* Search */
-Route::group(array('before' => 'auth|superadmin|event'), function(){
+Route::group(array('before' => 'auth|can_search|event'), function(){
 	Route::post('/search', 'search@index');
 	Route::get('/search/(:any)', 'search@index');
 	Route::post('/search/(:any)', 'search@index');
 });
 
 /* Profiles */
-Route::group(array('before' => 'auth|superadmin|event'), function(){
+Route::group(array('before' => 'auth|can_profiles|event'), function(){
 	/* Profile */
-	Route::get('/profile/(:any)/edit', 'profiles@edit');
-	Route::post('/profile/(:any)/edit', 'profiles@post_edit');
+	Route::get('/profile/(:any)/edit', array('before' => 'can_edit_profile', 'uses' => 'profiles@edit'));
+	Route::post('/profile/(:any)/edit', array('before' => 'can_edit_profile', 'uses' => 'profiles@post_edit'));
 
-	Route::get('/profile/(:any)/delete', 'profiles@delete');
-	Route::post('/profile/(:any)/delete', 'profiles@post_delete');
+	Route::get('/profile/(:any)/delete', array('before' => 'can_delete_profile', 'uses' => 'profiles@delete'));
+	Route::post('/profile/(:any)/delete', array('before' => 'can_delete_profile', 'uses' => 'profiles@post_delete'));
 
-	Route::get('/profile/(:any)/delete_comment/(:num)', 'profiles@delete_comment');
+	Route::get('/profile/(:any)/delete_comment/(:num)', array('before' => 'can_delete_profile_comment', 'uses' => 'profiles@delete_comment'));
 
 	Route::get('/profiles', 'profiles@index');
 	Route::get('/profile/(:any)', 'profiles@profile');
@@ -197,39 +197,39 @@ Route::group(array('before' => 'auth|superadmin|event'), function(){
 
 	Route::get('/profile/(:any)/map.jpg', 'profiles@profile_map');
 
-	Route::get('/profile/add-person', 'profiles@add_person');
-	Route::post('/profile/add-person', 'profiles@post_add_person');
+	Route::get('/profile/add-person', array('before' => 'can_add_personell', 'uses' => 'profiles@add_person'));
+	Route::post('/profile/add-person', array('before' => 'can_add_personell', 'uses' => 'profiles@post_add_person'));
 
-	Route::get('/profile/(:any)/add-person', 'profiles@add_person_profile');
-	Route::post('/profile/(:any)/add-person', 'profiles@post_add_person');
+	Route::get('/profile/(:any)/add-person', array('before' => 'can_add_personell', 'uses' => 'profiles@add_person_profile'));
+	Route::post('/profile/(:any)/add-person', array('before' => 'can_add_personell', 'uses' => 'profiles@post_add_person'));
 
-	Route::get('/profile/(:any)/(:any)/add-child', 'profiles@add_child');
-	Route::post('/profile/(:any)/(:any)/add-child', 'profiles@post_add_child');
+	Route::get('/profile/(:any)/(:any)/add-child', array('before' => 'can_add_personell', 'uses' => 'profiles@add_child'));
+	Route::post('/profile/(:any)/(:any)/add-child', array('before' => 'can_add_personell', 'uses' => 'profiles@post_add_child'));
 	
 	Route::get('/profile/(:any)/(:any)/follow', 'profiles@person_follow');
 	Route::get('/profile/(:any)/(:any)/(:any)/follow', 'profiles@person_follow');
 	Route::get('/profile/(:any)/(:any)/not_follow', 'profiles@person_not_follow');
 	Route::get('/profile/(:any)/(:any)/(:any)/not_follow', 'profiles@person_not_follow');	
 
-	Route::get('/profile/(:any)/(:any)/make_contactperson', 'profiles@make_contactperson');
-	Route::get('/profile/(:any)/(:any)/(:any)/make_contactperson', 'profiles@make_contactperson');
+	Route::get('/profile/(:any)/(:any)/make_contactperson', array('before' => 'can_edit_personell', 'uses' => 'profiles@make_contactperson'));
+	Route::get('/profile/(:any)/(:any)/(:any)/make_contactperson', array('before' => 'can_edit_personell', 'uses' => 'profiles@make_contactperson'));
 
-	Route::get('/person-edit/(:any)/(:any)', 'profiles@person_edit');
-	Route::get('/person-edit/(:any)/(:any)/(:any)', 'profiles@person_edit');
-	Route::post('/person-edit/(:any)/(:any)', 'profiles@post_person_edit');
-	Route::post('/person-edit/(:any)/(:any)/(:any)', 'profiles@post_person_edit');
+	Route::get('/person-edit/(:any)/(:any)', array('before' => 'can_edit_personell', 'uses' => 'profiles@person_edit'));
+	Route::get('/person-edit/(:any)/(:any)/(:any)', array('before' => 'can_edit_personell', 'uses' => 'profiles@person_edit'));
+	Route::post('/person-edit/(:any)/(:any)', array('before' => 'can_edit_personell', 'uses' => 'profiles@post_person_edit'));
+	Route::post('/person-edit/(:any)/(:any)/(:any)', array('before' => 'can_edit_personell', 'uses' => 'profiles@post_person_edit'));
 
-	Route::get('/delete-person/(:any)/(:any)', 'profiles@person_delete');
-	Route::get('/delete-person/(:any)/(:any)/(:any)', 'profiles@person_delete');
-	Route::post('/delete-person/(:any)/(:any)', 'profiles@post_person_delete');
-	Route::post('/delete-person/(:any)/(:any)/(:any)', 'profiles@post_person_delete');
+	Route::get('/delete-person/(:any)/(:any)', array('before' => 'can_delete_personell', 'uses' => 'profiles@person_delete'));
+	Route::get('/delete-person/(:any)/(:any)/(:any)', array('before' => 'can_delete_personell', 'uses' => 'profiles@person_delete'));
+	Route::post('/delete-person/(:any)/(:any)', array('before' => 'can_delete_personell', 'uses' => 'profiles@post_person_delete'));
+	Route::post('/delete-person/(:any)/(:any)/(:any)', array('before' => 'can_delete_personell', 'uses' => 'profiles@post_person_delete'));
 
 
 	Route::get('/profile/(:any)/(:any)', 'profiles@person');
 	Route::get('/profile/(:any)/(:any)/(:any)', 'profiles@child');
 	
-	Route::get('/profile/add', 'profiles@add');
-	Route::post('/profile/add', 'profiles@post_add');
+	Route::get('/profile/add', array('before' => 'can_add_profile', 'uses' => 'profiles@add'));
+	Route::post('/profile/add', array('before' => 'can_add_profile', 'uses' => 'profiles@post_add'));
 });
 
 
@@ -389,9 +389,16 @@ Route::filter('csrf', function()
 Route::filter('event', function()
 {
 	$event = Config::get('application.event');
+	$user = Auth::user()->id;
+	$user = User::find($user);
+	$events = $user->events();
+
 	if(!is_object($event) && $event == 0){
-		$user = Auth::user()->id;
-		$user = User::find($user);
+		$content = View::make('event.select')->with("events", $events);
+		$content = View::make('common.clean', array('content' => $content));
+		print($content->__toString());
+		exit;
+	} elseif($events->where("events.id", "=", $event->id)->count() < 1){
 		$events = $user->events();
 		$content = View::make('event.select')->with("events", $events);
 		$content = View::make('common.clean', array('content' => $content));
@@ -405,7 +412,16 @@ Route::filter('auth', function()
 	if (Auth::guest()) return Redirect::to('login')->with("referer", URI::full());
 });
 
-Route::filter('superadmin', function()
-{
-	if (!Auth::user()->is('superSponsorAdmin')) return Redirect::to(Request::referrer())->with('error', __('common.access_denied'));
+Route::filter('is_superadmin', function(){
+	if (!Auth::user()->is('superAdmin'))
+			return Redirect::to(Request::referrer())->with('error', __('common.access_denied'));
 });
+
+foreach(Permission::all() as $permisson){
+	Route::filter('can_'.$permisson->name, function() use($permisson)
+	{
+		var_dump("Runned can_".$permisson->name);
+		if (!Auth::user()->can($permisson->name))
+			return Redirect::to(Request::referrer())->with('error', __('common.access_denied'));
+	});
+}

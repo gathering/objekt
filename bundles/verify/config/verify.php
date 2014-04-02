@@ -10,7 +10,7 @@ return array(
 
 	// The Super Admin role
 	// (returns true for all permissions)
-	'super_admin'			=> 'superSponsorAdmin',
+	'super_admin'			=> 'superAdmin',
 
 	// DB prefix for tables
 	// NO '_' NECESSARY, e.g. use 'verify' for 'verify_users'

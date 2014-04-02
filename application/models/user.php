@@ -56,11 +56,11 @@ class User extends Verify\Models\User {
 	}
 
 	public function user_events(){
-		return $this->has_many_and_belongs_to('events', 'event_users', 'user_id', 'event_id');
+		return $this->has_many_and_belongs_to('events', 'role_user', 'user_id', 'event_id');
 	}
 
 	public function events(){
-		if($this::is('superSponsorAdmin'))
+		if($this::is('superAdmin'))
 			return Events::where("status", "=", "activated")->order_by('date', 'desc');
 		return $this->user_events();
 	}
