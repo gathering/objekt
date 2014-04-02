@@ -420,7 +420,6 @@ Route::filter('is_superadmin', function(){
 foreach(Permission::all() as $permisson){
 	Route::filter('can_'.$permisson->name, function() use($permisson)
 	{
-		var_dump("Runned can_".$permisson->name);
 		if (!Auth::user()->can($permisson->name))
 			return Redirect::to(Request::referrer())->with('error', __('common.access_denied'));
 	});
