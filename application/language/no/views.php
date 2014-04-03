@@ -6,17 +6,21 @@ return array(
 		array(
 			'index' => __('nav.dashboard')
 		),
+	'mediebank' => 
+		array(
+			'index' => __('Mediebank')
+		),
 	'search' =>
 		array(
 			'results' => 'Søk'
 		),
 	'profiles' =>
 		array(
-			'index' => __('nav.profiles'),
+			'index' => __('Profiler'),
 			'profile' => 'Profil',
 			'person_profile' => 'Profil',
-			'add' => __('user.add_new_profile'),
-			'add-person' => 'Legger til person'
+			'add' => __('Legg til personell'),
+			'add-person' => 'Legg til personell'
 		),
 	'event' =>
 		array(
@@ -28,9 +32,9 @@ return array(
 		),
 	'user' =>
 		array(
-			'index' => __('nav.users'),
-			'add' => __('user.add_new_user'),
-			'delete_user' => __('user.delete_user')
+			'index' => __('Bruker'),
+			'add' => __('Legg til bruker'),
+			'delete_user' => __('Slett bruker)
 		),
 	'accreditation' =>
 		array(
