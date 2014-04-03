@@ -34,7 +34,7 @@ return array(
 		array(
 			'index' => __('Bruker'),
 			'add' => __('Legg til bruker'),
-			'delete_user' => __('Slett bruker)
+			'delete_user' => __('Slett bruker'),
 		),
 	'accreditation' =>
 		array(
