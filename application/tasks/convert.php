@@ -29,17 +29,18 @@ class Convert_Task {
 			$filepath = $event->s3_slug."/mediabank/{$meta['hash']}-500px.jpg";
 			S3::putObject(S3::inputFile($tmpFile, false), "s3.obj.no", $filepath, S3::ACL_PUBLIC_READ);
 
-			unlink($tmpFile);
-
 			$child = new Fil3;
 			$child->type = "mediabank-thumbnail";
 			$child->converted = '1';
 			$child->event_id = $event->id;
 			$child->filename = $file->filename;
 			$child->s3_path = $filepath;
+			$child->size = filesize($tmpFile);
 			$child->parent_id = $file->id;
 			$child->url = "http://s3.obj.no/".$filepath;
 			$child->save();
+
+			unlink($tmpFile);
 
 			$file->converted = '1';
 			$file->save();

@@ -45,17 +45,17 @@
 		<ul class="nav nav-tabs pull-left">
 			<li class="active">
 				<a href="#general_settings" data-toggle="tab">
-					<i class="fa fa-cog icon-large text-default"></i>{{ __('admin.general_settings') }}
+					<i class="fa fa-cog icon-large text-default"></i> {{ __('admin.general_settings') }}
 				</a>
 			</li>
 			<li>
 				<a href="#technical_settings" data-toggle="tab">
-					<i class="fa fa-hdd-o icon-large text-default"></i>{{ __('admin.technical_settings') }}
+					<i class="fa fa-hdd-o icon-large text-default"></i> {{ __('admin.technical_settings') }}
 				</a>
 			</li>
 			<li>
 				<a href="#files" data-toggle="tab">
-					<i class="fa fa-file-text icon-large text-default"></i>{{ __('admin.files') }}
+					<i class="fa fa-file icon-large text-default"></i> {{ __('admin.files') }}
 				</a>
 			</li>
 			@if($event->map())
@@ -63,11 +63,16 @@
 	        @if($map->pdf->converted == '1')
 			<li>
 				<a href="#map" data-toggle="tab">
-					<i class="fa fa-map-marker icon-large text-default"></i>{{ __('admin.map') }}
+					<i class="fa fa-map-marker icon-large text-default"></i> {{ __('admin.map') }}
 				</a>
 			</li>
 			@endif
 			@endif
+			<li>
+				<a href="#usage" data-toggle="tab">
+					<i class="fa fa-flash icon-large text-default"></i> {{ __('admin.usage') }}
+				</a>
+			</li>
 		</ul>
 		<span class="hidden-sm">{{ sprintf(__('admin.settings_for'), $event->name) }}</span>
 	</header>
@@ -260,6 +265,52 @@
 					<img id="map_img" src="{{ $map->jpg->url }}" />
 				</div>
 				@endif
+				<div class="tab-pane in" id="usage">
+					<? $usage = $event->calculateMonths(); ?>
+					<table class="table">
+					<thead>
+						<tr>
+							<th width="60">{{ __('admin.qty') }}</th>
+							<th>{{ __('admin.line_description') }}</th>
+							<th width="140">{{ __('admin.unit_price') }}</th>
+							<th width="90">{{ __('admin.total') }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($usage['diskusage'] as $month => $result)
+						<tr>
+							<td>{{ $result['diskuse'] }}</td>
+							<td>{{ sprintf(__('admin.s3_month'), $month) }}</td>
+							<td>0.19 NOK</td>
+							<td>{{ number_format($result['total'], 2, ".", " ") }} NOK</td>
+						</tr>
+						@endforeach
+						@foreach($usage['requests'] as $month => $result)
+						<tr>
+							<td>5</td>
+							<td>{{ sprintf(__('admin.requests_month'), $month) }}</td>
+							<td>0.04 NOK</td>
+							<td>{{ number_format($result['total'], 2, ".", " ") }} NOK</td>
+						</tr>
+						@endforeach
+						<tr>
+							<td colspan="3" class="text-right"><strong>{{ __('admin.sub_total') }}</strong></td>
+							<td>{{ number_format($usage['subtotal'], 2, ".", " ") }}</td>
+						</tr>
+						<tr>
+							<td colspan="3" class="text-right no-border"><strong>{{ __('admin.total') }}</strong></td>
+							<td><strong>{{ number_format($usage['subtotal'], 2, ".", " ") }}</strong></td>
+						</tr>
+						<tr>
+							<td colspan="4" class="no-border"><br><br></td>
+						</tr>
+						<tr>
+							<td colspan="3" class="text-right no-border"><strong>{{ __('admin.total_diskuse') }}</strong></td>
+							<td>{{ $usage['diskuse'] }}</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<div class="form-group" style="margin-bottom: 40px;">

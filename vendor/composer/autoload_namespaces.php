@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
+    'SimplePie' => array($vendorDir . '/simplepie/simplepie/library'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),

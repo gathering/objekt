@@ -3,13 +3,16 @@
 
 Route::group(array('before' => 'auth|event'), function()
 {
-	Route::get('/', function()
-	{
-		return View::make('home.index');
-	});
+	Route::get('/', 'home@index');
 
 	Route::get('/pushover', 'users@pushover');
 	Route::post('/pushover', 'users@post_pushover');
+
+	Route::post('/pusher_auth', function(){
+		$presence_data = array('name' => Auth::user()->username);
+		echo Push::presence_auth(Input::get('channel_name'), Input::get('socket_id'), Auth::user()->id, $presence_data);
+		exit;
+	});
 
 	Route::get('/aid', function(){
 
@@ -111,6 +114,16 @@ Route::group(array('before' => 'auth|can_users|event'), function()
 
 	Route::get('/user/(:num)/delete-user', array('before' => 'can_delete_user', 'uses' => 'users@delete_user'));
 	Route::post('/user/(:num)/delete-user', array('before' => 'can_delete_user', 'uses' => 'users@post_delete_user'));
+
+	Route::get('/user/(:num)/edit', array('before' => 'can_edit_user', 'uses' => 'users@edit'));
+	Route::post('/user/(:num)/edit', array('before' => 'can_edit_user', 'uses' => 'users@post_edit'));
+
+	Route::get('/users/roles', array('before' => 'can_manage_roles', 'uses' => 'users@roles'));
+	Route::get('/users/roles/add', array('before' => 'can_manage_roles', 'uses' => 'users@add_role'));
+	Route::get('/users/role/(:num)', array('before' => 'can_manage_roles', 'uses' => 'users@edit_role'));
+	Route::post('/users/role/(:num)', array('before' => 'can_manage_roles', 'uses' => 'users@post_edit_role'));
+	Route::post('/users/roles/add', array('before' => 'can_manage_roles', 'uses' => 'users@post_add_role'));
+	Route::get('/users/role/(:num)/delete', array('before' => 'can_manage_roles', 'uses' => 'users@delete_role'));
 });
 
 
@@ -232,6 +245,14 @@ Route::group(array('before' => 'auth|can_profiles|event'), function(){
 	Route::post('/profile/add', array('before' => 'can_add_profile', 'uses' => 'profiles@post_add'));
 });
 
+/* Logistics */
+Route::group(array('before' => 'auth|can_logistics|event'), function()
+{
+	Route::get('/logistics', function(){
+		return View::make('not_done_yet');
+	});
+});
+
 
 /* General */
 
@@ -269,16 +290,15 @@ Route::get('/login', function(){
 	return View::make('common.login');
 });
 
-Route::group(array('before' => 'event'), function(){
-	Route::any('/invite', function()
-	{
-		$event = Config::get('application.event');
-		if(!$event->special()->hasInvite()){
-			return Redirect::to('/')->with("error", __('common.invite_non_existant'));
-		}
+Route::any('/invite', function()
+{
+	$event = Config::get('application.event');
+	if(!is_object($event)) return Redirect::to('/');
+	if(!$event->special()->hasInvite()){
+		return Redirect::to('/')->with("error", __('common.invite_non_existant'));
+	}
 
-		return $event->special()->invite();
-	});
+	return $event->special()->invite();
 });
 
 Route::post('/login', function(){
@@ -297,6 +317,11 @@ Route::post('/login', function(){
 	}
 });
 
+View::composer('all', function($view)
+{
+	$event = Config::get('application.event');
+    $view->with('current_event', $event);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -417,10 +442,10 @@ Route::filter('is_superadmin', function(){
 			return Redirect::to(Request::referrer())->with('error', __('common.access_denied'));
 });
 
-foreach(Permission::all() as $permisson){
-	Route::filter('can_'.$permisson->name, function() use($permisson)
+foreach(Permission::all() as $permission){
+	Route::filter('can_'.$permission->name, function() use($permission)
 	{
-		if (!Auth::user()->can($permisson->name))
-			return Redirect::to(Request::referrer())->with('error', __('common.access_denied'));
+		if (!Auth::user()->can($permission->name))
+			return Redirect::to(Request::referrer())->with('error', sprintf(__('common.access_denied'), __('user.permission.'.$permission->name)));
 	});
 }

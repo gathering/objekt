@@ -312,65 +312,6 @@
         ]
     },
     {
-        "name": "elasticsearch/elasticsearch",
-        "version": "v1.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/elasticsearch/elasticsearch-php.git",
-            "reference": "09a81a85ab015cd1350c622bebe9111941259782"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/elasticsearch/elasticsearch-php/zipball/09a81a85ab015cd1350c622bebe9111941259782",
-            "reference": "09a81a85ab015cd1350c622bebe9111941259782",
-            "shasum": ""
-        },
-        "require": {
-            "ext-curl": "*",
-            "guzzle/guzzle": "~3.7",
-            "monolog/monolog": "~1.5",
-            "php": ">=5.3.9",
-            "pimple/pimple": "~1.0",
-            "psr/log": "~1.0"
-        },
-        "require-dev": {
-            "athletic/athletic": "~0.1",
-            "elasticsearch/elasticsearch_src": "dev-master",
-            "mikey179/vfsstream": "~1.2",
-            "mockery/mockery": "dev-master@dev",
-            "phpunit/phpunit": "3.7.*",
-            "satooshi/php-coveralls": "dev-master",
-            "symfony/yaml": "2.4.*@dev",
-            "twig/twig": "1.*"
-        },
-        "time": "2014-02-12 14:57:02",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Elasticsearch": "src/",
-                "Elasticsearch\\Tests": "tests/",
-                "Elasticsearch\\Benchmarks": "benchmarks/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache 2"
-        ],
-        "authors": [
-            {
-                "name": "Zachary Tong"
-            }
-        ],
-        "description": "PHP Client for Elasticsearch",
-        "keywords": [
-            "client",
-            "elasticsearch",
-            "search"
-        ]
-    },
-    {
         "name": "pusher/pusher-php-server",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -414,6 +355,121 @@
             "realtime",
             "rest",
             "trigger"
+        ]
+    },
+    {
+        "name": "elasticsearch/elasticsearch",
+        "version": "v1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/elasticsearch/elasticsearch-php.git",
+            "reference": "fb8241c8c148047d282ddbaddc377dd0690b1ae2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/elasticsearch/elasticsearch-php/zipball/fb8241c8c148047d282ddbaddc377dd0690b1ae2",
+            "reference": "fb8241c8c148047d282ddbaddc377dd0690b1ae2",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "guzzle/guzzle": "~3.7",
+            "monolog/monolog": "~1.5",
+            "php": ">=5.3.9",
+            "pimple/pimple": "~1.0",
+            "psr/log": "~1.0"
+        },
+        "require-dev": {
+            "athletic/athletic": "~0.1",
+            "cpliakas/git-wrapper": "~1.0",
+            "mikey179/vfsstream": "~1.2",
+            "mockery/mockery": "dev-master@dev",
+            "phpunit/phpunit": "3.7.*",
+            "satooshi/php-coveralls": "dev-master",
+            "symfony/yaml": "2.4.3 as 2.4.2",
+            "twig/twig": "1.*"
+        },
+        "time": "2014-03-31 18:32:47",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Elasticsearch": "src/",
+                "Elasticsearch\\Tests": "tests/",
+                "Elasticsearch\\Benchmarks": "benchmarks/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache 2"
+        ],
+        "authors": [
+            {
+                "name": "Zachary Tong"
+            }
+        ],
+        "description": "PHP Client for Elasticsearch",
+        "keywords": [
+            "client",
+            "elasticsearch",
+            "search"
+        ]
+    },
+    {
+        "name": "simplepie/simplepie",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/simplepie/simplepie.git",
+            "reference": "5f00e77b5feb96605cbcea4dcfb555e87c2fed24"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/simplepie/simplepie/zipball/5f00e77b5feb96605cbcea4dcfb555e87c2fed24",
+            "reference": "5f00e77b5feb96605cbcea4dcfb555e87c2fed24",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.0"
+        },
+        "time": "2013-10-24 06:37:55",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "SimplePie": "library"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Ryan Parman",
+                "homepage": "http://ryanparman.com/",
+                "role": "Creator, alumnus developer"
+            },
+            {
+                "name": "Geoffrey Sneddon",
+                "homepage": "http://gsnedders.com/",
+                "role": "Alumnus developer"
+            },
+            {
+                "name": "Ryan McCue",
+                "email": "me@ryanmccue.info",
+                "homepage": "http://ryanmccue.info/",
+                "role": "Developer"
+            }
+        ],
+        "description": "A simple Atom/RSS parsing library for PHP",
+        "homepage": "http://simplepie.org/",
+        "keywords": [
+            "atom",
+            "feeds",
+            "rss"
         ]
     }
 ]

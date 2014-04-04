@@ -1,8 +1,14 @@
 <section class="toolbar clearfix m-t-large m-b">
+	@if (Auth::user()->can("add_profile"))
 	<a href="{{ url('profile/add') }}" class="btn btn-primary btn-circle"><i class="fa fa-group"></i> {{ __('user.add_new_profile') }}</a>
+	@endif
+	@if (Auth::user()->can("add_personell"))
 	<a href="{{ url('profile/add-person') }}" class="btn btn-warning btn-circle"><i class="fa fa-user"></i> {{ __('profile.add_personel') }}</a>
+	@endif
 	<a href="{{ url('/help') }}" class="btn btn-info btn-circle"><i class="fa fa-question-circle"></i>{{ __('user.help') }}</a>
+	@if (Auth::user()->can("send_aid"))
 	<a href="{{ url('/aid') }}" onclick="return confirm('{{ __('user.air_confirm') }}')" class="btn btn-danger btn-circle active"><i class="fa fa-warning"></i>{{ __('user.aid') }}</a>
+	@endif
 </section>
 <br />
 <div class="row">

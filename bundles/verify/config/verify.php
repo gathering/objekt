@@ -6,7 +6,7 @@ return array(
 	'username'				=> array('email', 'username'),
 
 	// The User mode to use
-	'user_model'			=> 'Verify\Models\User',
+	'user_model'			=> 'User',
 
 	// The Super Admin role
 	// (returns true for all permissions)

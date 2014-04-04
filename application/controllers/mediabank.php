@@ -64,6 +64,7 @@ class Mediabank_Controller extends Base_Controller {
 			$fil3->url = "http://s3.obj.no/".$file['path'];
 			$fil3->tags = implode(",", $tags);
 			$fil3->meta = serialize($file);
+			$fil3->size = $file['filesize'];
 			$fil3->save();
 
 			$params = array();

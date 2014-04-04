@@ -1,10 +1,6 @@
 <?php
 
 class User extends Verify\Models\User {
-	
-	public function role(){
-		return $this->belongs_to('Role');
-	}
 
 	public function sms(){
 		return $this->has_many('sms');
@@ -14,12 +10,33 @@ class User extends Verify\Models\User {
 		return $this->has_many('notification');
 	}
 
+	public function image($size=36){
+		return !empty($this->profile_img) ? $this->profile_img : "http://www.gravatar.com/avatar/".md5( strtolower( trim( $this->email ) ) )."?d=http%3A%2F%2Fsupersponsor.no%2Fimages%2Fdefault_profile.png&s=".$size;
+	}
+
+	public function display_name(){
+		return !empty($this->name) ? $this->name : $this->username;
+	}
+
 	public function following(){
 		return $this->has_many('following');
 	}
 
 	public function isFollowing($what, $id){
 		return $this->following()->where("type", "=", $what)->where("belongs_to", "=", $id)->count() > 0 ? true : false;
+	}
+
+	public function allRoles(){
+		$event = Config::get('application.event');
+		$roles = $event->roles()->get();
+		$thisRoles = $this->roles()->get();
+
+		foreach($roles as $int => $role){
+			foreach($thisRoles as $thisRole)
+				if($thisRole->id == $role->id) $roles[$int]->access = true;
+		}
+
+		return $roles;
 	}
 
 	static function active($event=""){
@@ -35,34 +52,15 @@ class User extends Verify\Models\User {
 					->where("users.deleted", "=", "0");
 	}
 
-	static function current(){
-		$currentRoles = Role::current();
-
-		$users = array();
-		foreach($currentRoles as $role){
-			$users = array_merge($users, $role->users()->get());
-		}
-		return $users;
-	}
-
-	static function non_current(){
-		$currentRoles = Role::non_current();
-
-		$users = array();
-		foreach($currentRoles as $role){
-			$users = array_merge($users, $role->users()->get());
-		}
-		return $users;
-	}
-
-	public function user_events(){
-		return $this->has_many_and_belongs_to('events', 'role_user', 'user_id', 'event_id');
-	}
-
 	public function events(){
 		if($this::is('superAdmin'))
 			return Events::where("status", "=", "activated")->order_by('date', 'desc');
-		return $this->user_events();
+
+		return Events::left_join('roles', 'roles.event_id', '=', 'events.id')
+						->left_join('role_user', 'role_user.role_id', '=', 'roles.id')
+						->where('events.status', '=', 'activated')
+						->where('role_user.user_id', '=', $this->id)
+						->select('events.*');
 	}
 
 }

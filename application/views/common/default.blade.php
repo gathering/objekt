@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>{{ $title }} (<? $event = Config::get('application.event'); echo $event->name; ?>) Objekt - Transolini</title>
+	<title>{{ $title }} ({{ $current_event->name }}) Objekt - Transolini</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
 	<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
   	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -27,7 +27,7 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">            
           <span class="hidden-xs-only">{{ Auth::user()->username }}</span>
-          <span class="thumb-small avatar inline"><img src="http://www.gravatar.com/avatar/{{ md5( strtolower( trim( Auth::user()->email ) ) ) }}&s=36" alt="Mika Sokeil" class="img-circle"></span>
+          <span class="thumb-small avatar inline"><img src="{{ Auth::user()->image() }}" style="height: 36px;" alt="Mika Sokeil" class="img-circle"></span>
           <b class="caret hidden-xs-only"></b>
         </a>
         <ul class="dropdown-menu">
@@ -43,7 +43,7 @@
     <button type="button" class="btn btn-link pull-left nav-toggle visible-xs" data-toggle="class:slide-nav slide-nav-left" data-target="body">
       <i class="fa fa-bars icon-xlarge text-default"></i>
     </button>
-    <? $user = User::find(Auth::user()->id); $notifications = $user->notifications()->order_by('created_at', 'desc')->where("status", "=", "unread"); $notification_count = $notifications->count(); ?> 
+    <? $notifications = Auth::user()->notifications()->order_by('created_at', 'desc')->where("status", "=", "unread"); $notification_count = $notifications->count(); ?> 
     <ul class="nav navbar-nav hidden-xs">
       <li>
         <div class="m-t m-b-small" id="notifications">
@@ -81,29 +81,44 @@
         </div>
       </li>
     </ul>
+    @if (Auth::user()->can("search"))
     <form action="{{ url('search') }}" method="post" class="navbar-form pull-left shift">
       <i class="fa fa-search text-muted"></i>
       <input type="text" name="search" class="input-sm form-control" placeholder="{{ __('common.search') }}">
     </form>
+    @endif
+    <ul class="nav navbar-nav hidden-xs pull-right">
+      @yield('top_buttons')
+    </ul>
 	</header>
   <!-- / header -->
   <!-- nav -->
   <nav id="nav" class="nav-primary hidden-xs nav-vertical">
     <ul class="nav" data-spy="affix" data-offset-top="50">
       <li {{ URI::segment(2) == '' ? 'class="active"' : '' }}><a href="{{ url('/') }}"><i class="fa fa-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span></a></li>
-      @if (Auth::user()->is("superSponsorAdmin"))
-      <li class="dropdown-submenu {{ URI::segment(2) == 'admin' ? ' active' : '' }}">
-        <a href="{{ url('/admin/events') }}"><i class="fa fa-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+      @if (Auth::user()->can("admin"))
+      <li class="dropdown-submenu {{ URI::segment(2) == 'admin' || URI::segment(2) == 'users' ? ' active' : '' }}">
+        @if (Auth::user()->is("superAdmin"))
+        <a href="{{ url('/admin/event/'.$current_event->slug) }}"><i class="fa fa-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+        @else
+        <a href="#"><i class="fa fa-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+        @endif
         <ul class="dropdown-menu">
+          @if (Auth::user()->is("superAdmin"))
           <li{{ URI::segment(2) == 'admin' && URI::segment(3) =='events' ? ' class="active"' : '' }}>
             <a href="{{ url('/admin/events') }}">{{ __('nav.events') }}</a>
           </li>
-          <!--<li{{ URI::segment(2) == 'admin' && URI::segment(3) =='invoices' ? ' class="active"' : '' }}>
-            <a href="{{ url('/admin/invoices') }}">{{ __('nav.invoices') }}</a>
-          </li>-->
-          <li{{ URI::segment(2) == 'users' ? ' class="active"' : '' }}>
+          @endif
+          @if (Auth::user()->can("users"))
+          <li{{ URI::segment(2) == 'users' && URI::segment(3) != 'roles'  ? ' class="active"' : '' }}>
             <a href="{{ url('/users') }}">{{ __('nav.users') }}</a>
           </li>
+          @endif
+          @if (Auth::user()->can("manage_roles"))
+          <li{{ URI::segment(2) == 'users' && URI::segment(3) == 'roles' ? ' class="active"' : '' }}>
+            <a href="{{ url('/users/roles') }}">{{ __('nav.roles') }}</a>
+          </li>
+          @endif
         </ul>
       </li>
       @endif
@@ -117,13 +132,22 @@
           <li{{ URI::segment(2) == 'profiles' && URI::segment(3) =='' ? ' class="active"' : '' }}>
             <a href="{{ url('/profiles') }}">{{ __('nav.list_profiles') }}</a>
           </li>
+          @if (Auth::user()->can("add_profile"))
           <li{{ URI::segment(2) == 'profile' && URI::segment(3) =='add' ? ' class="active"' : '' }}>
             <a href="{{ url('/profile/add') }}">{{ __('user.add_new_profile') }}</a>
           </li>
+          @endif
         </ul>
       </li>
       @endif
-      <li {{ URI::segment(2) == 'accreditation' ? 'class="active"' : '' }}><a href="{{ url('/accreditation') }}"><i class="fa fa-tags icon-xlarge"></i><span>{{ __('nav.accreditation') }}</span></a></li>
+      @if (Auth::user()->can("accreditation"))
+      <li {{ URI::segment(2) == 'accreditation' ? 'class="active"' : '' }}>
+        <a href="{{ url('/accreditation') }}"><i class="fa fa-tags icon-xlarge"></i><span>{{ __('nav.accreditation') }}</span></a>
+      </li>
+      @endif
+      @if (Auth::user()->can("logistics"))
+      <li {{ URI::segment(2) == 'logistics' ? 'class="active"' : '' }}><a href="{{ url('/logistics') }}"><i class="fa fa-truck icon-xlarge"></i><span>{{ __('nav.logistics') }}</span></a></li>
+      @endif
     </ul>
   </nav>
   <!-- / nav -->
@@ -140,11 +164,11 @@
 	<footer id="footer">
 	<div class="text-center padder clearfix">
 	  <p>
+      <span class="label bg-inverse">{{ $current_event->name }}</span><br /><br />
 	    <small>{{__('common.footer')}}<br>
       <? echo shell_exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit"); ?></small><br><br>
-	    <a href="#" class="btn btn-xs btn-circle btn-twitter"><i class="fa fa-twitter"></i></a>
-	    <a href="#" class="btn btn-xs btn-circle btn-facebook"><i class="fa fa-facebook"></i></a>
-	    <a href="#" class="btn btn-xs btn-circle btn-gplus"><i class="fa fa-google-plus"></i></a>
+	    <a href="https://twitter.com/objno" target="_blank" class="btn btn-xs btn-circle btn-twitter"><i class="fa fa-twitter"></i></a>
+	    <a href="https://facebook.com/objno" target="_blank" class="btn btn-xs btn-circle btn-facebook"><i class="fa fa-facebook"></i></a>
 	  </p>
 	</div>
 	</footer>
@@ -252,9 +276,11 @@
       });
     });
 
-    var pusher = new Pusher('{{ Config::get('pusher.app_key') }}');
-      var channel = pusher.subscribe('{{ md5('user_'.Auth::user()->id) }}');
-      channel.bind('notification', add_notification);
+    var pusher = new Pusher('{{ Config::get('pusher.app_key') }}', { authEndpoint: '{{ url('/pusher_auth') }}' });
+    var presenceChannel = pusher.subscribe('presence-obj');
+    var channel = pusher.subscribe('{{ md5('user_'.Auth::user()->id) }}');
+    channel.bind('notification', add_notification);
+    @yield('special_scripts')
   });
   </script>
 

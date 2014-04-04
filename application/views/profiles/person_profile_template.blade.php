@@ -34,16 +34,22 @@ $(function() {
           <i class="icon-eye-open"></i> {{ __('profile.gets_notifications') }}
         </span>
       </button>
-      @if($person->contact_person == '0')
+      @if($person->contact_person == '0' && Auth::user()->can("edit_profile"))
       <br /><a href="{{ $person->url() }}/make_contactperson" class="btn btn-sm">{{ __('profile.make_contactperson') }}</a>
       @endif
 		</div>
 		<div class="list-group list-normal m-b-none">
 			<a href="{{ $person->url() }}" class="list-group-item{{ URI::segment(2) != 'profile' ? ' active' : '' }}"><i class="fa fa-user"></i> Profil</a>
-			<a href="{{ $person->url('accreditation') }}" class="list-group-item{{ URI::segment(2) != 'accreditation' ? ' active' : '' }}"><i class="fa fa-tag"></i> {{ __('accreditation.accredit') }}</a>
-			<a href="{{ $person->url('sms') }}" class="list-group-item{{ URI::segment(2) != 'sms' ? ' active' : '' }}"><i class="fa fa-mobile-phone"></i> {{ __('sms.send_to_person') }}</a>
-			<a href="{{ $person->url('person-edit') }}" class="list-group-item{{ URI::segment(2) != 'person-edit' ? ' active' : '' }}"><i class="fa fa-pencil"></i> {{ __('profile.edit') }}</a>
-			@if ($person->is_child())
+			@if (Auth::user()->can("accreditation"))
+      <a href="{{ $person->url('accreditation') }}" class="list-group-item{{ URI::segment(2) != 'accreditation' ? ' active' : '' }}"><i class="fa fa-tag"></i> {{ __('accreditation.accredit') }}</a>
+			@endif
+      @if (Auth::user()->can("sms"))
+      <a href="{{ $person->url('sms') }}" class="list-group-item{{ URI::segment(2) != 'sms' ? ' active' : '' }}"><i class="fa fa-mobile-phone"></i> {{ __('sms.send_to_person') }}</a>
+			@endif
+      @if (Auth::user()->can("edit_personell"))
+      <a href="{{ $person->url('person-edit') }}" class="list-group-item{{ URI::segment(2) != 'person-edit' ? ' active' : '' }}"><i class="fa fa-pencil"></i> {{ __('profile.edit') }}</a>
+			@endif
+      @if ($person->is_child())
 			<a href="{{ $person->parent()->url() }}" class="list-group-item{{ URI::segment(5) != 'add-child' ? ' active' : '' }}"><i class="fa fa-arrow-left"></i> {{ sprintf(__('profile.back_to_parent'), $person->parent()->firstname) }}</a>
 			@endif
 		</div>
@@ -84,7 +90,9 @@ $(function() {
         </li>
 		@endforeach
       </ul>
+      @if (Auth::user()->can("add_personell"))
       <a href="{{ $person->url() }}/add-child" class="list-group-item{{ URI::segment(5) == 'add-child' ? ' active' : '' }}"><i class="icon-plus"></i> {{ __('profile.add_child') }}</a>
+      @endif
     </aside>
     @endif
 </section>

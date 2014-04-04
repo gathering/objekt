@@ -46,11 +46,15 @@ $(function() {
       </div>
       <div class="list-group list-normal m-b-none">
       	<a href="{{ $profile->url() }}" class="list-group-item active"><i class="fa fa-user"></i> {{ __('profile.profile') }}</a>
+        @if (Auth::user()->can("add_personell"))
         <a href="{{ url('profile/'.$profile->slug.'/add-person') }}" class="list-group-item active"><i class="fa fa-plus"></i> {{ __('profile.add_personel') }}</a>
+        @endif
         @if (!empty($profile->website))
         <a href="{{ $profile->website }}" class="list-group-item active"><i class="fa fa-chevron-right"></i> {{ __('profile.go_to_website') }}</a>
         @endif
+        @if (Auth::user()->can("edit_profile"))
         <a href="{{ url('profile/'.$profile->slug.'/edit') }}" class="list-group-item active"><i class="fa fa-pencil"></i> {{ __('profile.edit') }}</a>
+        @endif
       </div>
       @if ($profile->location()->w > 0)
       <div class="text-center clearfix bg-white">
@@ -149,7 +153,7 @@ $(function() {
             </article>
             @foreach($profile->comments()->order_by('created_at', 'desc')->get() as $comment)
             <article id="comment-id-1" class="comment-item media arrow arrow-left">
-              <a class="pull-left thumb-small avatar"><img src="http://www.gravatar.com/avatar/{{ md5( strtolower( trim( $comment->user()->email ) ) ) }}&s=32" class="img-circle"></a>
+              <a class="pull-left thumb-small avatar"><img src="{{ $comment->user()->image() }}" class="img-circle"></a>
               <section class="media-body panel">
                 <header class="panel-heading clearfix">
                   <a href="#">{{ $comment->user()->username }}</a>
@@ -160,7 +164,7 @@ $(function() {
                 <div class="panel-body">
                   <div>
                     {{ $comment->comment }}
-                    @if(Auth::user()->can('delete_comments'))
+                    @if(Auth::user()->can('delete_profile_comments'))
                     <a href="{{ url('profiled/'.$profile->slug.'/elete_comment/'.$comment->id) }}" class="pull-right btn btn-danger btn-xs">{{ __('profile.delete_comment') }}</a>
                     @endif
                   </div>

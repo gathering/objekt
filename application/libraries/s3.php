@@ -56,7 +56,7 @@ class S3
 	            if ($response){
 	            	$exif = exif_read_data($fileTempName, 0, true);
 	            	$xmp = XMP::read($fileTempName);
-	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $real_fileName, 'hash' => $hash
+	            	$files[] = array('filesize' => filesize($fileTempName), 'path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $real_fileName, 'hash' => $hash
 	            		);
 	            }
 	        }
@@ -72,7 +72,7 @@ class S3
 	            if ($response){
 	            	$exif = exif_read_data($fileTempName, 0, true);
 	            	$xmp = XMP::read($fileTempName);
-	            	$files[] = array('path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $real_fileName, 'hash' => $hash
+	            	$files[] = array('filesize' => filesize($fileTempName), 'path' => $fileName, 'exif' => $exif, 'xmp' => $xmp, 'filename' => $real_fileName, 'hash' => $hash
 	            		);
 	            }
 	        }
