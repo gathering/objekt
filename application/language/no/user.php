@@ -10,7 +10,7 @@ return array(
 	'id' => 'ID',
 	'color' => 'Profilfarge',
 	'pushover_activate' => 'Aktiver PushOver-notifikasjoner',
-	'pushover_activate_2' => 'Aktiver PushOver for alle typer notificationer.',
+	'pushover_activate_2' => 'Aktiver PushOver for alle typer notifikasjoner.',
 	'pushover_api' => 'API-nøkkel',
 	'pushover_description' => 'Objekt er tilknyttet <a href="https://pushover.net/">Pushover</a> for sending av Push-notifikasjoner. I noen roller på enkelte arrangementer er det vitalt å kunne hurtigst mulig motta meldinger. Objekt bruker Push-teknologi for å kommunisere hurtigst mulig.<br /><br />For å benytte seg Pushover sine tjenester, må du ha smart-telefon applikasjonen dems - samt ha en konto. På fremsiden deres får du opp «Your User Key», denne nøkkelen må limes inn i feltet ovenfor for å gi tilgang til å sende notifikasjoner.',
 	'pushover_placeholder' => 'dJBftzWsxfxSygDp8mmK4JdffG1E4M',
