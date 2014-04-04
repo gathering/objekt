@@ -15,7 +15,7 @@
 @endif
 @endsection
 <section class="panel">
-	<header class="panel-heading bg bg-default">
+	<header class="panel-heading bg bg-inverse">
 		{{ __('user.admins') }}
 	</header>
 	<div class="list-group">
@@ -25,17 +25,12 @@
 		<div class="media">
 		  <span class="pull-left thumb-small"><img src="{{ $user->image() }}" class="img-rounded"></span>
 		  <div class="pull-right m-t-small">
-	        @if (Auth::user()->can("delete_user"))
-	        <a class="btn btn-xs btn-danger" href="{{url('user/'.$user->id.'/delete-user')}}">
-	        	<i class="fa fa-times"></i> {{ __('user.delete') }}
-	        </a>
-	        @endif
 		  </div>
 		  <div class="media-body">
 		  	<div class="pull-right">
 		    	<span class="label label-info"></span>
 		    </div>
-		    <div><a href="{{ url('user/'.$user->id.'/edit') }}" class="h5">{{ $user->display_name() }}</a></div>
+		    <div><a href="{{ url('user/'.$user->id.'/edit') }}" onclick="alert('Ved å lagre denne så fjerner du tilgangen til administratoren.')" class="h5">{{ $user->display_name() }}</a></div>
 		    <small class="text-muted">{{ $user->email }}</small>
 		  </div>
 		</div>
