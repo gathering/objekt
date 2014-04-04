@@ -13,6 +13,7 @@ return array(
 	'file_deleted' => 'Filen ble slettet.',
 	'map_is_uploaded' => 'Kart er lastet opp.',
 	'delete_map' => 'Slett kart',
+	'usage' => 'Systembruk',
 	'show_map' => 'Vis kart',
 	'map' => 'Kart',
 	'field' => array(
@@ -62,7 +63,15 @@ return array(
 	'technical_settings' => 'Teknisk',
 	'files' => 'Filer',
 	'saved_success' => 'Endringene ble lagret.',
-	'deactivated' => 'Arrangementet ble deaktivert.'
+	'deactivated' => 'Arrangementet ble deaktivert.',
+	'qty' => 'Antall',
+	'line_description' => 'Beskrivelse',
+	'unit_price' => 'Enhetspris',
+	'total' => 'Totalt',
+	's3_month' => 'Amazon AWS S3-lagring for %s',
+	'requests_month' => 'Amazon AWS S3 1000-forespørsler (PUT, COPY, POST, eller LIST) for %s',
+	'sub_total' => 'Subtotalt',
+	'total_diskuse' => 'Totalt diskforbruk'
 );
 
 ?>

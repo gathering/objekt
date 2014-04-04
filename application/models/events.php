@@ -13,6 +13,67 @@ class Events extends Eloquent {
 		return $this->has_many('role', 'event_id');
 	}
 
+	public function totalDiskUse(){
+		return round($this->files()->select(array(DB::Raw('SUM(`size`) as `total_size_use`')))->first()->total_size_use/(1024*1024*1024), 2, PHP_ROUND_HALF_UP);
+	}
+
+	public function calculateMonths(){
+		$files = $this->files()
+					->select(
+						array(
+							DB::Raw('SUM(`size`) as `total_size_use`'),
+							DB::Raw('DATE_FORMAT(created_at, "%Y-%m") AS Month')
+							)
+						)
+					->group_by(DB::Raw('DATE_FORMAT(created_at, "%Y-%m")'))
+					->get();
+
+		$startFile = $this->files()->order_by('created_at', 'asc')->first('created_at');
+		$endFile = $this->files()->order_by('created_at', 'desc')->first('created_at');
+
+		$start = strtotime($startFile->created_at);
+		$end = strtotime($endFile->created_at);
+
+		$months = array();
+		$months[date('Y-m', $start)] = array();
+		$month = $start;
+		while($month <= $end){
+			$month = strtotime("+1 month", $month);
+			$months[date('Y-m', $month)] = array();
+		}
+
+		foreach($files as $month){
+			$months[$month->month] = array('diskuse' => $month->total_size_use);
+		}
+
+		$diskuse = 0;
+		$totals = 0;
+		foreach($months as $month => $data){
+			$diskuse += isset($data['diskuse']) ? round(($data['diskuse']/(1024*1024*1024)), 2, PHP_ROUND_HALF_UP) : 0;
+			$total = 0.19*$diskuse;
+			$totals += $total;
+			$months[$month] = array(
+				'diskuse' => $diskuse,
+				'total' => $total
+				);
+		}
+
+		$result['diskusage'] = $months;
+		$result['diskuse'] = $diskuse;
+
+		$requests = $months;
+		foreach($requests as $month => $data){
+			$total = 0.04*5;
+			$totals += $total;
+			$requests[$month] = array(
+				'total' => $total
+				);
+		}
+		$result['requests'] = $requests;
+		$result['subtotal'] = $totals; 
+		return $result;
+	}
+
 	public function users(){
 		return User::left_join('role_user', 'role_user.user_id', '=', 'users.id')
 					->left_join('roles', 'roles.id', '=', 'role_user.role_id')
