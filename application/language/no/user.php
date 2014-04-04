@@ -2,7 +2,7 @@
 
 return array(
 	'placeholder' => array(
-			'username' => 'Skriv inn et passende brukernavn, noe lekent!',
+			'username' => 'Skriv inn et passende brukernavn; noe lekent!',
 			'password' => 'Skriv inn et passord',
 			'password2' => 'Og om igjen…',
 			'email' => 'e@post.no'
@@ -16,7 +16,7 @@ return array(
 	'pushover_placeholder' => 'dJBftzWsxfxSygDp8mmK4JdffG1E4M',
 	'pushover_success' => 'Nøkkelen er lagret',
 	'notifications' => 'Notifikasjoner',
-	'aid_title' => 'Øyeblikkelig assistanse',
+	'aid_title' => '911',
 	'aid_message' => 'Brukeren %s ønsker umiddelbar assistanse.',
 	'aid_success' => 'En melding er sendt ut til de som er angitt som kontaktperson.',
 	'air_confirm' => 'Vennligst bekreft at du faktisk behøver øyeblikkelig assistanse. En melding blir sendt ut til ansvarsperson som vil umiddelbart henvende seg hos deg for assistanse.',
