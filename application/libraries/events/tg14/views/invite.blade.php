@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 
-	<title>SuperSponsor</title>
+	<title>Invite - Objekt - Transolini</title>
 
 	<meta charset="utf-8" />
 	<meta name="description" content="" />

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 
-	<title>SuperSponsor</title>
+	<title>Login - Objekt - Transolini</title>
 
 	<meta charset="utf-8" />
 	<meta name="description" content="" />
@@ -73,6 +73,15 @@
 					<h3>{{ __('common.error_title_login') }}</h3>
 					
 					<p>{{ Session::get('error') }}</p>
+
+				</div>
+				@endif
+				@if ( Session::get('success') )
+				<hr>
+				<div class="notify notify-success">
+					
+					<a href="javascript:;" class="close">&times;</a>					
+					<p>{{ Session::get('success') }}</p>
 
 				</div>
 				@endif

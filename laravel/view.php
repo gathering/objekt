@@ -337,6 +337,7 @@ class View implements ArrayAccess {
 		static::$render_count++;
 
 		Event::fire("laravel.composing: {$this->view}", array($this));
+		Event::fire("laravel.composing: all", array($this));
 
 		$contents = null;
 

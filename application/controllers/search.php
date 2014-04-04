@@ -72,18 +72,19 @@ class Search_Controller extends Controller {
 
 			$params['index'] = 'people';
 			$params['type']  = 'obj';
-			#$params['body']['query']['multi_match']['query'] = $search;
-			#$params['body']['query']['multi_match']['fields'] = array('firstname', 'surname', 'phone', 'email');
 			$params['body']['query']['query_string']['query'] = $search;
 			$params['body']['filter']['term']['event_id'] = $event->id;
 			$elastisk = Elastisk::search($params);
 
 			foreach($elastisk['hits']['hits'] as $result){
 				$person = new stdClass;
-				$model = Person::find($result['_source']['id']);
-				$person->name = $model->firstname." ".$model->surname;
-				$person->url = $model->url();
-				array_push($results, $person);
+				#var_dump($result['_id']); exit;
+				$model = Person::find($result['_id']);
+				if($model != NULL){
+					$person->name = $model->firstname." ".$model->surname;
+					$person->url = $model->url();
+					array_push($results, $person);
+				}
 			}
 		}
 

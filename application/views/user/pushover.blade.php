@@ -20,7 +20,7 @@
 	        <div class="checkbox">
 				<label class="checkbox-custom">
 					<input type="checkbox" name="pushover_status" {{ Auth::user()->pushover_status == "activate" ? 'checked="checked"' : '' }}>
-					<i class="icon-unchecked checked"></i>
+					<i class="fa fa-check-square-o checked"></i>
 					{{ __('user.pushover_activate_2') }}
 				</label>
 			</div>

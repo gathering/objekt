@@ -9,6 +9,10 @@ class Events extends Eloquent {
 		return Config::get('application.event');
 	}
 
+	public function roles(){
+		return $this->has_many('role', 'event_id');
+	}
+
 	public function s3_slug(){
 		$s3_slug = $this->get_attribute('s3_slug');
 		if(empty($s3_slug)){

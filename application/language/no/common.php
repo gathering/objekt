@@ -21,7 +21,7 @@ return array(
 	'notifications' => 'Notifikasjoner',
 	'view_all_notifications' => 'Vis alle notifikasjoner',
 	'logged_in' => 'Logged inn som',
-	'access_denied' => 'Du har ikke tilgang til denne modulen. ',
+	'access_denied' => 'Du har ikke tilgang til denne modulen. (%s)',
 	'error_title' => 'En feil oppsto.',
 	'error_title_login' => 'Du, en ting..',
 	'footer' => 'Laga av folk med noe mellom øreflippene.<br />Objekt, herunder <a href="http://www.obj.no ">obj.no </a>og <a href="app.obj.no">app.obj.no</a>, er utviklet av <a href="http://www.twitter.com/msglol" target="_blank">@msglol</a>&nbsp;i <a href="http://www.skykonsult.no/" target="_blank">Sky Konsult</a> og <a href="http://www.twitter.com/cobrazo" target="_blank">@cobrazo</a>&nbsp;i <a href="http://www.nconel.no/" target="_blank">Nconel</a>&nbsp;- og alt er så klart <a title="Kopirettigheter" href="http://obj.no/kopirettigheter/">kopibeskyttet</a>&nbsp;© 2014',
@@ -34,7 +34,7 @@ return array(
 	'nothing_found' => 'Fant ingenting..',
 	'search_person' => 'Søk på person…',
 	'search_profiles' => 'Søk på profiler…',
-	'invite_non_existant' => 'Invitasjon er ikke tilgjengelig på dette arrangementet'
+	'invite_non_existant' => 'Invitasjon er ikke tilgjengelig på dette arrangementet',
 );
 
 ?>

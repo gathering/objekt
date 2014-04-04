@@ -5,6 +5,8 @@ return array(
 			'username' => 'Skriv inn et passende brukernavn, noe lekent!',
 			'password' => 'Skriv inn et passord',
 			'password2' => 'Og om igjen…',
+			'name' => 'Navnet på vedkommende…',
+			'role_name' => 'Rollenavn…',
 			'email' => 'e@post.no'
 		),
 	'id' => 'ID',
@@ -39,11 +41,9 @@ return array(
 	'noreply_name' => 'Objekt',
 	'aid' => 'Øyeblikkelig assistanse',
 	'faq' => 'Ofte stilte spørsmål',
+	'role_settings' => 'Rolleinnstillinger',
 	'help' => 'Hjelp',
-	'roles' => array(
-			'supersponsoradmin' => 'Administrator',
-			'sponsorsupportmember' => 'Medlem'
-		),
+	'roles' => 'Roller',
 	'missing' => array(
 			'username' => 'Vi mangler brukernavnet..',
 			'password' => 'Passordet må skrives inn, og det 2 ganger.. For sikkerhets skyld!',
@@ -75,5 +75,31 @@ return array(
 	'delete_user' => 'Slett bruker',
 	'delete_are_you_sure' => '<b>Er du sikker på at du vil slette brukeren?</b><br />Det vil ikke være mulig å angre, uten å snakke med Simen selvfølgelig. Fordi det som egentlig bare skjer er at brukeren blir merket med «slettet» og deretter vil brukeren ikke være tilgjengelig noen steder.',
 	'delete_yes' => 'Ja, slett',
-	'user_deleted' => 'Brukeren er slettet!'
+	'user_deleted' => 'Brukeren er slettet!',
+	'add_role' => 'Legg til ny rolle',
+	'role_not_found' => 'Rollen ble ikke funnet',
+	'permissions' => 'Rettigheter',
+	'edit_role' => 'Endre på rollen',
+	'role_saved' => 'Rollen ble lagret',
+	'permission' => array(
+		'admin' => 'Administrasjon',
+		'mediabank' => 'Mediabank',
+		'users' => 'Styre brukere',
+		'add_users' => 'Legge til brukere',
+		'reset_user_password' => 'Resette passord',
+		'delete_user' => 'Slette bruker',
+		'accreditation' => 'Akkredittering',
+		'accreditation_print_badge' => 'Skrive ut badge',
+		'accreditation_badge' => 'Akredittere badge',
+		'sms' => 'Sende SMS',
+		'search' => 'Søke',
+		'profiles' => 'Profiler',
+		'edit_profile' => 'Endre profiler',
+		'delete_profile' => 'Slette profiler',
+		'delete_profile_comment' => 'Slette profilkommentarer',
+		'add_personell' => 'Legge til personell',
+		'edit_personell' => 'Endre personell',
+		'delete_personell' => 'Slette personell',
+		'add_profile' => 'Legge til profil'
+		)
 );

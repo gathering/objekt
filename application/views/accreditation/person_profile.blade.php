@@ -6,11 +6,12 @@
 	<span class="icon-file-text"></span>
 	{{ __('accreditation.wristband') }}
 </a>
-
+@if (Auth::user()->can("accreditation_badge"))
 <a href="{{ $person->url('accreditation/badge') }}" class="btn btn-green">
 	<span class="icon-tag"></span>
 	{{ __('accreditation.badge') }}
 </a>
+@endif
 @elseif ($person->status == "departed")
 <i>{{ __('accreditation.has_departed') }}</i>			
 @else

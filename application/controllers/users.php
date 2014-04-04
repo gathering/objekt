@@ -156,4 +156,35 @@ class Users_Controller extends Base_Controller {
 		return Redirect::to('users')->with('success', __('user.user_added'));
 	}
 
+	public function action_roles(){
+		return View::make('user.roles');
+	}
+
+	public function action_edit_role($role_id){
+		$event = Config::get('application.event');
+		$role = Role::where("id", "=", $role_id)->where("event_id", "=", $event->id)->first();
+		if($role == NULL)
+			return Redirect::to('users/roles')->with('error', __('user.role_not_found'));
+
+		return View::make('user.edit_role')->with("role", $role);
+	}
+
+	public function action_post_edit_role($role_id){
+		$event = Config::get('application.event');
+		$role = Verify\Models\Role::where("id", "=", $role_id)->where("event_id", "=", $event->id)->first();
+		if($role == NULL)
+			return Redirect::to('users/roles')->with('error', __('user.role_not_found'));
+
+		$input = Input::all();
+		$input['permission'] = array_keys($input['permission']);
+		$role->permissions()->sync($input['permission']);
+
+		if(isset($input['name'])){
+			$role->name = $input['name'];
+			$role->save();
+		}
+
+		return Redirect::to('users/roles')->with('success', __('user.role_saved'));
+	}
+
 }
