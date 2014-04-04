@@ -21,7 +21,7 @@ return array(
 	'associated' => 'Tilknyttet',
 	'contactperson' => 'Kontaktperson',
 	'website_url' => '<a href=":website" target="_blank">Gå til nettsiden</a>',
-	'add_personel' => 'Legg til personell',
+	'add_personel' => 'Nytt personell',
 	'choose_profile' => '-- Velg profil --',
 	'choose_profile2' => 'Velg hvilken profil person tilhører',
 	'otherpersons' => 'Andre person(er)',
