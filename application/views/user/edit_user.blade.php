@@ -13,6 +13,7 @@
 	        <input type="text" name="name" tabindex="2" placeholder="{{ __('user.placeholder.name') }}" value="{{ $user->name }}" class="form-control">
 	      </div>
 	    </div>
+	    @if(!$user->is('superAdmin'))
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.role') }}</label>
 	      <div class="col-lg-4">
@@ -24,6 +25,7 @@
 	        <div class="line line-dashed m-t-large"></div>
 	      </div>
 	    </div>
+	    @endif
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.password') }}</label>
 	      <div class="col-lg-8">

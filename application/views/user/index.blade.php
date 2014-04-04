@@ -14,31 +14,6 @@
 </li>
 @endif
 @endsection
-<section class="panel">
-	<header class="panel-heading bg bg-inverse">
-		{{ __('user.admins') }}
-	</header>
-	<div class="list-group">
-	@foreach (Role::where("name", "=", "superAdmin")->get() as $role)
-	@foreach ($role->users()->get() as $user)
-	<li class="list-group-item">
-		<div class="media">
-		  <span class="pull-left thumb-small"><img src="{{ $user->image() }}" class="img-rounded"></span>
-		  <div class="pull-right m-t-small">
-		  </div>
-		  <div class="media-body">
-		  	<div class="pull-right">
-		    	<span class="label label-info"></span>
-		    </div>
-		    <div><a href="{{ url('user/'.$user->id.'/edit') }}" onclick="alert('Ved å lagre denne så fjerner du tilgangen til administratoren.')" class="h5">{{ $user->display_name() }}</a></div>
-		    <small class="text-muted">{{ $user->email }}</small>
-		  </div>
-		</div>
-	</li>
-	@endforeach
-	@endforeach
-	</div>
-</section>
 @foreach($current_event->roles()->get() as $role)
 <section class="panel">
 	<header class="panel-heading bg bg-inverse">
