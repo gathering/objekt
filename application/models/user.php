@@ -26,6 +26,19 @@ class User extends Verify\Models\User {
 		return $this->following()->where("type", "=", $what)->where("belongs_to", "=", $id)->count() > 0 ? true : false;
 	}
 
+	public function allRoles(){
+		$event = Config::get('application.event');
+		$roles = $event->roles()->get();
+		$thisRoles = $this->roles()->get();
+
+		foreach($roles as $int => $role){
+			foreach($thisRoles as $thisRole)
+				if($thisRole->id == $role->id) $roles[$int]->access = true;
+		}
+
+		return $roles;
+	}
+
 	static function active($event=""){
 		return self::left_join('event_users', 'event_users.user_id', '=', 'users.id')
 					->where(function($query) use(&$event) {

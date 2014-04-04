@@ -62,14 +62,82 @@ class Users_Controller extends Base_Controller {
 		return View::make('user.add');
 	}
 
+	public function action_edit($id)
+	{
+		$user = User::find($id);
+		if($user == NULL)
+			return Redirect::to('users/roles')->with('error', __('user.not_found'));
+
+		$event = Config::get('application.event');
+		$role = $user->roles()->where("event_id", "=", $event->id)->first();
+
+		if($role == NULL && !Auth::user()->is('superAdmin'))
+			return Redirect::to('users/roles')->with('error', __('user.role_not_found'));
+
+		return View::make('user.edit_user')->with("user", $user);
+	}
+
+	public function action_post_edit($user_id)
+	{		
+
+		$user = Auth::retrieve($user_id);
+		if($user == NULL)
+			return Redirect::to('users/roles')->with('error', __('user.not_found'));
+
+		$event = Config::get('application.event');
+		$role = $user->roles()->where("event_id", "=", $event->id)->first();
+
+		if($role == NULL && !Auth::user()->is('superAdmin'))
+			return Redirect::to('users/roles')->with('error', __('user.role_not_found'));
+		
+		$input = Input::all();
+		$rules = array(
+		    'username'  => 'required|max:50|unique:users,username,'.$user->id,
+		    'password' => 'same:password2',
+		    'role' => 'required|exists:roles,id',
+		    'email' => 'required|email|unique:users,email,'.$user->id
+		);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		$username = Input::get('username');
+		$password = Input::get('password');
+		$password2 = Input::get('password2');
+		$email = Input::get('email');
+
+		$user->username = $username;
+		$user->name = Input::get('name');
+		if($user->email != $email){
+			$user->password = $password; // This is automatically salted and encrypted
+			$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
+			$response = Mandrill::request('/messages/send', array(
+			    'message' => array(
+			        'html' => $contents->render(),
+			        'subject' => Lang::line('user.verification_subject')->get(),
+			        'from_email' => Lang::line('user.noreply')->get(),
+			        'from_name' => Lang::line('user.noreply_name')->get(),
+			        'to' => array(array('email'=>$user->email)),
+			    ),
+			));
+			$user->email = $email;
+		}
+
+		$user->save();
+
+		// TODO: Make sure old event-role stick.
+		$user->roles()->sync(array(Input::get('role')));
+
+		return Redirect::to('users')->with('success', __('user.user_edited'));
+	}
+
 	public function action_reset_password($user_id)
 	{
 		return View::make('user.reset-password');
-	}
-
-	public function action_activate_user($user_id)
-	{
-		
 	}
 
 	public function action_post_reset_password($user_id)
@@ -129,15 +197,16 @@ class Users_Controller extends Base_Controller {
 		$username = Input::get('username');
 		$password = Input::get('password');
 		$password2 = Input::get('password2');
-		$role = Role::find(Input::get('role'));
 		$email = Input::get('email');
 
 		$user = new \Verify\Models\User;
 		$user->username = $username;
 		$user->email = $email;
+		$user->name = Input::get('name');
 		$user->password = $password; // This is automatically salted and encrypted
-		$user->role_id = $role->id;
 		$user->save();
+
+		$user->roles()->sync(array(Input::get('role')));
 
 		$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
 		$response = Mandrill::request('/messages/send', array(
@@ -185,6 +254,51 @@ class Users_Controller extends Base_Controller {
 		}
 
 		return Redirect::to('users/roles')->with('success', __('user.role_saved'));
+	}
+
+	public function action_add_role(){
+		return View::make('user.add_role');
+	}
+
+	public function action_post_add_role(){
+		$input = Input::all();
+		$input['permission'] = array_keys($input['permission']);
+
+		$rules = array(
+		    'name'  => 'required',
+		);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+		$role = new Role;
+		$role->name = $input['name'];
+		$event = Config::get('application.event');
+		$role = $event->roles()->insert($role);
+		$role->permissions()->sync($input['permission']);
+
+		return Redirect::to('users/roles')->with('success', __('user.role_saved'));
+	}
+
+	public function action_delete_role($role_id){
+		$event = Config::get('application.event');
+		$role = Verify\Models\Role::where("id", "=", $role_id)->where("event_id", "=", $event->id)->first();
+		if($role == NULL)
+			return Redirect::to('users/roles')->with('error', __('user.role_not_found'));
+
+		if($role->users()->count() > 0)
+			return Redirect::to('users/roles')->with('error', __('user.role_has_users'));
+
+		if($role->static == '1')
+			return Redirect::to('users/roles')->with('error', __('user.role_is_static'));
+
+		$role->permissions()->sync(array());
+		$role->delete();
+
+		return Redirect::to('users/roles')->with('success', __('user.role_deleted'));
 	}
 
 }

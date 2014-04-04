@@ -112,9 +112,15 @@ Route::group(array('before' => 'auth|can_users|event'), function()
 	Route::get('/user/(:num)/delete-user', array('before' => 'can_delete_user', 'uses' => 'users@delete_user'));
 	Route::post('/user/(:num)/delete-user', array('before' => 'can_delete_user', 'uses' => 'users@post_delete_user'));
 
+	Route::get('/user/(:num)/edit', array('before' => 'can_edit_user', 'uses' => 'users@edit'));
+	Route::post('/user/(:num)/edit', array('before' => 'can_edit_user', 'uses' => 'users@post_edit'));
+
 	Route::get('/users/roles', array('before' => 'can_manage_roles', 'uses' => 'users@roles'));
+	Route::get('/users/roles/add', array('before' => 'can_manage_roles', 'uses' => 'users@add_role'));
 	Route::get('/users/role/(:num)', array('before' => 'can_manage_roles', 'uses' => 'users@edit_role'));
 	Route::post('/users/role/(:num)', array('before' => 'can_manage_roles', 'uses' => 'users@post_edit_role'));
+	Route::post('/users/roles/add', array('before' => 'can_manage_roles', 'uses' => 'users@post_add_role'));
+	Route::get('/users/role/(:num)/delete', array('before' => 'can_manage_roles', 'uses' => 'users@delete_role'));
 });
 
 

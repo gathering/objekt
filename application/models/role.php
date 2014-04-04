@@ -10,6 +10,11 @@ class Role extends Eloquent {
 		return $this->belongs_to('events', 'event_id');
 	}
 
+	static function non_current(){
+		$event = Config::get('application.event');
+		return self::where("event_id", "!=", $event->id)->where("name", "!=", "superAdmin");
+	}
+
 	public function allPermissions(){
 		$permissions = Permission::all();
 		$thisPermissions = $this->permissions()->get();

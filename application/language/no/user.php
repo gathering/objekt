@@ -31,6 +31,7 @@ return array(
 	'username' => 'Brukernavn',
 	'password' => 'Passord',
 	'password2' => 'Gjenta passord',
+	'add_role' => 'Legg til rolle',
 	'add_new_user' => 'Ny bruker',
 	'add_new_profile' => 'Ny profil',
 	'edit_profile' => 'Endre på «%s»',
@@ -81,6 +82,14 @@ return array(
 	'permissions' => 'Rettigheter',
 	'edit_role' => 'Endre på rollen',
 	'role_saved' => 'Rollen ble lagret',
+	'role_deleted' => 'Rollen ble slettet',
+	'delete_role' => 'Slett rolle',
+	'role_has_users' => 'Rollen har brukere, og kan dermed ikke slettes',
+	'role_is_static' => 'Rollen er statisk, og kan dermed ikke slettes',
+	'import_users' => 'Brukere fra andre arrangementer',
+	'not_found' => 'Bruker ble ikke funnet',
+	'user_edited' => 'Brukeren ble lagret',
+	'edit_user' => 'Endre bruker',
 	'permission' => array(
 		'admin' => 'Administrasjon',
 		'mediabank' => 'Mediabank',
@@ -100,6 +109,8 @@ return array(
 		'add_personell' => 'Legge til personell',
 		'edit_personell' => 'Endre personell',
 		'delete_personell' => 'Slette personell',
-		'add_profile' => 'Legge til profil'
+		'add_profile' => 'Legge til profil',
+		'send_aid' => 'Sende øyeblikkelig assitanse',
+		'manage_roles' => 'Styre roller'
 		)
 );

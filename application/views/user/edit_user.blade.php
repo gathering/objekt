@@ -4,21 +4,21 @@
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.username') }}</label>
 	      <div class="col-lg-8">
-	        <input type="text" name="username" tabindex="1" placeholder="{{ __('user.placeholder.username') }}" class="form-control">
+	        <input type="text" name="username" tabindex="1" placeholder="{{ __('user.placeholder.username') }}" value="{{ $user->username }}" class="form-control">
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.name') }}</label>
 	      <div class="col-lg-8">
-	        <input type="text" name="name" tabindex="2" placeholder="{{ __('user.placeholder.name') }}" class="form-control">
+	        <input type="text" name="name" tabindex="2" placeholder="{{ __('user.placeholder.name') }}" value="{{ $user->name }}" class="form-control">
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.role') }}</label>
 	      <div class="col-lg-4">
 	        <select name="role" tabindex="3" class="form-control">
-	          @foreach ($current_event->roles()->get() as $role)
-			  <option value="{{ $role->id }}">{{ $role->name }}</option>
+	          @foreach ($user->allRoles() as $role)
+			  <option value="{{ $role->id }}" {{ $role->access ? 'selected="selected"' : '' }}>{{ $role->name }}</option>
 			  @endforeach
 	        </select>
 	        <div class="line line-dashed m-t-large"></div>
@@ -40,12 +40,12 @@
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.email') }}</label>
 	      <div class="col-lg-8">
-	        <input type="text" tabindex="6" name="email" placeholder="{{ __('user.placeholder.email') }}" class="form-control">
+	        <input type="text" tabindex="6" name="email" value="{{ $user->email }}" placeholder="{{ __('user.placeholder.email') }}" class="form-control">
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <div class="col-lg-9 col-lg-offset-3">                      
-	        <button type="submit" tabindex="7" class="btn btn-primary">{{ __('user.add_new_user') }}</button>
+	        <button type="submit" tabindex="7" class="btn btn-primary">{{ __('user.edit_user') }}</button>
 	      </div>
 	    </div>
 	  </form>
