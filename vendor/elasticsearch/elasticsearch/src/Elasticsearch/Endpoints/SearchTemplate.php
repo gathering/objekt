@@ -1,26 +1,27 @@
 <?php
 /**
  * User: zach
- * Date: 01/20/2014
- * Time: 14:34:49 pm
+ * Date: 3/24/14
+ * Time: 5:09 PM
  */
 
-namespace Elasticsearch\Endpoints\Cluster;
+namespace Elasticsearch\Endpoints;
 
+use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use Elasticsearch\Endpoints\AbstractEndpoint;
 use Elasticsearch\Common\Exceptions;
 
 /**
- * Class Reroute
+ * Class SearchTemplate
  *
  * @category Elasticsearch
- * @package Elasticsearch\Endpoints\Cluster
+ * @package Elasticsearch\Endpoints
  * @author   Zachary Tong <zachary.tong@elasticsearch.com>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache2
  * @link     http://elasticsearch.org
  */
 
-class Reroute extends AbstractEndpoint
+class SearchTemplate extends AbstractEndpoint
 {
     /**
      * @param array $body
@@ -34,7 +35,6 @@ class Reroute extends AbstractEndpoint
             return $this;
         }
 
-
         $this->body = $body;
         return $this;
     }
@@ -46,8 +46,17 @@ class Reroute extends AbstractEndpoint
      */
     protected function getURI()
     {
-        $uri   = "/_cluster/reroute";
+        $index = $this->index;
+        $type = $this->type;
+        $uri   = "/_search/template";
 
+        if (isset($index) === true && isset($type) === true) {
+            $uri = "/$index/$type/_search/template";
+        } elseif (isset($index) === true) {
+            $uri = "/$index/_search/template";
+        } elseif (isset($type) === true) {
+            $uri = "/_all/$type/_search/template";
+        }
 
         return $uri;
     }
@@ -58,13 +67,7 @@ class Reroute extends AbstractEndpoint
      */
     protected function getParamWhitelist()
     {
-        return array(
-            'dry_run',
-            'filter_metadata',
-            'master_timeout',
-            'timeout',
-            'explain'
-        );
+        return array();
     }
 
 
@@ -73,6 +76,6 @@ class Reroute extends AbstractEndpoint
      */
     protected function getMethod()
     {
-        return 'POST';
+        return 'GET';
     }
 }

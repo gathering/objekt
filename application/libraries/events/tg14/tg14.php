@@ -23,15 +23,26 @@ class tg14 extends EventTemplate {
 
 		var_dump($user); exit;
 
-		foreach($user->user->crews->crew as $crew){
-			switch($crew->id){
-				case 279:
-					$role = Role::findByName($crew->name)->first();
-				break;
-				case 275:
-					$role = Role::findByName($crew->name)->first();
-				break;
-			}
+		// Special users
+		switch($user->user->id){
+			case 5497:
+				$role = Role::find(6);
+			break;
+			default: case "":
+				foreach($user->user->crews->crew as $crew){
+					switch($crew->id){
+						case 279:
+							$role = Role::findByName($crew->name)->first();
+						break;
+						case 275:
+							$role = Role::findByName($crew->name)->first();
+						break;
+						case 278:
+							$role = Role::findByName($crew->name)->first();
+						break;
+					}
+				}
+			break;
 		}
 
 		if(!$role)

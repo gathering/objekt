@@ -13,6 +13,14 @@ class Events extends Eloquent {
 		return $this->has_many('role', 'event_id');
 	}
 
+	public function users(){
+		return User::left_join('role_user', 'role_user.user_id', '=', 'users.id')
+					->left_join('roles', 'roles.id', '=', 'role_user.role_id')
+					->where('roles.event_id', '=', $this->id)
+					->or_where('role_user.role_id', '=', 1)
+					->select('users.*');
+	}
+
 	public function s3_slug(){
 		$s3_slug = $this->get_attribute('s3_slug');
 		if(empty($s3_slug)){

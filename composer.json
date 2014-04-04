@@ -1,6 +1,7 @@
 {
     "require": {
         "elasticsearch/elasticsearch": "~1.0",
-        "pusher/pusher-php-server": "dev-master"
+        "pusher/pusher-php-server": "dev-master",
+        "simplepie/simplepie": "dev-master"
     }
 }

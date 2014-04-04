@@ -465,9 +465,9 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
 .axis li:last-child{margin-right:0 !important;}
 .axis-full{display: table;}
 .axis-full li{display: table-cell;padding: 0;width: 1%;}
-.easypiechart {position: relative;text-align: center;}
-.easypiechart canvas {position: absolute;top: 0;left: 0;}
-.easypiechart .easypie-text{position: absolute;z-index:1;line-height: 1;font-size: 75%;width: 100%;top: 60%}
+.easyPieChart {position: relative;text-align: center;}
+.easyPieChart canvas {position: absolute;top: 0;left: 0;}
+.easyPieChart .easypie-text{position: absolute;z-index:1;line-height: 1;font-size: 75%;width: 100%;top: 60%}
 
 .combodate select{display: inline-block;}
 .doc-buttons .btn{margin-bottom: 5px}
@@ -573,6 +573,43 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
   background: none;
   border: none;
   color: #656565;
+}
+
+.welcome {
+  width: 100%;
+  height: 314px;
+
+  background: url('../img/welcome.jpg') no-repeat center center; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  margin-bottom: 30px;
+  border-radius: 4px;
+  text-align: center;
+
+  overflow: hidden;
+}
+.welcome .labelDisplay {
+  width: 400px;
+  margin:auto;
+  margin-top: 120px;
+  font-size: 34px;
+  background: rgba(0,0,0,0.5);
+  padding: 20px;
+  color: #FFFFFF;
+  text-align: center;
+}
+.media-image {
+  background: no-repeat center center; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 150px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 /*desktop*/

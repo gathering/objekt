@@ -245,8 +245,10 @@ class Users_Controller extends Base_Controller {
 			return Redirect::to('users/roles')->with('error', __('user.role_not_found'));
 
 		$input = Input::all();
-		$input['permission'] = array_keys($input['permission']);
-		$role->permissions()->sync($input['permission']);
+		if(!empty($input['permission'])){
+			$input['permission'] = array_keys($input['permission']);
+			$role->permissions()->sync($input['permission']);
+		}
 
 		if(isset($input['name'])){
 			$role->name = $input['name'];
@@ -262,8 +264,6 @@ class Users_Controller extends Base_Controller {
 
 	public function action_post_add_role(){
 		$input = Input::all();
-		$input['permission'] = array_keys($input['permission']);
-
 		$rules = array(
 		    'name'  => 'required',
 		);
@@ -278,7 +278,11 @@ class Users_Controller extends Base_Controller {
 		$role->name = $input['name'];
 		$event = Config::get('application.event');
 		$role = $event->roles()->insert($role);
-		$role->permissions()->sync($input['permission']);
+
+		if(!empty($input['permission'])){
+			$input['permission'] = array_keys($input['permission']);
+			$role->permissions()->sync($input['permission']);
+		}
 
 		return Redirect::to('users/roles')->with('success', __('user.role_saved'));
 	}

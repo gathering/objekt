@@ -13,6 +13,8 @@ return array(
 	'invoices' => 'Fakturering',
 	'events' => 'Arrangementer',
 	'change_event' => 'Endre arrangement',
-	'pushover' => 'Push-tjenester'
+	'pushover' => 'Push-tjenester',
+	'roles' => 'Roller',
+	'logistics' => 'Logistikk'
 
 );

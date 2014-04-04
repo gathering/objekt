@@ -97,7 +97,7 @@
     <ul class="nav" data-spy="affix" data-offset-top="50">
       <li {{ URI::segment(2) == '' ? 'class="active"' : '' }}><a href="{{ url('/') }}"><i class="fa fa-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span></a></li>
       @if (Auth::user()->can("admin"))
-      <li class="dropdown-submenu {{ URI::segment(2) == 'admin' ? ' active' : '' }}">
+      <li class="dropdown-submenu {{ URI::segment(2) == 'admin' || URI::segment(2) == 'users' ? ' active' : '' }}">
         @if (Auth::user()->is("superAdmin"))
         <a href="{{ url('/admin/event/'.$current_event->slug) }}"><i class="fa fa-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
         @else
@@ -110,8 +110,13 @@
           </li>
           @endif
           @if (Auth::user()->can("users"))
-          <li{{ URI::segment(2) == 'users' ? ' class="active"' : '' }}>
+          <li{{ URI::segment(2) == 'users' && URI::segment(3) != 'roles'  ? ' class="active"' : '' }}>
             <a href="{{ url('/users') }}">{{ __('nav.users') }}</a>
+          </li>
+          @endif
+          @if (Auth::user()->can("manage_roles"))
+          <li{{ URI::segment(2) == 'users' && URI::segment(3) == 'roles' ? ' class="active"' : '' }}>
+            <a href="{{ url('/users/roles') }}">{{ __('nav.roles') }}</a>
           </li>
           @endif
         </ul>
@@ -139,6 +144,9 @@
       <li {{ URI::segment(2) == 'accreditation' ? 'class="active"' : '' }}>
         <a href="{{ url('/accreditation') }}"><i class="fa fa-tags icon-xlarge"></i><span>{{ __('nav.accreditation') }}</span></a>
       </li>
+      @endif
+      @if (Auth::user()->can("logistics"))
+      <li {{ URI::segment(2) == 'logistics' ? 'class="active"' : '' }}><a href="{{ url('/logistics') }}"><i class="fa fa-truck icon-xlarge"></i><span>{{ __('nav.logistics') }}</span></a></li>
       @endif
     </ul>
   </nav>
@@ -268,9 +276,11 @@
       });
     });
 
-    var pusher = new Pusher('{{ Config::get('pusher.app_key') }}');
-      var channel = pusher.subscribe('{{ md5('user_'.Auth::user()->id) }}');
-      channel.bind('notification', add_notification);
+    var pusher = new Pusher('{{ Config::get('pusher.app_key') }}', { authEndpoint: '{{ url('/pusher_auth') }}' });
+    var presenceChannel = pusher.subscribe('presence-obj');
+    var channel = pusher.subscribe('{{ md5('user_'.Auth::user()->id) }}');
+    channel.bind('notification', add_notification);
+    @yield('special_scripts')
   });
   </script>
 

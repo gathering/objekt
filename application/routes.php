@@ -3,13 +3,16 @@
 
 Route::group(array('before' => 'auth|event'), function()
 {
-	Route::get('/', function()
-	{
-		return View::make('home.index');
-	});
+	Route::get('/', 'home@index');
 
 	Route::get('/pushover', 'users@pushover');
 	Route::post('/pushover', 'users@post_pushover');
+
+	Route::post('/pusher_auth', function(){
+		$presence_data = array('name' => Auth::user()->username);
+		echo Push::presence_auth(Input::get('channel_name'), Input::get('socket_id'), Auth::user()->id, $presence_data);
+		exit;
+	});
 
 	Route::get('/aid', function(){
 
@@ -240,6 +243,14 @@ Route::group(array('before' => 'auth|can_profiles|event'), function(){
 	
 	Route::get('/profile/add', array('before' => 'can_add_profile', 'uses' => 'profiles@add'));
 	Route::post('/profile/add', array('before' => 'can_add_profile', 'uses' => 'profiles@post_add'));
+});
+
+/* Logistics */
+Route::group(array('before' => 'auth|can_logistics|event'), function()
+{
+	Route::get('/logistics', function(){
+		return View::make('not_done_yet');
+	});
 });
 
 
