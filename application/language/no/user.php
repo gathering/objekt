@@ -90,6 +90,7 @@ return array(
 	'not_found' => 'Bruker ble ikke funnet',
 	'user_edited' => 'Brukeren ble lagret',
 	'edit_user' => 'Endre bruker',
+	'admins' => 'Administratorer',
 	'permission' => array(
 		'admin' => 'Administrasjon',
 		'mediabank' => 'Mediabank',

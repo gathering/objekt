@@ -27,7 +27,7 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">            
           <span class="hidden-xs-only">{{ Auth::user()->username }}</span>
-          <span class="thumb-small avatar inline"><img src="{{ Auth::user()->image() }}" alt="Mika Sokeil" class="img-circle"></span>
+          <span class="thumb-small avatar inline"><img src="{{ Auth::user()->image() }}" style="height: 36px;" alt="Mika Sokeil" class="img-circle"></span>
           <b class="caret hidden-xs-only"></b>
         </a>
         <ul class="dropdown-menu">
@@ -98,9 +98,13 @@
       <li {{ URI::segment(2) == '' ? 'class="active"' : '' }}><a href="{{ url('/') }}"><i class="fa fa-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span></a></li>
       @if (Auth::user()->can("admin"))
       <li class="dropdown-submenu {{ URI::segment(2) == 'admin' ? ' active' : '' }}">
-        <a href="{{ url('/admin/events') }}"><i class="fa fa-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+        @if (Auth::user()->is("superAdmin"))
+        <a href="{{ url('/admin/event/'.$current_event->slug) }}"><i class="fa fa-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+        @else
+        <a href="#"><i class="fa fa-suitcase icon-xlarge"></i><span>{{ __('nav.admin') }}</span></a>
+        @endif
         <ul class="dropdown-menu">
-          @if (Auth::user()->is("superSponsorAdmin"))
+          @if (Auth::user()->is("superAdmin"))
           <li{{ URI::segment(2) == 'admin' && URI::segment(3) =='events' ? ' class="active"' : '' }}>
             <a href="{{ url('/admin/events') }}">{{ __('nav.events') }}</a>
           </li>

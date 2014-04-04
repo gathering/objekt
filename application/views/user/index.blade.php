@@ -14,6 +14,36 @@
 </li>
 @endif
 @endsection
+<section class="panel">
+	<header class="panel-heading bg bg-default">
+		{{ __('user.admins') }}
+	</header>
+	<div class="list-group">
+	@foreach (Role::where("name", "=", "superAdmin")->get() as $role)
+	@foreach ($role->users()->get() as $user)
+	<li class="list-group-item">
+		<div class="media">
+		  <span class="pull-left thumb-small"><img src="{{ $user->image() }}" class="img-rounded"></span>
+		  <div class="pull-right m-t-small">
+	        @if (Auth::user()->can("delete_user"))
+	        <a class="btn btn-xs btn-danger" href="{{url('user/'.$user->id.'/delete-user')}}">
+	        	<i class="fa fa-times"></i> {{ __('user.delete') }}
+	        </a>
+	        @endif
+		  </div>
+		  <div class="media-body">
+		  	<div class="pull-right">
+		    	<span class="label label-info"></span>
+		    </div>
+		    <div><a href="{{ url('user/'.$user->id.'/edit') }}" class="h5">{{ $user->display_name() }}</a></div>
+		    <small class="text-muted">{{ $user->email }}</small>
+		  </div>
+		</div>
+	</li>
+	@endforeach
+	@endforeach
+	</div>
+</section>
 @foreach($current_event->roles()->get() as $role)
 <section class="panel">
 	<header class="panel-heading bg bg-inverse">
