@@ -376,7 +376,6 @@ Event::listen('500', function()
 |
 */
 
-
 Route::filter('before', function()
 {
 
