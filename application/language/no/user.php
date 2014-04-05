@@ -18,7 +18,7 @@ return array(
 	'pushover_placeholder' => 'dJBftzWsxfxSygDp8mmK4JdffG1E4M',
 	'pushover_success' => 'Nøkkelen er lagret',
 	'notifications' => 'Notifikasjoner',
-	'aid_title' => '911',
+	'aid_title' => 'Øyeblikkelig hjelp',
 	'aid_message' => 'Brukeren %s ønsker umiddelbar assistanse.',
 	'aid_success' => 'En melding er sendt ut til de som er angitt som kontaktperson.',
 	'air_confirm' => 'Vennligst bekreft at du faktisk behøver øyeblikkelig assistanse. En melding blir sendt ut til ansvarsperson som vil umiddelbart henvende seg hos deg for assistanse.',
