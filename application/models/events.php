@@ -17,6 +17,10 @@ class Events extends Eloquent {
 		return round($this->files()->select(array(DB::Raw('SUM(`size`) as `total_size_use`')))->first()->total_size_use/(1024*1024*1024), 2, PHP_ROUND_HALF_UP);
 	}
 
+	public function storages(){
+		return $this->has_many('storage', 'event_id');
+	}
+
 	public function calculateMonths(){
 		$files = $this->files()
 					->select(

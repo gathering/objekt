@@ -74,6 +74,14 @@ Route::group(array('before' => 'auth|can_admin|event'), function()
 		$indexParams['index']  = 'mediabank';
 		Elastisk::indices()->create($indexParams);
 	});
+
+	Route::get('/clearUsers', function(){
+		foreach(Person::all() as $person){
+			if(!$person->profile()){
+				$person->delete();
+			}
+		}
+	});
 });
 
 /* Mediabank */
@@ -98,7 +106,7 @@ Route::group(array('before' => 'auth|event'), function()
 	Route::get('/notifications/readall', function(){
 		$user = User::find(Auth::user()->id);
 		$notifications = $user->notifications()->update(array("status" => "read"));
-		die("Done!");
+		die("true");
 	});
 });
 
@@ -245,12 +253,51 @@ Route::group(array('before' => 'auth|can_profiles|event'), function(){
 	Route::post('/profile/add', array('before' => 'can_add_profile', 'uses' => 'profiles@post_add'));
 });
 
+Route::get('/not_done_yet', function(){
+	return View::make('not_done_yet');
+});
+
 /* Logistics */
+/* Started: 8. april 2014 kl. 11:11 */
+
+Route::filter('logistics', function()
+{
+	$slug = URI::segment(3);
+	if(empty($slug))
+		return Redirect::to('/logistics');
+
+	$location = Storage::findBySlug($slug);
+	if(!$location)
+		return Redirect::to('/logistics')->with('error', __('logistics.storage_not_found'));
+
+	Config::set('logistics.storage', $location);
+
+	View::composer('all', function($view) use($location)
+	{
+	    $view->with('storage', $location);
+	});
+
+	tplConstructor::set(true);
+});
+
 Route::group(array('before' => 'auth|can_logistics|event'), function()
 {
 	Route::get('/logistics', function(){
-		return View::make('not_done_yet');
+		return View::make('logistics.select_storage');
 	});
+
+	Route::get('/logistics/add', 'logistics@add');
+	Route::post('/logistics/add', 'logistics@post_add');
+	Route::get('/logistics/owners/(:any).json', 'logistics@owners');
+
+});
+
+Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
+{
+	$baseURL = '/logistics/(:any)';
+
+	Route::get($baseURL, 'logistics@view_storage');
+	Route::get($baseURL . '/add_parcel', 'logistics@add_parcel');
 });
 
 

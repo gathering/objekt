@@ -3,8 +3,10 @@
 
 class Wannabe {
 
-	static private $api_key = "53299290-9920-4cba-9afb-433bc39fe93c";
+	static private $app_key = "53299290-9920-4cba-9afb-433bc39fe93c";
 	static private $api_url = "http://wannabe.gathering.org/tg14/api/";
+
+	static private $api_key = "";
 
 	static private $query_string = array();
 
@@ -14,12 +16,21 @@ class Wannabe {
 		return self::run('auth');
 	}
 
+	static function setAPIKey($api_key){
+		self::$api_key = $api_key;
+	}
+
+	static function user($id){
+		self::setQuery("apikey", self::$api_key);
+		return self::run('users/view/'.$id);
+	}
+
 	private static function setQuery($name, $value){
 		self::$query_string[$name] = $value;
 	}
 
 	private static function getQuery(){
-		self::$query_string['app'] = self::$api_key;
+		self::$query_string['app'] = self::$app_key;
 		return "?".http_build_query(self::$query_string);
 	}
 

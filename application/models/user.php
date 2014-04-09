@@ -14,6 +14,10 @@ class User extends Verify\Models\User {
 		return !empty($this->profile_img) ? $this->profile_img : "http://www.gravatar.com/avatar/".md5( strtolower( trim( $this->email ) ) )."?d=http%3A%2F%2Fsupersponsor.no%2Fimages%2Fdefault_profile.png&s=".$size;
 	}
 
+	public function meta(){
+		return unserialize($this->meta);
+	}
+
 	public function display_name(){
 		return !empty($this->name) ? $this->name : $this->username;
 	}

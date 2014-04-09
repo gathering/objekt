@@ -106,27 +106,30 @@ $(function() {
                   <span class="pull-left thumb-small"><img src="<?=$person->gravatar()?>" class="img-circle"></span>
                   @if ($person->status == "registred")
                   <div class="pull-right text-warning m-t-small">
-                    <i class="icon-circle"></i>
+                    <i class="fa fa-circle"></i>
                   </div>
                   @endif
                   @if ($person->status == "arrived")
                   <div class="pull-right text-success m-t-small">
-                    <i class="icon-circle"></i>
+                    <i class="fa fa-circle"></i>
                   </div>
                   @endif
                   @if ($person->status == "departed")
                   <div class="pull-right text-danger m-t-small">
-                    <i class="icon-circle"></i>
+                    <i class="fa fa-circle"></i>
                   </div>
                   @endif
                   <div class="media-body">
                     <div><a href="{{ $person->url() }}" class="h5">{{ $person->firstname }} {{ $person->surname }}</a></div>
                     <small class="text-muted">
                       @if (!empty($person->email))
-                      <i class="icon-envelope"></i> {{ $person->email }} 
+                      <i class="fa fa-envelope"></i> {{ $person->email }} 
                       @endif
                       @if (!empty($person->phone))
-                      <i class="icon-mobile-phone"></i> {{ $person->phone }}
+                      <i class="fa fa-mobile-phone"></i> {{ $person->phone }}
+                      @endif
+                      @if ($person->child()->count() > 0)
+                      <i class="fa fa-star"></i>
                       @endif
                     </small>
                   </div>

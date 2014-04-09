@@ -3,21 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<title>{{ $title }} ({{ $current_event->name }}) Objekt - Transolini</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
-	<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-  	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
-	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  	<link rel="stylesheet" href="{{ asset('css/plugin.css') }}">
-  	<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+	<meta name="viewport"     content="width=device-width, initial-scale=1, maximum-scale=1">	
+	<link rel="stylesheet"    href="{{ asset('css/bootstrap.css') }}">
+  <link rel="stylesheet"    href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
+  <link rel="stylesheet"    href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet"    href="{{ asset('css/plugin.css') }}">
+  <link rel="stylesheet"    href="{{ asset('css/landing.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('css/messenger.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/messenger-theme-flat.css') }}">
-    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}"/>
-	<!--[if lt IE 9]>
-		<script src="{{ asset('js/ie/respond.min.js') }}"></script>
-		<script src="{{ asset('js/ie/html5.js') }}"></script>
-		<script src="{{ asset('js/ie/excanvas.js') }}"></script>
-	<![endif]-->
+  <link rel="stylesheet"    href="{{ asset('css/messenger.css') }}">
+  <link rel="stylesheet"    href="{{ asset('css/messenger-theme-flat.css') }}">
+  <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}"/>
+  <!--[if lt IE 9]>
+    <script src="{{ asset('js/ie/respond.min.js') }}"></script>
+    <script src="{{ asset('js/ie/html5.js') }}"></script>
+    <script src="{{ asset('js/ie/excanvas.js') }}"></script>
+  <![endif]-->
   @yield('styles')
 </head>
 <body>
@@ -177,6 +177,8 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<!-- Bootstrap -->
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.2/typeahead.bundle.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.2/handlebars.min.js"></script>
 	<!-- app -->
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script src="{{ asset('js/app.plugin.js') }}"></script>

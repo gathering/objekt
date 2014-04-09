@@ -94,9 +94,12 @@ class Users_Controller extends Base_Controller {
 		$rules = array(
 		    'username'  => 'required|max:50|unique:users,username,'.$user->id,
 		    'password' => 'same:password2',
-		    'role' => 'required|exists:roles,id',
 		    'email' => 'required|email|unique:users,email,'.$user->id
 		);
+
+		if(!$user->is('superAdmin')){
+			$rules['role'] = 'required|exists:roles,id';
+		}
 
 		$validation = Validator::make($input, $rules);
 
@@ -112,8 +115,10 @@ class Users_Controller extends Base_Controller {
 
 		$user->username = $username;
 		$user->name = Input::get('name');
-		if($user->email != $email){
+		if(!empty($password))
 			$user->password = $password; // This is automatically salted and encrypted
+
+		if($user->email != $email){
 			$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
 			$response = Mandrill::request('/messages/send', array(
 			    'message' => array(
@@ -127,10 +132,12 @@ class Users_Controller extends Base_Controller {
 			$user->email = $email;
 		}
 
+		unset($user->to_check_cache);
 		$user->save();
 
 		// TODO: Make sure old event-role stick.
-		$user->roles()->sync(array(Input::get('role')));
+		if(!$user->is('superAdmin'))
+			$user->roles()->sync(array(Input::get('role')));
 
 		return Redirect::to('users')->with('success', __('user.user_edited'));
 	}
