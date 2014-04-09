@@ -83,7 +83,7 @@ class tg14 extends EventTemplate {
 		
 		if(isset($currentUser->meta()->apikey)){
 			$apikey = $currentUser->meta()->apikey;
-		} else $apiKey = "1d7fcf1944cbc683ea6bc3c044c9c2cd";
+		} else $apikey = "1d7fcf1944cbc683ea6bc3c044c9c2cd";
 
 		Wannabe::setAPIKey($apikey);
 		$user = Wannabe::user($id);
