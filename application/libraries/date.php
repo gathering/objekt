@@ -50,7 +50,7 @@ class Date {
         if($remain->d > 0)
             return __("time.countdown_days", array("days" => $remain->d, "hours" => $remain->h));
         else
-            return __("time.countdown_hours", array("hours" => $remain->h));
+            return __("time.countdown_hours", array("hours" => $remain->h, "minutes" => $remain->i));
     }
 
     public static function snice($datetime=0) {
