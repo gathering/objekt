@@ -22,10 +22,11 @@ $(function() {
 		</div>
 		<div class="bg-light padder padder-v">
 			<span class="h4">{{ $person->firstname }} {{ $person->surname }}</span>
+      <div class="text-muted">{{ sprintf(__('profile.followers'), $person->followers()->count()) }}</div>
 			@if ($person->contact_person == '1')
 			<span class="block"><i class="icon-user"></i> {{ __('profile.contactperson') }}</span><br />
 			@endif
-      <br /><br />
+      <br />
       <button id="follow" class="btn btn-primary btn-sm {{ User::find(Auth::user()->id)->isFollowing('person', $person->id) ? 'active' : '' }}" data-toggle="button">
         <span class="text">
           <i class="icon-eye-open"></i> {{ __('profile.get_notifications') }}

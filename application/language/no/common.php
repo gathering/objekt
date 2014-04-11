@@ -24,7 +24,7 @@ return array(
 	'access_denied' => 'Du har ikke tilgang til denne modulen. (%s)',
 	'error_title' => 'En feil oppsto.',
 	'error_title_login' => 'Du, en ting..',
-	'footer' => 'Laga av folk med noe mellom øreflippene.<br />Objekt, herunder <a href="http://www.obj.no ">obj.no </a>og <a href="app.obj.no">app.obj.no</a>, er utviklet av <a href="http://www.twitter.com/msglol" target="_blank">@msglol</a>&nbsp;i <a href="http://www.skykonsult.no/" target="_blank">Sky Konsult</a> og <a href="http://www.twitter.com/cobrazo" target="_blank">@cobrazo</a>&nbsp;i <a href="http://www.nconel.no/" target="_blank">Nconel</a>&nbsp;- og alt er så klart <a title="Kopirettigheter" href="http://obj.no/kopirettigheter/">kopibeskyttet</a>&nbsp;© 2014',
+	'footer' => 'Laga av folk med noe mellom øreflippene.<br />Objekt, herunder <a href="http://www.obj.no ">obj.no </a>og <a href="app.obj.no">app.obj.no</a>, er utviklet av <a href="http://www.twitter.com/msglol" target="_blank">@msglol</a>&nbsp;i <a href="http://www.skykonsult.no/" target="_blank">Sky Konsult</a> og <a href="http://www.twitter.com/cobrazo" target="_blank">@cobrazo</a>&nbsp;i <a href="http://www.nconel.no/" target="_blank">Nconel</a>&nbsp;<br />- og alt er så klart <a title="Kopirettigheter" href="http://obj.no/kopirettigheter/">kopibeskyttet</a>&nbsp;© 2014',
 	'index' => array(
 		'users' => 'Registrerte brukere',
 		'profiles' => 'Registrerte profiler',

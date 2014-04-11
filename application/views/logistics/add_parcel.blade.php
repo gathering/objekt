@@ -17,7 +17,7 @@ $(function() {
 	    next.attr('disabled', (activeStep == 1 || activeStep == 3) ? true : false);
 	});
 
-	$("button[name=parcel_single],button[name=parcel_multi],button[name=parcel_bulk]").on('click', function(){
+	$("button[name=parcel_single],button[name=parcel_multi],button[name=parcel_bulk],button[name=parcel_consumable]").on('click', function(){
 		var name = $(this).attr('name');
 		$("#parcel_type").find('.name').html($(this).text());
 		$("#parcel_type").attr("data-target", name);
@@ -42,37 +42,15 @@ $(function() {
 		$(this).find(".tags_field").val(items_formated);
 	});
 
-	var substringMatcher = function(strs) {
-		return function findMatches(q, cb) {
-			var matches, substringRegex;
-
-			// an array that will be populated with substring matches
-			matches = [];
-
-			// regex used to determine if a string contains the substring `q`
-			substrRegex = new RegExp(q, 'i');
-
-			// iterate through the pool of strings and for any string that
-			// contains the substring `q`, add it to the `matches` array
-			$.each(strs, function(i, str) {
-			  if (substrRegex.test(str)) {
-			    // the typeahead jQuery plugin expects suggestions to a
-			    // JavaScript object, refer to typeahead docs for more info
-			    matches.push({ value: str });
-			  }
-			});
-
-			cb(matches);
-		};
-	};
-
 	var owners = new Bloodhound({
 	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 	  queryTokenizer: Bloodhound.tokenizers.whitespace,
+	  prefetch: '{{ url('logistics/owners.json') }}',
 	  remote: '{{ url('logistics/owners') }}/%QUERY.json'
 	});
 
 	owners.initialize();
+	owners.clearPrefetchCache();
 
 	$('input[name=owner]').typeahead({
 		hint: true,
@@ -104,31 +82,32 @@ $(function() {
 	    	<button type="button" name="parcel_single" class="btn btn-info"><i class="fa fa-square"></i> {{ __('logistics.parcel_single') }}</button>
 	    	<button type="button" name="parcel_multi" class="btn btn-info"><i class="fa fa-sitemap"></i> {{ __('logistics.parcel_multi') }}</button>
 	    	<button type="button" name="parcel_bulk" class="btn btn-info"><i class="fa fa-list-ol"></i> {{ __('logistics.parcel_bulk') }}</button>
+	    	<button type="button" name="parcel_consumable" class="btn btn-info"><i class="fa fa-pencil-square"></i> {{ __('logistics.parcel_consumable') }}</button>
 	    </div>
 	    <div class="step-pane" id="parcel_single">
-	    	<form id="form" class="form-horizontal">
+	    	<form id="form" class="form-horizontal" method="post" action="{{ url('logistics/'.$storage->slug.'/add_parcel/single') }}">
 		    	<div class="form-group">
 			      <label class="col-lg-3 control-label">{{ __('logistics.parcel_name') }}</label>
 			      <div class="col-lg-8">
-			        <input type="text" name="name" tabindex="1" placeholder="{{ __('logistics.placeholder.parcel_name') }}" class="form-control" autocomplete="off">
+			        <input type="text" name="name" tabindex="1" value="{{ Session::get('post')['name'] }}" placeholder="{{ __('logistics.placeholder.parcel_name') }}" class="form-control" autocomplete="off">
 			      </div>
 			    </div>
 			    <div class="form-group">
 			      <label class="col-lg-3 control-label">{{ __('logistics.description') }}</label>
 			      <div class="col-lg-8">
-			        <input type="text" name="description" tabindex="2" placeholder="{{ __('logistics.placeholder.description') }}" class="form-control" autocomplete="off">
+			        <input type="text" name="description" value="{{ Session::get('post')['description'] }}" tabindex="2" placeholder="{{ __('logistics.placeholder.description') }}" class="form-control" autocomplete="off">
 			      </div>
 			    </div>
 			    <div class="form-group">
 			      <label class="col-lg-3 control-label">{{ __('logistics.comment') }}</label>
 			      <div class="col-lg-8">
-			      	<textarea name="comment" class="form-control" tabindex="3" placeholder="{{ __('logistics.placeholder.comment') }}"></textarea>
+			      	<textarea name="comment" class="form-control" tabindex="3" placeholder="{{ __('logistics.placeholder.comment') }}">{{ Session::get('post')['comment'] }}</textarea>
 			      </div>
 			    </div>
 			    <div class="form-group">
-			      <label class="col-lg-3 control-label">{{ __('logistics.serialnumber') }}</label>
+			      <label class="col-lg-3 control-label">{{ __('logistics.owner') }}</label>
 			      <div class="col-lg-8">
-			        <input type="text" name="serialnumber" tabindex="4" placeholder="{{ __('logistics.placeholder.serialnumber') }}" class="form-control" autocomplete="off">
+			        <input type="text" name="owner" tabindex="4" value="{{ Session::get('post')['owner'] }}" placeholder="{{ __('logistics.placeholder.owner') }}" class="form-control" autocomplete="off">
 			      </div>
 			    </div>
 			    <hr />
@@ -145,21 +124,22 @@ $(function() {
 	            </div>
 	            <hr />
 	            <div class="form-group">
-			      <label class="col-lg-3 control-label">{{ __('logistics.owner') }}</label>
+			      <label class="col-lg-3 control-label">{{ __('logistics.serialnumber') }}</label>
 			      <div class="col-lg-8">
-			        <input type="text" name="owner" tabindex="4" placeholder="{{ __('logistics.placeholder.owner') }}" class="form-control" autocomplete="off">
+			        <input type="text" name="serialnumber" value="{{ Session::get('post')['serialnumber'] }}" tabindex="6" placeholder="{{ __('logistics.placeholder.serialnumber') }}" class="form-control" autocomplete="off">
 			      </div>
 			    </div>
 			    <div class="form-group">
 				    <div class="col-lg-9 col-lg-offset-3">                      
 			        	<a href="{{ url('/logistics/'.$storage->slug.'/add_parcel') }}" class="btn btn-white">{{ __('admin.field.cancel') }}</a>
-			        	<button type="submit" class="btn btn-primary">{{ __('logistics.add_parcel') }}</button>
+			        	<button type="submit" tabindex="7" class="btn btn-primary">{{ __('logistics.add_parcel') }}</button>
 			        </div>
 			    </div>
 			</form>
 	    </div>
-	    <div class="step-pane" id="parcel_multi">This is the multi</div>
-	    <div class="step-pane" id="parcel_bulk">This is the bulk</div>
+	    <div class="step-pane" id="parcel_multi"><img src="{{ asset('img/not_done_yet_small.png') }}" alt="" /></div>
+	    <div class="step-pane" id="parcel_bulk"><img src="{{ asset('img/not_done_yet_small.png') }}" alt="" /></div>
+	    <div class="step-pane" id="parcel_consumable"><img src="{{ asset('img/not_done_yet_small.png') }}" alt="" /></div>
 	  </form>
 	</div>
 </section>

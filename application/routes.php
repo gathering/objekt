@@ -71,8 +71,10 @@ Route::group(array('before' => 'auth|is_superadmin|event'), function()
 Route::group(array('before' => 'auth|can_admin|event'), function()
 {
 	Route::get('/elastisk', function(){
-		$indexParams['index']  = 'mediabank';
-		Elastisk::indices()->create($indexParams);
+		#$indexParams['index']  = 'mediabank';
+		#Elastisk::indices()->create($indexParams);
+		$event = Config::get('application.event');
+		$event->special()->synchronizeUsers();
 	});
 
 	Route::get('/clearUsers', function(){
@@ -289,7 +291,9 @@ Route::group(array('before' => 'auth|can_logistics|event'), function()
 	Route::get('/logistics/add', 'logistics@add');
 	Route::post('/logistics/add', 'logistics@post_add');
 	Route::get('/logistics/owners/(:any).json', 'logistics@owners');
+	Route::get('/logistics/owners.json', 'logistics@owners');
 
+	Route::post('/logistics/search', 'logistics@search');
 });
 
 Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
@@ -298,6 +302,26 @@ Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
 
 	Route::get($baseURL, 'logistics@view_storage');
 	Route::get($baseURL . '/add_parcel', 'logistics@add_parcel');
+
+	Route::post($baseURL . '/add_parcel/single', 'logistics@post_parcel_single');
+
+	Route::get($baseURL . '/(:num)', 'logistics@parcel');
+	Route::get($baseURL . '/(:num)/action', 'logistics@parcel_action');
+	Route::get($baseURL . '/(:num)/handout', 'logistics@handout');
+	Route::post($baseURL . '/(:num)/handout', 'logistics@post_handout');
+	Route::get($baseURL . '/(:num)/receive', 'logistics@receive');
+
+	Route::get($baseURL . '/(:num)/(:any)', function(){
+		return View::make('not_done_yet');
+	});
+
+	Route::get($baseURL . '/search/filter', function(){
+		return View::make('not_done_yet');
+	});
+
+	Route::get($baseURL . '/reports', function(){
+		return View::make('not_done_yet');
+	});
 });
 
 

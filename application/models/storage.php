@@ -9,6 +9,9 @@ class Storage extends Eloquent {
 		$event = Config::get('application.event');
 		return self::where("event_id", "=", $event->id)->get();
 	}
+	function parcels(){
+		return $this->has_many('parcel');
+	}
 }
 
 ?>

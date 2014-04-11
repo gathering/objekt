@@ -7,6 +7,7 @@
 include("wannabe.php");
 
 class tg14 extends EventTemplate {
+	var $tag = "wb";
 	function invite(){
 		if(!Input::get())
 			return $this->view('invite.blade.php');
@@ -75,7 +76,60 @@ class tg14 extends EventTemplate {
 		// Crew_ID : Info Desk : 275
 	}
 
-	function searchUsers($id){
+	function synchronizeUsers(){
+		// Create Index
+		#$indexParams['index']  = 'wannabe_tg14';
+		#Elastisk::indices()->create($indexParams);
+
+		$currentUser = Auth::user();
+		if(isset($currentUser->meta()->apikey)){
+			$apikey = $currentUser->meta()->apikey;
+		} else $apikey = "1d7fcf1944cbc683ea6bc3c044c9c2cd";
+
+		Wannabe::setAPIKey($apikey);
+		
+		$i=0;
+		foreach(Wannabe::users()->users->user as $user){
+			$params = array();
+			$params['body']  = array(
+				'name' => $user->realname,
+				'id' => $user->id
+				);
+
+			$params['index'] = 'wannabe_tg14';
+			$params['type']  = 'user';
+			$params['id']    = $user->id;
+
+			Elastisk::index($params);
+			$i++;
+		}
+
+		return $i." users added.";
+
+	}
+
+	function searchUsers($term){
+
+		$params['index'] = 'wannabe_tg14';
+		$params['type']  = 'user';
+		$params['body']['query']['query_string']['query'] = $term;
+		if($term == "*") $params['body']['size'] = 10000;
+
+		$results = array();
+		$elastisk = Elastisk::search($params);
+
+		foreach($elastisk['hits']['hits'] as $result){
+			$person = array();
+			$person['name'] = "Wannabe: ".$result['_source']['name'];
+			$person['value'] = "wb:".$result['_id'];
+			array_push($results, $person);
+		}
+
+		return $results;
+
+	}
+
+	function getUser($id){
 		
 		$id = intval($id);
 
@@ -87,9 +141,11 @@ class tg14 extends EventTemplate {
 
 		Wannabe::setAPIKey($apikey);
 		$user = Wannabe::user($id);
-		if(isset($user->user))
-			return array(array('name' => "Wannabe: ".$user->user->realname." (".$user->user->id.")", 'value' => "wb:".$user->user->id));
-		else
+
+		if(isset($user->user)){
+			$user->user->name = $user->user->realname; // Objekt Fix.
+			return $user->user;
+		} else
 			return array();
 	}
 }

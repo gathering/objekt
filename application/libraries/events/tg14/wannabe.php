@@ -25,6 +25,11 @@ class Wannabe {
 		return self::run('users/view/'.$id);
 	}
 
+	static function users(){
+		self::setQuery("apikey", self::$api_key);
+		return self::run('users');
+	}
+
 	private static function setQuery($name, $value){
 		self::$query_string[$name] = $value;
 	}
@@ -45,7 +50,8 @@ class Wannabe {
 	    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	    return json_decode(curl_exec($ch));
+	    $return = curl_exec($ch);
+	    return json_decode($return) ? json_decode($return) : $return;
 	}
 
 }

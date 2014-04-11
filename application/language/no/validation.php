@@ -68,6 +68,7 @@ return array(
 	),
 	"unique"         => ":attribute er alt tatt.",
 	"url"            => ":attribute format er ugyldig.",
+	"owner"			=> "Eieren ble ikke funnet.",
 
 	/*
 	|--------------------------------------------------------------------------

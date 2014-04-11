@@ -660,6 +660,7 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
 .tt-suggestion.tt-cursor, .tt-suggestion:hover {
     color: #fff;
     background-color: #0097cf;
+    cursor: pointer;
 
 }
 

@@ -12,6 +12,7 @@
 
   <link rel="stylesheet"    href="{{ asset('css/messenger.css') }}">
   <link rel="stylesheet"    href="{{ asset('css/messenger-theme-flat.css') }}">
+  <link rel="stylesheet"    href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/css/bootstrap-datetimepicker.min.css">
   <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}"/>
   <!--[if lt IE 9]>
     <script src="{{ asset('js/ie/respond.min.js') }}"></script>
@@ -179,7 +180,7 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.2/typeahead.bundle.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.2/handlebars.min.js"></script>
-	<!-- app -->
+  <!-- app -->
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script src="{{ asset('js/app.plugin.js') }}"></script>
 	<script src="{{ asset('js/app.data.js') }}"></script>
@@ -239,6 +240,12 @@
 	<script src="{{ asset('js/charts/easypiechart/jquery.easy-pie-chart.js') }}"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/retina.js/1.0.1/retina.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/pusher/2.1.6/pusher.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/2.1.30/js/locales/bootstrap-datetimepicker.nb.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/locales/bootstrap-datepicker.nb.min.js" charset="UTF-8"></script>
+  
   <script>
   $(function() {
     var num_notifications = {{ $notification_count }};

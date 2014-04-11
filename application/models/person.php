@@ -11,7 +11,7 @@ class Person extends Eloquent {
 		return $this->has_many("person", "parent_id");
 	}
 	public function followers(){
-		return $this->has_many('following', 'belongs_to')->where("type", "=", "profile");
+		return $this->has_many('following', 'belongs_to')->where("type", "=", "person");
 	}
 
 	public function delete(){

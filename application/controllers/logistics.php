@@ -32,7 +32,8 @@ class Logistics_Controller extends Base_Controller {
 		return Redirect::to('/logistics/'.$storage->slug)->with('success', __('logistics.storage_added'));
 	}
 
-	function action_owners($term){
+	function action_owners($term="*", $wildcard=true, $arrayReturn=false){
+
 
 		$results = array();
 
@@ -48,10 +49,13 @@ class Logistics_Controller extends Base_Controller {
 			$results = array_merge($results, $event->special()->searchUsers($term));
 		}
 
+		if($wildcard) $term = "*".$term."*";
+
 		$params['index'] = 'people';
 		$params['type']  = 'obj';
-		$params['body']['query']['query_string']['query'] = "*".$term."*";
+		$params['body']['query']['query_string']['query'] = $term;
 		$params['body']['filter']['term']['event_id'] = $event->id;
+		if($term == "*") $params['body']['size'] = 10000;
 
 		$elastisk = Elastisk::search($params);
 		foreach($elastisk['hits']['hits'] as $result){
@@ -64,10 +68,13 @@ class Logistics_Controller extends Base_Controller {
 			}
 		}
 
+		unset($params);
+
 		$params['index'] = 'profiles';
 		$params['type']  = 'obj';
-		$params['body']['query']['query_string']['query'] = "*".$term."*";
+		$params['body']['query']['query_string']['query'] = $term;
 		$params['body']['filter']['term']['event_id'] = $event->id;
+		if($term == "*") $params['body']['size'] = 10000;
 
 		$elastisk = Elastisk::search($params);
 		foreach($elastisk['hits']['hits'] as $result){
@@ -76,6 +83,8 @@ class Logistics_Controller extends Base_Controller {
 			$profile['value'] = "profile:".$result['_id'];
 			array_push($results, $profile);
 		}
+
+		if($arrayReturn) return $results;
 
 		return Response::json($results);
 		exit;
@@ -87,6 +96,169 @@ class Logistics_Controller extends Base_Controller {
 
 	function action_add_parcel(){
 		return View::make('logistics.add_parcel');
+	}
+
+	/*
+		- Meldingssystem på kolli (Meld hendelse på kolli)
+		Eks. Skjerm som har knekt fot. Sende melding om at hendenlsen har skjedd
+	*/
+
+	function action_post_parcel_single(){
+
+		Validator::register('owner', function($attribute, $value, $parameters)
+		{
+			$value = explode(":", str_replace(" ", "", $value));
+			$value = @$value[1];
+			if(count($this->action_owners(strval($value), false, true)) > 0 && !empty($value)) return true;
+			return false;
+		});
+
+		$input = Input::all();
+		$rules = array(
+		    'name'  => 'required|max:255',
+		    'description' => 'max:3000',
+		    'comment' => 'max:3000',
+		    'owner' => 'required|owner'
+		);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		$parcel = new Parcel;
+		foreach($rules as $rule => $validation){
+			$parcel->{$rule} = $input[$rule];
+		}
+		$parcel->tags = $input['tags'];
+		$parcel->user_id = Auth::user()->id;
+		$storage = Config::get('logistics.storage');
+		$parcel = $storage->parcels()->insert($parcel);
+
+		$params['body']  = $parcel->to_array();
+		unset($params['body']['updated_at']); // Not needed.
+		unset($params['body']['created_at']); // Not needed.
+
+		$tags = array_unique(array_merge(explode(",", $parcel->tags), array_map(function($value){
+			$value = strtolower($value);
+			return Str::slug($value);
+		}, explode(" ", $input['name']))));
+
+		$params['body']['tags'] = $tags;
+
+		$params['index'] = 'logistics';
+		$params['type']  = 'parcel';
+		$params['id']    = $parcel->id;
+		Elastisk::index($params);
+
+
+		return Redirect::to('logistics/'.$storage->slug.'/'.$parcel->id.'/action');
+	}
+
+	function action_parcel_action($storage, $parcel_id){
+		$parcel = Parcel::find($parcel_id);
+		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+		return View::make('logistics.parcel_action')->with("parcel", $parcel);
+	}
+
+	function action_parcel($storage, $parcel_id){
+		$parcel = Parcel::find($parcel_id);
+		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+		return View::make('logistics.parcel_view')->with("parcel", $parcel);
+	}
+
+	function action_handout($storage, $parcel_id){
+		$parcel = Parcel::find($parcel_id);
+		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+
+		if($parcel->current_status()->status == "handout")
+			return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_already_handedout'));
+
+		return View::make('logistics.parcel_handout')->with("parcel", $parcel);
+	}
+
+	function action_post_handout($storage, $parcel_id){
+		$parcel = Parcel::find($parcel_id);
+		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+
+		Validator::register('owner', function($attribute, $value, $parameters)
+		{
+			$value = explode(":", str_replace(" ", "", $value));
+			$value = @$value[1];
+			if(count($this->action_owners(strval($value), false, true)) > 0 && !empty($value)) return true;
+			return false;
+		});
+
+		$input = Input::all();
+		$rules = array(
+		    'receiver' => 'required|owner'
+		);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		$log = new Parcellog;
+		$log->status = "handout";
+		$log->user_id = Auth::user()->id;
+		$log->receiver_id = $input['receiver'];
+		$log->expected_back = date("Y-m-d H:i:s", strtotime($input['expected_back'])); 
+		$parcel->logs()->insert($log);
+
+		$storage = Config::get('logistics.storage');
+		return Redirect::to('/logistics/'.$storage->slug.'/'.$parcel->id)->with('success', __('logistics.parcel_handedout'));
+	}
+
+	function action_receive($storage, $parcel_id){
+		$parcel = Parcel::find($parcel_id);
+		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+
+		$log = new Parcellog;
+		$log->status = "receive";
+		$log->user_id = Auth::user()->id;
+		$log->expected_back = date("Y-m-d H:i:s"); 
+		$parcel->logs()->insert($log);
+
+		$storage = Config::get('logistics.storage');
+		return Redirect::to('/logistics/'.$storage->slug.'/'.$parcel->id)->with('success', __('logistics.parcel_received'));
+	}
+
+	function action_search(){
+
+		tplConstructor::set(true);
+
+		$search = Input::get('search');
+		$event = Config::get('application.event');
+
+		$params['index'] = 'logistics';
+		$params['type']  = 'parcel';
+		$params['body']['query']['query_string']['query'] = $search;
+
+		$results = array();
+
+		$elastisk = Elastisk::search($params);
+		foreach($elastisk['hits']['hits'] as $result){
+			$parcel = new stdClass;
+			$parcel->name = $result['_source']['name'];
+			$storage = Storage::find($result['_source']['storage_id']);
+			$parcel->url = url('logistics/'.$storage->slug.'/'.$result['_id']);
+			array_push($results, $parcel);
+		}
+
+		if(count($results) == 1){
+			return Redirect::to($results[0]->url);
+		}
+
+		if(count($results) == 0){
+			return Redirect::to(Request::referrer())->with('error',  __('common.nothing_found'));
+		}
+
+		return View::make('logistics.search')->with("results", $results);
 	}
 }
 

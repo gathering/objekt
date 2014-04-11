@@ -42,7 +42,8 @@ $(function() {
           <span class="text-active">
             <i class="icon-eye-open"></i> {{ __('profile.gets_notifications') }}
           </span>
-        </button>
+        </button><br /><br />
+        <div class="text-muted">{{ sprintf(__('profile.followers'), $profile->followers()->count()) }}</div>
       </div>
       <div class="list-group list-normal m-b-none">
       	<a href="{{ $profile->url() }}" class="list-group-item active"><i class="fa fa-user"></i> {{ __('profile.profile') }}</a>
