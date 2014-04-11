@@ -62,7 +62,7 @@
 						@if($log->status == "created")
 							{{ __('logistics.status.created') }}
 						@else
-							{{ sprintf(__('logistics.status.'.$log->status), $log->user()->first()->display_name()) }}
+							{{ sprintf(__('logistics.status.'.$log->status), $log->receiver()) }}
 							@if(strtotime($log->expected_back) > 0 && strtotime($log->expected_back) > time())
 								<br />
 								<div class="label bg-black" title="{{ Date::nice($log->expected_back) }}">
