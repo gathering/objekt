@@ -60,7 +60,7 @@ class tg14 extends EventTemplate {
 			if($objUser = $objUser->first()){
 				if($objUser->events()->where('events.id', '=', 2)->first())
 					return Redirect::to('/invite')->with('error', "You are already registred with this event.");
-				$objUser = Verify\Models\User::find($objUser->id); // There must be a better way.
+				$objUser = new Verify\Models\User::find($objUser->id); // There must be a better way.
 			} else return Redirect::to('/invite')->with('error', "This username already exists, but with another email. We don't know it's you, so.. I'm sorry?");
 		} else $objUser = new Verify\Models\User;
 
