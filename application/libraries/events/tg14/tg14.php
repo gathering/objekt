@@ -51,7 +51,6 @@ class tg14 extends EventTemplate {
 			return Redirect::to('/invite')->with('error', "Not apart of a crew that are eligible to have an Objekt-account.");
 
 		$objUser = User::where("username", "=", $user->user->username);
-		var_dump($objUser);
 		if($objUser->count() > 0){
 			$objUser = $objUser->where("email", "=", $user->user->email);
 			if($objUser = $objUser->first()){
@@ -59,12 +58,11 @@ class tg14 extends EventTemplate {
 					return Redirect::to('/invite')->with('error', "You are already registred with this event.");
 			} else return Redirect::to('/invite')->with('error', "This username already exists, but with another email. We don't know it's you, so.. I'm sorry?");
 		} else $objUser = new Verify\Models\User;
-		var_dump($objUser); exit;
-
+		
 		$objUser->username = @$user->user->username;
 		$objUser->password = $password;
 		$objUser->email = @$user->user->email;
-		$objuser->name = empty($user->user->realname) ? $user->user->username : $user->user->realname;
+		$objUser->name = empty($user->user->realname) ? $user->user->username : $user->user->realname;
 		$objUser->verified = 1;
 		$objUser->profile_img = isset($user->user->images->image[3]['url']) ? $user->user->images->image[3]['url'] : "";
 		$objUser->meta = serialize($user);
