@@ -22,8 +22,6 @@ class tg14 extends EventTemplate {
 		if(!is_array($user->user->crews->crew))
 			return Redirect::to('/invite')->with('error', "You are not apart of any crew, so we cannot add your account.");
 
-		var_dump($user); exit;
-
 		// Special users
 		switch($user->user->id){
 			case 5497:
