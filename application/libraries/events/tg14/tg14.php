@@ -63,7 +63,6 @@ class tg14 extends EventTemplate {
 		$objUser->username = $user->user->username;
 		$objUser->password = $password;
 		$objUser->email = $user->user->email;
-		var_dump($user->user); exit;
 		$objuser->name = $user->user->realname;
 		$objUser->verified = 1;
 		$objUser->profile_img = isset($user->user->images->image[3]['url']) ? $user->user->images->image[3]['url'] : "";
