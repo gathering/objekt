@@ -64,8 +64,7 @@ class tg14 extends EventTemplate {
 		$objUser->email = @$user->user->email;
 		$objUser->name = empty($user->user->realname) ? $user->user->username : $user->user->realname;
 		$objUser->verified = 1;
-		var_dump($user->user->images); exit;
-		$objUser->profile_img = isset($user->user->images->image[3]['url']) ? $user->user->images->image[3]['url'] : "";
+		$objUser->profile_img = isset($user->user->images->image[3]->url) ? $user->user->images->image[3]->url : "";
 		$objUser->meta = serialize($user);
 		$objUser->save();
 
