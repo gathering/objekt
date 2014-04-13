@@ -46,13 +46,17 @@ class tg14 extends EventTemplate {
 				}
 			break;
 		}
+		if(empty($user->user))
+			return Redirect::to('/invite')->with('error', "An error occurred during retrieving data from Wannabe.");
+
+		$user = $user->user;
 
 		if(!$role)
 			return Redirect::to('/invite')->with('error', "Not apart of a crew that are eligible to have an Objekt-account.");
 
-		$objUser = User::where("username", "=", $user->user->username);
+		$objUser = User::where("username", "=", $user->username);
 		if($objUser->count() > 0){
-			$objUser = $objUser->where("email", "=", $user->user->email);
+			$objUser = $objUser->where("email", "=", $user->email);
 			if($objUser = $objUser->first()){
 				if($objUser->events()->where('events.id', '=', 2)->first())
 					return Redirect::to('/invite')->with('error', "You are already registred with this event.");
@@ -60,12 +64,12 @@ class tg14 extends EventTemplate {
 			} else return Redirect::to('/invite')->with('error', "This username already exists, but with another email. We don't know it's you, so.. I'm sorry?");
 		} else $objUser = new Verify\Models\User;
 
-		$objUser->username = @$user->user->username;
+		$objUser->username = @$user->username;
 		$objUser->password = $password;
-		$objUser->email = @$user->user->email;
-		$objuser->name = @$user->user->realname;
+		$objUser->email = @$user->email;
+		$objuser->name = @$user->realname;
 		$objUser->verified = 1;
-		$objUser->profile_img = isset($user->user->images->image[3]['url']) ? $user->user->images->image[3]['url'] : "";
+		$objUser->profile_img = isset($user->images->image[3]['url']) ? $user->images->image[3]['url'] : "";
 		$objUser->meta = serialize($user);
 		$objUser->save();
 
