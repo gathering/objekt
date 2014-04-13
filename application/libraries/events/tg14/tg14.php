@@ -29,6 +29,9 @@ class tg14 extends EventTemplate {
 			case 5497:
 				$role = Role::find(6);
 			break;
+			case 2260:
+				$role = Role::find(8);
+			break;
 			default: case "":
 				foreach($user->user->crews->crew as $crew){
 					switch($crew->id){
