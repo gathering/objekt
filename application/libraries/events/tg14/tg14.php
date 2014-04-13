@@ -60,11 +60,10 @@ class tg14 extends EventTemplate {
 			} else return Redirect::to('/invite')->with('error', "This username already exists, but with another email. We don't know it's you, so.. I'm sorry?");
 		} else $objUser = new Verify\Models\User;
 
-		$objUser->username = $user->user->username;
+		$objUser->username = @$user->user->username;
 		$objUser->password = $password;
-		$objUser->email = $user->user->email;
-		var_dump($user->user->realname); exit;
-		$objuser->name = $user->user->realname;
+		$objUser->email = @$user->user->email;
+		$objuser->name = @$user->user->realname;
 		$objUser->verified = 1;
 		$objUser->profile_img = isset($user->user->images->image[3]['url']) ? $user->user->images->image[3]['url'] : "";
 		$objUser->meta = serialize($user);
