@@ -304,6 +304,9 @@ Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
 	Route::get($baseURL . '/add_parcel', 'logistics@add_parcel');
 
 	Route::post($baseURL . '/add_parcel/single', 'logistics@post_parcel_single');
+	Route::post($baseURL . '/add_parcel/bulk', 'logistics@post_parcel_bulk');
+	Route::post($baseURL . '/add_parcel/bulkline', 'logistics@bulkline');
+	Route::post($baseURL . '/edit_bulkline', 'logistics@edit_bulkline');
 
 	Route::get($baseURL . '/(:num)', 'logistics@parcel');
 	Route::get($baseURL . '/(:num)/action', 'logistics@parcel_action');
@@ -311,15 +314,15 @@ Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
 	Route::post($baseURL . '/(:num)/handout', 'logistics@post_handout');
 	Route::get($baseURL . '/(:num)/receive', 'logistics@receive');
 
-	Route::get($baseURL . '/(:num)/(:any)', function(){
+	Route::any($baseURL . '/(:num)/(:any)', function(){
 		return View::make('not_done_yet');
 	});
 
-	Route::get($baseURL . '/search/filter', function(){
+	Route::any($baseURL . '/search/filter', function(){
 		return View::make('not_done_yet');
 	});
 
-	Route::get($baseURL . '/reports', function(){
+	Route::any($baseURL . '/reports', function(){
 		return View::make('not_done_yet');
 	});
 });

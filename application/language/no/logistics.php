@@ -45,6 +45,12 @@ return array(
 	'current_status' => 'Status',
 	'parcel_received' => 'Kolli registrert mottatt',
 	'place_in_stock' => 'Plasser på lager',
+	'unique_field' => 'Unik',
+	'no_unique_fields' => 'Ingen unike felt ble valgt.',
+	'bulking' => 'Bulkverktøy',
+	'bulk_status' => 'Status',
+	'bulk_missing_field' => 'Et felt mangler',
+	'beforeunload' => 'Dine data som er skrevet inn her i multiverktøyet, som ikke er merket med suksess, vil ikke bli lagret.',
 
 	'placeholder' => array(
 		'name' => 'Lagernavn',

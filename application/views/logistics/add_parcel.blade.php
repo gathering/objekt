@@ -65,6 +65,21 @@ $(function() {
 			suggestion: Handlebars.compile('<p><?='{'.'{'?>name}}</p>')
 		}
 	});
+
+	$('input[type=checkbox]')
+
+	$('.unique input[type=checkbox]').click(function(){
+		var name = $(this).attr('data-input');
+		if(name == undefined){
+			var name = $(this).attr('data-name');
+		}
+
+		if( $(this).is(':checked') ) {
+			$("input[name=" + name + "]").attr("disabled", true);
+		} else {
+			$("input[name=" + name + "]").attr("disabled", false);
+		}
+	})
 });
 </script>
 @endsection
@@ -89,25 +104,25 @@ $(function() {
 		    	<div class="form-group">
 			      <label class="col-lg-3 control-label">{{ __('logistics.parcel_name') }}</label>
 			      <div class="col-lg-8">
-			        <input type="text" name="name" tabindex="1" value="{{ Session::get('post')['name'] }}" placeholder="{{ __('logistics.placeholder.parcel_name') }}" class="form-control" autocomplete="off">
+			        <input type="text" name="name" tabindex="1" value="{{ @Session::get('post')['name'] }}" placeholder="{{ __('logistics.placeholder.parcel_name') }}" class="form-control" autocomplete="off">
 			      </div>
 			    </div>
 			    <div class="form-group">
 			      <label class="col-lg-3 control-label">{{ __('logistics.description') }}</label>
 			      <div class="col-lg-8">
-			        <input type="text" name="description" value="{{ Session::get('post')['description'] }}" tabindex="2" placeholder="{{ __('logistics.placeholder.description') }}" class="form-control" autocomplete="off">
+			        <input type="text" name="description" value="{{ @Session::get('post')['description'] }}" tabindex="2" placeholder="{{ __('logistics.placeholder.description') }}" class="form-control" autocomplete="off">
 			      </div>
 			    </div>
 			    <div class="form-group">
 			      <label class="col-lg-3 control-label">{{ __('logistics.comment') }}</label>
 			      <div class="col-lg-8">
-			      	<textarea name="comment" class="form-control" tabindex="3" placeholder="{{ __('logistics.placeholder.comment') }}">{{ Session::get('post')['comment'] }}</textarea>
+			      	<textarea name="comment" class="form-control" tabindex="3" placeholder="{{ __('logistics.placeholder.comment') }}">{{ @Session::get('post')['comment'] }}</textarea>
 			      </div>
 			    </div>
 			    <div class="form-group">
 			      <label class="col-lg-3 control-label">{{ __('logistics.owner') }}</label>
 			      <div class="col-lg-8">
-			        <input type="text" name="owner" tabindex="4" value="{{ Session::get('post')['owner'] }}" placeholder="{{ __('logistics.placeholder.owner') }}" class="form-control" autocomplete="off">
+			        <input type="text" name="owner" tabindex="4" value="{{ @Session::get('post')['owner'] }}" placeholder="{{ __('logistics.placeholder.owner') }}" class="form-control" autocomplete="off">
 			      </div>
 			    </div>
 			    <hr />
@@ -126,7 +141,7 @@ $(function() {
 	            <div class="form-group">
 			      <label class="col-lg-3 control-label">{{ __('logistics.serialnumber') }}</label>
 			      <div class="col-lg-8">
-			        <input type="text" name="serialnumber" value="{{ Session::get('post')['serialnumber'] }}" tabindex="6" placeholder="{{ __('logistics.placeholder.serialnumber') }}" class="form-control" autocomplete="off">
+			        <input type="text" name="serialnumber" value="{{ @Session::get('post')['serialnumber'] }}" tabindex="6" placeholder="{{ __('logistics.placeholder.serialnumber') }}" class="form-control" autocomplete="off">
 			      </div>
 			    </div>
 			    <div class="form-group">
@@ -138,7 +153,106 @@ $(function() {
 			</form>
 	    </div>
 	    <div class="step-pane" id="parcel_multi"><img src="{{ asset('img/not_done_yet_small.png') }}" alt="" /></div>
-	    <div class="step-pane" id="parcel_bulk"><img src="{{ asset('img/not_done_yet_small.png') }}" alt="" /></div>
+	    <div class="step-pane" id="parcel_bulk">
+	    	<form id="form" class="form-horizontal" method="post" action="{{ url('logistics/'.$storage->slug.'/add_parcel/bulk') }}">
+		    	<div class="form-group">
+			      <label class="col-lg-3 control-label">
+			      	{{ __('logistics.parcel_name') }}			      	
+			      </label>
+ 				  <div class="col-lg-7">
+			        <input type="text" name="name" tabindex="1" value="{{ @Session::get('post')['name'] }}" placeholder="{{ __('logistics.placeholder.parcel_name') }}" class="form-control" autocomplete="off">
+			      </div>
+			      <div class="col-lg-2">
+			      	<label class="checkbox-custom unique" style="font-weight: normal; margin-top: 10px;">
+						<input type="checkbox" data-name="name" name="unique[name]">
+						<i class="fa fa-square-o checked"></i>
+						{{ __('logistics.unique_field') }}
+					</label>
+				  </div>
+			    </div>
+			    <hr />
+			    <div class="form-group">
+			      <label class="col-lg-3 control-label">
+			      	{{ __('logistics.description') }}
+			      </label>
+			      <div class="col-lg-7">
+			        <input type="text" name="description" value="{{ @Session::get('post')['description'] }}" tabindex="2" placeholder="{{ __('logistics.placeholder.description') }}" class="form-control" autocomplete="off">
+			      </div>
+			      <div class="col-lg-2">
+			      	<label class="checkbox-custom unique" style="font-weight: normal; margin-top: 10px;">
+						<input type="checkbox" data-name="description" name="unique[description]">
+						<i class="fa fa-square-o checked"></i>
+						{{ __('logistics.unique_field') }}
+					</label>
+				  </div>
+			    </div>
+			    <div class="form-group">
+			      <label class="col-lg-3 control-label">{{ __('logistics.comment') }}</label>
+			      <div class="col-lg-7">
+			      	<textarea name="comment" class="form-control" tabindex="3" placeholder="{{ __('logistics.placeholder.comment') }}">{{ @Session::get('post')['comment'] }}</textarea>
+			      </div>
+			      <div class="col-lg-2">
+			      	<label class="checkbox-custom unique" style="font-weight: normal; margin-top: 10px;">
+						<input type="checkbox" data-name="comment" name="unique[comment]">
+						<i class="fa fa-square-o checked"></i>
+						{{ __('logistics.unique_field') }}
+					</label>
+				  </div>
+			    </div>
+			    <div class="form-group">
+			      <label class="col-lg-3 control-label">{{ __('logistics.owner') }}</label>
+			      <div class="col-lg-7">
+			        <input type="text" name="owner" tabindex="4" value="{{ @Session::get('post')['owner'] }}" placeholder="{{ __('logistics.placeholder.owner') }}" class="form-control" autocomplete="off">
+			      </div>
+			      <div class="col-lg-2">
+			      	<label class="checkbox-custom unique" style="font-weight: normal; margin-top: 10px;">
+						<input type="checkbox" data-name="owner" name="unique[owner]">
+						<i class="fa fa-square-o checked"></i>
+						{{ __('logistics.unique_field') }}
+					</label>
+				  </div>
+			    </div>
+			    <hr />
+			    <div class="form-group">
+	              <label class="col-lg-3 control-label">{{ __('logistics.tags') }}</label>
+	              <div class="col-lg-7">
+	            	<div class="pillbox clearfix m-b tags">
+						<ul>
+							<input type="text" name="tags-input" tabindex="5" placeholder="{{ __('admin.placeholder.tags') }}">
+						</ul>
+						<input type="hidden" name="tags" class="tags_field" />
+					</div>
+	              </div>
+	              <div class="col-lg-2">
+			      	<label class="checkbox-custom unique" style="font-weight: normal; margin-top: 10px;">
+						<input type="checkbox" data-name="tags" data-input="tags-input" name="unique[tags]">
+						<i class="fa fa-square-o checked"></i>
+						{{ __('logistics.unique_field') }}
+					</label>
+				  </div>
+	            </div>
+	            <hr />
+	            <div class="form-group">
+			      <label class="col-lg-3 control-label">{{ __('logistics.serialnumber') }}</label>
+			      <div class="col-lg-7">
+			        <input type="text" name="serialnumber" value="{{ @Session::get('post')['serialnumber'] }}" tabindex="6" placeholder="{{ __('logistics.placeholder.serialnumber') }}" class="form-control" autocomplete="off">
+			      </div>
+			      <div class="col-lg-2">
+			      	<label class="checkbox-custom unique" style="font-weight: normal; margin-top: 10px;">
+						<input type="checkbox" data-name="serialnumber" name="unique[serialnumber]">
+						<i class="fa fa-square-o checked"></i>
+						{{ __('logistics.unique_field') }}
+					</label>
+				  </div>
+			    </div>
+			    <div class="form-group">
+				    <div class="col-lg-9 col-lg-offset-3">                      
+			        	<a href="{{ url('/logistics/'.$storage->slug.'/add_parcel') }}" class="btn btn-white">{{ __('admin.field.cancel') }}</a>
+			        	<button type="submit" tabindex="7" class="btn btn-primary">{{ __('logistics.add_parcel') }}</button>
+			        </div>
+			    </div>
+			</form>
+	    </div>
 	    <div class="step-pane" id="parcel_consumable"><img src="{{ asset('img/not_done_yet_small.png') }}" alt="" /></div>
 	  </form>
 	</div>

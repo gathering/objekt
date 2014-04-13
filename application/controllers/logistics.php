@@ -238,6 +238,7 @@ class Logistics_Controller extends Base_Controller {
 		$params['index'] = 'logistics';
 		$params['type']  = 'parcel';
 		$params['body']['query']['query_string']['query'] = $search;
+		$params['body']['size'] = 5000;
 
 		$results = array();
 
@@ -259,6 +260,163 @@ class Logistics_Controller extends Base_Controller {
 		}
 
 		return View::make('logistics.search')->with("results", $results);
+	}
+
+	function action_post_parcel_bulk(){
+		Validator::register('owner', function($attribute, $value, $parameters)
+		{
+			$value = explode(":", str_replace(" ", "", $value));
+			$value = @$value[1];
+			if(count($this->action_owners(strval($value), false, true)) > 0 && !empty($value)) return true;
+			return false;
+		});
+
+		$input = Input::all();
+		$rules = array(
+		    'name'  => 'required|max:255',
+		    'description' => 'max:3000',
+		    'comment' => 'max:3000',
+		    'owner' => 'required|owner'
+		);
+
+		foreach($rules as $rule => $validation){
+			if(isset($input['unique'][$rule]))
+				unset($rules[$rule]);
+		}
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		if(!is_array($input['unique']))
+			return Redirect::to(Request::referrer())->with('error', __('logistics.no_unique_fields'))->with('post', $input);
+
+		$fields = array();
+		foreach($input['unique'] as $name => $field){
+			array_push($fields, $name);
+		}
+
+		$rules['tags'] = "";
+
+		$staticFields = array();
+		foreach($rules as $rule => $validation) $staticFields[$rule] = $input[$rule];
+
+		return View::make('logistics.bulk')->with("fields", $fields)->with("staticFields", $staticFields);
+	}
+
+	function action_bulkline(){
+		Validator::register('owner', function($attribute, $value, $parameters)
+		{
+			$value = explode(":", str_replace(" ", "", $value));
+			$value = @$value[1];
+			if(count($this->action_owners(strval($value), false, true)) > 0 && !empty($value)) return true;
+			return false;
+		});
+
+		$input = Input::all();
+		$rules = array(
+		    'name'  => 'required|max:255',
+		    'description' => 'max:3000',
+		    'comment' => 'max:3000',
+		    'owner' => 'required|owner'
+		);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+			return Response::json(array('status' => 'failed', 'message' => $validation->errors), 404);
+		}
+
+		$parcel = new Parcel;
+		foreach($rules as $rule => $validation){
+			$parcel->{$rule} = $input[$rule];
+		}
+
+		$parcel->tags = $input['tags'];
+		$parcel->user_id = Auth::user()->id;
+
+		$storage = Config::get('logistics.storage');
+		$parcel = $storage->parcels()->insert($parcel);
+
+		$params['body']  = $parcel->to_array();
+		unset($params['body']['updated_at']); // Not needed.
+		unset($params['body']['created_at']); // Not needed.
+
+		$tags = array_unique(array_merge(explode(",", $parcel->tags), array_map(function($value){
+			$value = strtolower($value);
+			return Str::slug($value);
+		}, explode(" ", $input['name']))));
+
+		$params['body']['tags'] = $tags;
+
+		$params['index'] = 'logistics';
+		$params['type']  = 'parcel';
+		$params['id']    = $parcel->id;
+		Elastisk::index($params);
+
+		return Response::json(array('status' => 'created', 'id' => $parcel->id));
+	}
+
+	function action_edit_bulkline(){
+		Validator::register('owner', function($attribute, $value, $parameters)
+		{
+			$value = explode(":", str_replace(" ", "", $value));
+			$value = @$value[1];
+			if(count($this->action_owners(strval($value), false, true)) > 0 && !empty($value)) return true;
+			return false;
+		});
+
+		$input = Input::all();
+		$parcel = Parcel::find($input['id']);
+		if(!$parcel){
+			return Response::json(array('status' => 'failed', 'message' => "Parcel not found"), 404);
+		}
+
+		$rules = array(
+		    'name'  => 'required|max:255',
+		    'description' => 'max:3000',
+		    'comment' => 'max:3000',
+		    'owner' => 'required|owner'
+		);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+			return Response::json(array('status' => 'failed', 'message' => $validation->errors), 404);
+		}
+
+		foreach($rules as $rule => $validation){
+			$parcel->{$rule} = $input[$rule];
+		}
+
+		$parcel->tags = $input['tags'];
+		$parcel->user_id = Auth::user()->id;
+
+		$storage = Config::get('logistics.storage');
+		$parcel->save();
+
+		$params['body']  = $parcel->to_array();
+		unset($params['body']['updated_at']); // Not needed.
+		unset($params['body']['created_at']); // Not needed.
+
+		$tags = array_unique(array_merge(explode(",", $parcel->tags), array_map(function($value){
+			$value = strtolower($value);
+			return Str::slug($value);
+		}, explode(" ", $input['name']))));
+
+		$params['body']['tags'] = $tags;
+
+		$params['index'] = 'logistics';
+		$params['type']  = 'parcel';
+		$params['id']    = $parcel->id;
+		Elastisk::index($params);
+
+		return Response::json(array('status' => 'edited', 'id' => $parcel->id));
 	}
 }
 

@@ -736,6 +736,10 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
   background-size: cover;
 }
 
+.checkbox-custom {
+  cursor: pointer;
+}
+
 /*phone*/
 @media (max-width: 767px) {
   .btn-circle {
