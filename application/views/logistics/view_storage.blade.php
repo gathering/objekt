@@ -12,6 +12,9 @@
     <a href="{{ url('logistics/'.$storage->slug.'/search/filter') }}" class="btn btn-warning btn-circle">
         <i class="fa fa-search"></i> {{ __('logistics.filter_search') }}
     </a>
+    <a href="{{ url('logistics/'.$storage->slug.'/duplicates') }}" class="btn btn-danger btn-circle">
+        <i class="fa fa-files-o"></i> {{ __('logistics.duplicates') }}
+    </a>
     @endif
 </section>
 </div>

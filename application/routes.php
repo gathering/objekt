@@ -302,6 +302,17 @@ Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
 
 	Route::get($baseURL, 'logistics@view_storage');
 	Route::get($baseURL . '/add_parcel', 'logistics@add_parcel');
+	Route::get($baseURL . '/duplicates', function(){
+		var_dump(Parcel::duplicates()->get());
+		foreach (Parcel::duplicates()->get() as $parcel) {
+			foreach($parcel->ids() as $dup){
+				if(Parcellog::where("parcel_id", "=", $dup)->count() == 0){
+					$par = Parcel::find($dup);
+					if($par) $par->delete();
+				}
+			}
+		}
+	});
 
 	Route::post($baseURL . '/add_parcel/single', 'logistics@post_parcel_single');
 	Route::post($baseURL . '/add_parcel/bulk', 'logistics@post_parcel_bulk');

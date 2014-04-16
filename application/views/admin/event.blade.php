@@ -153,6 +153,13 @@
 	                </div>
 	                <hr />
 	                <div class="form-group">
+	                  <label class="col-lg-3 control-label">{{ __('admin.field.num_wristband') }}</label>
+	                  <div class="col-lg-8">
+	                    <input type="text" name="num_wristband" value="{{ $event->num_wristband }}" placeholder="{{ __('admin.placeholder.num_wristband') }}" class="form-control">
+	                  </div>
+	                </div>
+	                <hr />
+	                <div class="form-group">
 	                  <label class="col-lg-3 control-label">{{ __('user.aid') }}</label>
 	                  <div class="col-lg-8">
 	                	<div class="m-b">

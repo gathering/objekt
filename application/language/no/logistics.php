@@ -51,6 +51,7 @@ return array(
 	'bulk_status' => 'Status',
 	'bulk_missing_field' => 'Et felt mangler',
 	'beforeunload' => 'Dine data som er skrevet inn her i multiverktøyet, som ikke er merket med suksess, vil ikke bli lagret.',
+	'duplicates' => 'Duplikater',
 
 	'placeholder' => array(
 		'name' => 'Lagernavn',

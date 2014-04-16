@@ -10,6 +10,45 @@ class Parcel extends Eloquent {
 	function user(){
 		return $this->belongs_to('user');
 	}
+	function ids(){
+		return explode(",", $this->ids);
+	}
+	function delete(){
+		$params['index'] = 'logistics';
+		$params['type']  = 'parcel';
+		$params['id']    = $this->id;
+		Elastisk::delete($params);
+		return parent::delete();
+	}
+	static function duplicates(){
+		return self::select(
+						array(
+							"parcels.id",
+							"parcels.name",
+							"parcels.description",
+							"parcels.serialnumber",
+							"dup.ids"
+							)
+						)
+					->join(DB::Raw("(SELECT
+										`parcels`.`name`,
+										`parcels`.`description`,
+										`parcels`.`serialnumber`,
+										GROUP_CONCAT(DISTINCT `parcels`.`id` SEPARATOR ',') AS ids
+									 FROM
+									 	`parcels`
+									 GROUP BY
+									 	`parcels`.`name`,
+									 	`parcels`.`description`,
+									 	`parcels`.`serialnumber`
+									 HAVING
+									 	count(`parcels`.`id`) > 1
+									) AS dup"), function($join){
+						$join->on('parcels.name', '=', 'dup.name');
+						$join->on('parcels.description', '=', 'dup.description');
+						$join->on('parcels.serialnumber', '=', 'dup.serialnumber');
+					});
+	}
 }
 
 class parcelCurrentStatus {

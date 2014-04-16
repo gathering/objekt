@@ -15,11 +15,10 @@ class Mediabank_Controller extends Base_Controller {
 		$params['index'] = 'mediabank';
 		$params['type']  = 'image';
 		$params['body']['query']['query_string']['query'] = str_replace(" ", " +", urldecode($tag));
-
+		$params['body']['size'] = 5000;
 		
 		tplConstructor::set(true);
 		$elastisk = Elastisk::search($params);
-		#die(var_dump($params['body']['query']['query_string']['query'], $elastisk));
 		$results = array();
 
 		if($elastisk['hits']['total'] == 0)
@@ -140,6 +139,7 @@ class Mediabank_Controller extends Base_Controller {
 		$params['type']  = 'image';
 		$event = Config::get('application.event');
 		$params['body']['query']['query_string']['query'] = "*".$term."*";
+		$params['body']['size'] = 5000;
 		$params['body']['filter']['term']['event_id'] = $event->id;
 
 		$elastisk = Elastisk::search($params);

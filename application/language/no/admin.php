@@ -17,6 +17,7 @@ return array(
 	'show_map' => 'Vis kart',
 	'map' => 'Kart',
 	'field' => array(
+		'num_wristband' => 'Antall bånd',
 		'name' => 'Navn',
 		'features' => 'Funksjoner',
 		'mediabank' => 'Mediebank',
@@ -45,7 +46,8 @@ return array(
 		'name' => 'Arrangementnavn',
 		'tags' => 'Legg til merkelapper',
 		'date' => 'Dato for arrangementstart',
-		'slug' => 'URL-snegle (SLUG)'
+		'slug' => 'URL-snegle (SLUG)',
+		'num_wristband' => '504'
 		),
 	'description' => array(
 		'tags' => 'Disse merkelappene vil legges til i alle filer i mediebanken. Gjelder kun filer som er lastet opp i etterkant av innlegging av merkelapper.',

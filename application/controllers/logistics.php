@@ -134,6 +134,7 @@ class Logistics_Controller extends Base_Controller {
 		}
 		$parcel->tags = $input['tags'];
 		$parcel->user_id = Auth::user()->id;
+		$parcel->serialnumber = $input['serialnumber'];
 		$storage = Config::get('logistics.storage');
 		$parcel = $storage->parcels()->insert($parcel);
 
@@ -338,6 +339,7 @@ class Logistics_Controller extends Base_Controller {
 
 		$parcel->tags = $input['tags'];
 		$parcel->user_id = Auth::user()->id;
+		$parcel->serialnumber = $input['serialnumber'];
 
 		$storage = Config::get('logistics.storage');
 		$parcel = $storage->parcels()->insert($parcel);
