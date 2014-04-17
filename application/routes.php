@@ -78,7 +78,7 @@ Route::group(array('before' => 'auth|is_superadmin|event'), function()
 			$memo->with("title", $title);
 		$cloudprint = new GoogleCloudPrint;
 		$event = Config::get('application.event');
-		$cloudprint->submit(
+		$return = $cloudprint->submit(
 			$event->deskprinter,
 			"MEMO-".time(),
 			$memo->string(),

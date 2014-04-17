@@ -46,6 +46,7 @@ class PDF {
 	}
 
 	function string(){
+		$this->prepare();
 		return $this->content;
 	}
 
