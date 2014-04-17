@@ -43,14 +43,23 @@ class Date {
         return date('j', $time).". ".__("month.".strtolower(date('F', $time))).$ttime;
     }
 
-    public static function countdown($to=0, $from=0) {
+    public static function raw_countdown($to=0, $from=0){
         if($from == 0) $from = time();
         $dt_end = new DateTime(date("Y-m-d H:i:s", $from));
-        $remain = $dt_end->diff(new DateTime(date("Y-m-d H:i:s", strtotime($to))));
+        return $dt_end->diff(new DateTime(date("Y-m-d H:i:s", strtotime($to))));
+    }
+
+    public static function countdown($to=0, $from=0) {
+        if($from == 0) $from = time();
+        $remain = self::raw_countdown($to, $from);
+
+        if($from > strtotime($to))
+            return __('time.countdown_done');
+
         if($remain->d > 0)
             return __("time.countdown_days", array("days" => $remain->d, "hours" => $remain->h));
         else
-            return __("time.countdown_hours", array("hours" => $remain->h, "minutes" => $remain->i));
+            return __("time.countdown_hours", array("hours" => $remain->h, "minutes" => $remain->i)); 
     }
 
     public static function snice($datetime=0) {

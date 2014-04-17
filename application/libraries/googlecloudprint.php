@@ -185,6 +185,63 @@ class GoogleCloudPrint {
 		}
 		
 	}
+
+	/**
+	 * Function submit
+	 * 
+	 * Sends document to the printer
+	 * 
+	 * @param Printer id $printerid    // Printer id returned by Google Cloud Print service
+	 * 
+	 * @param Job Title $printjobtitle // Title of the print Job e.g. Fincial reports 2012
+	 * 
+	 * @param String with document $string      // Path to the file to be send to Google Cloud Print
+	 * 
+	 * @param Content Type $contenttype // File content type e.g. application/pdf, image/png for pdf and images
+	 */
+	public function submit($printerid,$printjobtitle,$string,$contenttype) {
+		$this->loginToGoogle();
+
+	// Check if we have auth token
+		if(empty($this->authtoken)) {
+			// We don't have auth token so throw exception
+			throw new Exception("Please first login to Google by calling loginToGoogle function");
+		}
+		// Check if prtinter id is passed
+		if(empty($printerid)) {
+			// Printer id is not there so throw exception
+			throw new Exception("Please provide printer ID");	
+		}
+		// Read file content
+		$contents = $string;
+		
+		// Prepare post fields for sending print
+		$post_fields = array(
+				
+			'printerid' => $printerid,
+			'title' => $printjobtitle,
+			'contentTransferEncoding' => 'base64',
+			'content' => base64_encode($contents), // encode file content as base64
+			'contentType' => $contenttype		
+		);
+		// Prepare authorization headers
+		$authheaders = array(
+			"Authorization: GoogleLogin auth=" . $this->authtoken
+		);
+		// Make http call for sending print Job
+		$response = json_decode($this->makeHttpCall(self::PRINT_URL,$post_fields,$authheaders));
+		
+		// Has document been successfully sent?
+		if($response->success=="1") {
+			
+			return array('status' =>true,'errorcode' =>'','errormessage'=>"");
+		}
+		else {
+			
+			return array('status' =>false,'errorcode' =>$response->errorCode,'errormessage'=>$response->message);
+		}
+		
+	}
 	
 	/**
 	 * Function parsePrinters

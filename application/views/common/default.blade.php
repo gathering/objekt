@@ -149,6 +149,11 @@
       @if (Auth::user()->can("logistics"))
       <li {{ URI::segment(2) == 'logistics' ? 'class="active"' : '' }}><a href="{{ url('/logistics') }}"><i class="fa fa-truck icon-xlarge"></i><span>{{ __('nav.logistics') }}</span></a></li>
       @endif
+      @if (Auth::user()->is("superAdmin"))
+      <li {{ URI::segment(2) == 'memo' ? 'class="active"' : '' }}>
+        <a href="{{ url('memo') }}"><i class="fa fa-file-text icon-xlarge"></i><span>{{ __('memo.memo') }}</span></a>
+      </li>
+      @endif
     </ul>
   </nav>
   <!-- / nav -->

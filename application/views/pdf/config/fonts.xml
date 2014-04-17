@@ -1,0 +1,12 @@
+<fonts>  
+    <font name="Montserrat">
+        <bold src="fonts/Montserrat-Bold.ttf" />
+        <normal src="fonts/Montserrat-Regular.ttf" />
+    </font>
+    <font name="OpenSans">
+        <bold src="fonts/OpenSans-Semibold.ttf" />
+        <normal src="fonts/OpenSans-Regular.ttf" />
+        <italic src="fonts/OpenSans-Italic.ttf" />
+        <bold-italic src="fonts/OpenSans-SemiboldItalic.ttf" />
+    </font>
+</fonts>

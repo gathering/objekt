@@ -63,7 +63,6 @@ $('.membersOnline').each(function(){
         	$this.data("loop") && setTimeout(function(){ $this.data("loop") && updatePieChart($this) }, 2000);        	
         }
     });
-
 });
 @endsection
 @section('scripts')
@@ -110,7 +109,13 @@ $(function(){
 	    tooltipOpts: {
 	      content: "%s: %p.0%"
 	    }
-	}); 
+	});
+
+	$('.countdownDone').hide();
+
+	$("#toggleHiddenBadge").click(function(){
+		$('.countdownDone').toggle();
+	});
 });
 </script>
 @endsection
@@ -180,11 +185,20 @@ $(function(){
 			<div class="col-lg-12">
 				<section class="panel">
 					<header class="panel-heading bg-inverse">
-						<div class="text-center h5">{{ __('dashboard.badge_manager') }}</div>
+						<div class="h5 pull-left">{{ __('dashboard.badge_manager') }}</div>
+						<button id="toggleHiddenBadge" class="btn btn-primary btn-xs pull-right" data-toggle="button">
+							<span class="text">
+					          {{ __('dashboard.togglehidden') }}
+					        </span>
+					        <span class="text-active">
+					          {{ __('dashboard.togglehidden2') }}
+					        </span>
+							
+						</button>
 					</header>
-					<div class="list-group m-b-small">
-						@foreach ($current_event->entries()->where("entries.type", "=", "badge")->where("entries.status", "=", "valid")->order_by("entries.created_at", "asc")->get() as $entry)
-						<a href="{{ $entry->person()->url() }}" class="list-group-item">
+					<div class="list-group m-b-small badgeManager">
+						@foreach ($current_event->entries()->where("entries.type", "=", "badge")->where("entries.status", "=", "valid")->order_by("entries.delivery_date", "asc")->get() as $entry)
+						<a href="{{ $entry->person()->url() }}" class="list-group-item {{ Date::raw_countdown($entry->delivery_date)->invert > 0 ? 'countdownDone' : '' }}">
 							<span class="badge bg-danger" title="{{ sprintf(__('dashboard.must_be_delivered'), Date::regular($entry->delivery_date)) }}">{{ Date::countdown($entry->delivery_date) }}</span>
 							{{ $entry->person()->firstname }} {{ $entry->person()->surname }}
 						</a>

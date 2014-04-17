@@ -65,6 +65,25 @@ Route::group(array('before' => 'auth|is_superadmin|event'), function()
 
 		return Redirect::to('/admin/events')->with("success", __('admin.deactivated'));
 	});
+
+	Route::get('/memo', function(){
+		return View::make('memo');
+	});
+
+	Route::post('/memo', function(){
+		$title = Input::get('title');
+		$content = Input::get('content');
+		$memo = PDF::view('memo')->with("content", $content);
+		if(!empty($title))
+			$memo->with("title", $title);
+		$cloudprint = new GoogleCloudPrint;
+		$cloudprint->submit(
+			$event->deskprinter,
+			"MEMO-".time(),
+			$memo->string(),
+			"application/pdf"
+			);
+	});
 });
 
 /* Generic Admin */
@@ -96,6 +115,8 @@ Route::group(array('before' => 'auth|can_mediabank|event'), function()
 	Route::post('/mediabank/update_file/(:num)', 'mediabank@update_file');
 	Route::post('/mediabank/search', 'mediabank@search');
 	Route::post('/mediabank/delete_file/(:num)', 'mediabank@delete_file');
+
+	Route::get('/mediabank/repopulate', 'mediabank@repopulate');
 });
 
 /* Notifications */

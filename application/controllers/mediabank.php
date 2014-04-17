@@ -16,9 +16,11 @@ class Mediabank_Controller extends Base_Controller {
 		$params['type']  = 'image';
 		$params['body']['query']['query_string']['query'] = str_replace(" ", " +", urldecode($tag));
 		$params['body']['size'] = 5000;
+		$params['body']['sort'] = array('timestamp' => 'desc', 'filename' => 'desc');
 		
 		tplConstructor::set(true);
 		$elastisk = Elastisk::search($params);
+		#var_dump($elastisk); die();
 		$results = array();
 
 		if($elastisk['hits']['total'] == 0)
@@ -29,6 +31,36 @@ class Mediabank_Controller extends Base_Controller {
 			if($model) array_push($results, $model);
 		}
 		return View::make('mediabank.tag')->with("results", $results);
+	}
+
+	public function action_repopulate()
+	{
+		$files = Fil3::where("type", "=", "mediabank")->get();
+		$event = Config::get('application.event');
+
+		foreach($files as $file){
+			$meta = $file->meta();
+			$timestamp = isset($meta['xmp']['Creation Date']) ? strtotime($meta['xmp']['Creation Date']) : strtotime($meta->created_at);
+
+			$params = array();
+			$params['body']  = array(
+				'filename' => $file->filename,
+				'event_id' => $event->id,
+				'url' => $file->url,
+				'tags' => $file->tags(),
+				'hash' => $file->hash,
+				'uploaded_at' => $file->created_at,
+				'timestamp' => $timestamp
+				);
+
+			$params['index'] = 'mediabank';
+			$params['type']  = 'image';
+			$params['id']    = $file->id;
+
+			$ret = Elastisk::index($params);
+		}
+
+		return Response::json(array('done' => true));
 	}
 
 	public function action_upload()
@@ -66,6 +98,8 @@ class Mediabank_Controller extends Base_Controller {
 			$fil3->size = $file['filesize'];
 			$fil3->save();
 
+			$timestamp = isset($file['xmp']['Creation Date']) ? strtotime($file['xmp']['Creation Date']) : time();
+
 			$params = array();
 			$params['body']  = array(
 				'filename' => $file['filename'],
@@ -73,7 +107,8 @@ class Mediabank_Controller extends Base_Controller {
 				'url' => "http://s3.obj.no/".$file['path'],
 				'tags' => $tags,
 				'hash' => $file['hash'],
-				'uploaded_at' => date("Y-m-d H:i:s")
+				'uploaded_at' => date("Y-m-d H:i:s"),
+				'timestamp' => $timestamp
 				);
 
 			$params['index'] = 'mediabank';
@@ -98,6 +133,8 @@ class Mediabank_Controller extends Base_Controller {
 
 		$meta = $file->meta();
 
+		$timestamp = isset($file['xmp']['Creation Date']) ? strtotime($file['xmp']['Creation Date']) : time();
+
 		$params = array();
 		$params['body']  = array(
 			'filename' => $file->filename,
@@ -105,7 +142,8 @@ class Mediabank_Controller extends Base_Controller {
 			'url' => $file->url,
 			'tags' => $tag_array,
 			'hash' => $meta['hash'],
-			'uploaded_at' => date("Y-m-d H:i:s")
+			'uploaded_at' => $file->created_at,
+			'timestamp' => $timestamp
 			);
 
 		$params['index'] = 'mediabank';
@@ -140,6 +178,7 @@ class Mediabank_Controller extends Base_Controller {
 		$event = Config::get('application.event');
 		$params['body']['query']['query_string']['query'] = "*".$term."*";
 		$params['body']['size'] = 5000;
+		$params['body']['sort'] = array('id' => array('order' => 'desc'), '_score');
 		$params['body']['filter']['term']['event_id'] = $event->id;
 
 		$elastisk = Elastisk::search($params);

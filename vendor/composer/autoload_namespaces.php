@@ -6,10 +6,18 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Zend\\Stdlib\\' => array($vendorDir . '/zendframework/zend-stdlib'),
+    'Zend\\ServiceManager\\' => array($vendorDir . '/zendframework/zend-servicemanager'),
+    'Zend\\Memory\\' => array($vendorDir . '/zendframework/zend-memory'),
+    'Zend\\EventManager\\' => array($vendorDir . '/zendframework/zend-eventmanager'),
+    'Zend\\Cache\\' => array($vendorDir . '/zendframework/zend-cache'),
+    'ZendPdf\\' => array($vendorDir . '/zendframework/zendpdf/library'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
     'SimplePie' => array($vendorDir . '/simplepie/simplepie/library'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
+    'PHPPdf' => array($vendorDir . '/psliwa/php-pdf/lib'),
+    'Imagine' => array($vendorDir . '/psliwa/php-pdf/lib', $vendorDir . '/imagine/imagine/lib'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Elasticsearch\\Tests' => array($vendorDir . '/elasticsearch/elasticsearch/tests'),

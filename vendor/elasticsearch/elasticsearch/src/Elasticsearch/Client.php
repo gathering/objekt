@@ -38,7 +38,7 @@ class Client
     /**
      * @var Transport
      */
-    protected $transport;
+    public $transport;
 
     /**
      * @var \Pimple
@@ -1062,6 +1062,35 @@ class Client
         $endpoint = $endpointBuilder('Scroll');
         $endpoint->setScrollID($scrollID)
                  ->setBody($body);
+        $endpoint->setParams($params);
+        $response = $endpoint->performRequest();
+        return $response['data'];
+    }
+
+
+    /**
+     * $params['scroll_id'] = (string) The scroll ID for scrolled search
+     *        ['scroll']    = (duration) Specify how long a consistent view of the index should be maintained for scrolled search
+     *        ['body']      = (string) The scroll ID for scrolled search
+     *
+     * @param $params array Associative array of parameters
+     *
+     * @return array
+     */
+    public function clearScroll($params = array())
+    {
+        $scrollID = $this->extractArgument($params, 'scroll_id');
+
+        $body = $this->extractArgument($params, 'body');
+
+        /** @var callback $endpointBuilder */
+        $endpointBuilder = $this->dicEndpoints;
+
+        /** @var \Elasticsearch\Endpoints\Scroll $endpoint */
+        $endpoint = $endpointBuilder('Scroll');
+        $endpoint->setScrollID($scrollID)
+                 ->setBody($body)
+                 ->setClearScroll(true);
         $endpoint->setParams($params);
         $response = $endpoint->performRequest();
         return $response['data'];
