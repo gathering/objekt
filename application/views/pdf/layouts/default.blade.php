@@ -1,5 +1,5 @@
 <pdf>
-    <dynamic-page document-template="{{ pdf_asset('layouts/default_background.pdf') }}">
+    <page page-size="a4" document-template="{{ pdf_asset('layouts/default_background.pdf') }}">
         <placeholders>
             <header>
                 <div height="70px"></div>
@@ -9,5 +9,5 @@
             </footer>
         </placeholders>
         @yield('content')
-    </dynamic-page>
+    </page>
 </pdf>
