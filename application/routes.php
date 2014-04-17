@@ -84,6 +84,8 @@ Route::group(array('before' => 'auth|is_superadmin|event'), function()
 			$memo->string(),
 			"application/pdf"
 			);
+
+		return Redirect::to('/')->with("success", "Memo sent..");
 	});
 });
 
