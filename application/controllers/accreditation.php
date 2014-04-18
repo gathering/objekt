@@ -60,8 +60,7 @@ class Accreditation_Controller extends Controller {
 		$input = Input::all();
 		$rules = array(
 		    'badge_id'  => 'numeric',
-		    'date' => 'required|after:'.date("Y-m-d H:i:s", time()-86400),
-		    'time' => 'required'
+		    'delivery_deadline' => 'required|after:'.date("Y-m-d H:i:s", time()-86400)
 		);
 
 		$validation = Validator::make($input, $rules);
@@ -76,8 +75,8 @@ class Accreditation_Controller extends Controller {
 			$entry->{$field} = $input[$field];
 		}
 		$entry->type = "badge";
-		$entry->delivery_date = $entry->date." ".$entry->time;
-		unset($entry->date, $entry->time);
+		$entry->delivery_date = date("Y-m-d H:i:s", strtotime($entry->delivery_deadline));
+		unset($entry->delivery_deadline);
 		
 		$person->entries()->update(array('status' => 'denied'));
 
