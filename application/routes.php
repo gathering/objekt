@@ -554,6 +554,7 @@ Route::filter('is_superadmin', function(){
 foreach(Permission::all() as $permission){
 	Route::filter('can_'.$permission->name, function() use($permission)
 	{
+		if (Auth::guest()) return Redirect::to('login')->with("referer", URI::full());
 		if (!Auth::user()->can($permission->name))
 			return Redirect::to(Request::referrer())->with('error', sprintf(__('common.access_denied'), __('user.permission.'.$permission->name)));
 	});

@@ -133,7 +133,7 @@ class Mediabank_Controller extends Base_Controller {
 
 		$meta = $file->meta();
 
-		$timestamp = isset($file['xmp']['Creation Date']) ? strtotime($file['xmp']['Creation Date']) : time();
+		$timestamp = isset($meta['xmp']['Creation Date']) ? strtotime($meta['xmp']['Creation Date']) : strtotime($file->created_at);
 
 		$params = array();
 		$params['body']  = array(

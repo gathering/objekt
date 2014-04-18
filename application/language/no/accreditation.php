@@ -21,6 +21,16 @@ return array(
 	'no_badges_found' => 'Personen har ingen badge registrert.',
 	'print' => 'Skriv ut akkredittering',
 	'printed' => 'Akkredittering er sendt til utskrift.',
+	'to' => 'Til',
+	'select' => array(
+		'3hours' => '3 timer',
+		'6hours' => '6 timer',
+		'24hours' => '24 timer',
+		),
+	'placeholder' =>
+		array(
+		'delivery_deadline' => date("d.m.Y H:i", (time()+86400))
+		),
 	'notification' => array(
 		'wristband' => 'akkreditert med et bånd.',
 		'badge' => 'akkreditert med et badge.',
