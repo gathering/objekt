@@ -242,14 +242,15 @@ class Logistics_Controller extends Base_Controller {
 		$params['index'] = 'logistics';
 		$params['type']  = 'parcel';
 		$params['body']['query']['query_string']['query'] = $search;
-		$params['body']['from'] = $show*$page;
+		$params['body']['from'] = $page == 1 ? 0 : $show*$page;
 		$params['body']['size'] = $show;
 
+		#die(var_dump($params));
+
 		$results = array();
-
 		$cleanup = false;
-
 		$elastisk = Elastisk::search($params);
+
 		foreach($elastisk['hits']['hits'] as $result){
 			$parcel = new stdClass;
 			$parcel->name = $result['_source']['name'];
@@ -262,6 +263,7 @@ class Logistics_Controller extends Base_Controller {
 					$delete['type']  = 'parcel';
 					$delete['id']    = $result['_id'];
 					Elastisk::delete($delete);
+					continue;
 				}
 			}
 
