@@ -196,10 +196,10 @@ class Profiles_Controller extends Controller {
 		$person->slug = $this->slugname_person($person, $profile, 0);
 		$person->hash = Str::random(32);
 		unset($person->i);
-		$profile->person()->insert($person);
+		$person = $profile->person()->insert($person);
 
 		$profile->sendNotification(sprintf(__('profile.notification.new_person'), $person->firstname." ".$person->surname));
-		return Redirect::to("profile/".$profile->slug)->with("success", "Informasjonen ble lagret!");
+		return Redirect::to($person->url())->with("success", "Informasjonen ble lagret!");
 	}
 
 	public function action_add(){

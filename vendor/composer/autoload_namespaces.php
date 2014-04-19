@@ -6,11 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Zend\\Validator\\' => array($vendorDir . '/zendframework/zend-validator'),
     'Zend\\Stdlib\\' => array($vendorDir . '/zendframework/zend-stdlib'),
     'Zend\\ServiceManager\\' => array($vendorDir . '/zendframework/zend-servicemanager'),
     'Zend\\Memory\\' => array($vendorDir . '/zendframework/zend-memory'),
     'Zend\\EventManager\\' => array($vendorDir . '/zendframework/zend-eventmanager'),
     'Zend\\Cache\\' => array($vendorDir . '/zendframework/zend-cache'),
+    'Zend\\Barcode\\' => array($vendorDir . '/zendframework/zend-barcode'),
     'ZendPdf\\' => array($vendorDir . '/zendframework/zendpdf/library'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
     'SimplePie' => array($vendorDir . '/simplepie/simplepie/library'),

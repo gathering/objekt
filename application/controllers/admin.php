@@ -44,7 +44,9 @@ class Admin_Controller extends Base_Controller {
 		    'tags' => 'max:3000',
 		    'aid_users' => 'max:3000',
 		    'badgeprinter' => 'max:255',
-		    'deskprinter' => 'max:255'
+		    'deskprinter' => 'max:255',
+		    'barcodeprinter' => 'max:255',
+		    'ediprinter' => 'max:255'
 		);
 
 		if(!empty($input['welcomeletter']['name'])){

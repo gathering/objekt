@@ -160,19 +160,19 @@ class Logistics_Controller extends Base_Controller {
 
 	function action_parcel_action($storage, $parcel_id){
 		$parcel = Parcel::find($parcel_id);
-		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+		if(!$parcel) return Redirect::to('logistics/'.$storage)->with('error', __('logistics.parcel_not_found'));
 		return View::make('logistics.parcel_action')->with("parcel", $parcel);
 	}
 
 	function action_parcel($storage, $parcel_id){
 		$parcel = Parcel::find($parcel_id);
-		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+		if(!$parcel) return Redirect::to('logistics/'.$storage)->with('error', __('logistics.parcel_not_found'));
 		return View::make('logistics.parcel_view')->with("parcel", $parcel);
 	}
 
 	function action_handout($storage, $parcel_id){
 		$parcel = Parcel::find($parcel_id);
-		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+		if(!$parcel) return Redirect::to('logistics/'.$storage)->with('error', __('logistics.parcel_not_found'));
 
 		if($parcel->current_status()->status == "handout")
 			return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_already_handedout'));
@@ -182,7 +182,7 @@ class Logistics_Controller extends Base_Controller {
 
 	function action_post_handout($storage, $parcel_id){
 		$parcel = Parcel::find($parcel_id);
-		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+		if(!$parcel) return Redirect::to('logistics/'.$storage)->with('error', __('logistics.parcel_not_found'));
 
 		Validator::register('owner', function($attribute, $value, $parameters)
 		{
@@ -236,12 +236,18 @@ class Logistics_Controller extends Base_Controller {
 		$search = Input::get('search');
 		$event = Config::get('application.event');
 
+		$show = Input::get('show') ? Input::get('show') : 10;
+		$page = Input::get('page') ? Input::get('page') : 1;
+
 		$params['index'] = 'logistics';
 		$params['type']  = 'parcel';
 		$params['body']['query']['query_string']['query'] = $search;
-		$params['body']['size'] = 5000;
+		$params['body']['from'] = $show*$page;
+		$params['body']['size'] = $show;
 
 		$results = array();
+
+		$cleanup = false;
 
 		$elastisk = Elastisk::search($params);
 		foreach($elastisk['hits']['hits'] as $result){
@@ -249,6 +255,16 @@ class Logistics_Controller extends Base_Controller {
 			$parcel->name = $result['_source']['name'];
 			$storage = Storage::find($result['_source']['storage_id']);
 			$parcel->url = url('logistics/'.$storage->slug.'/'.$result['_id']);
+
+			if($cleanup){
+				if(!$parcel = Parcel::find($result['_id'])){
+					$delete['index'] = 'logistics';
+					$delete['type']  = 'parcel';
+					$delete['id']    = $result['_id'];
+					Elastisk::delete($delete);
+				}
+			}
+
 			array_push($results, $parcel);
 		}
 
@@ -260,7 +276,17 @@ class Logistics_Controller extends Base_Controller {
 			return Redirect::to(Request::referrer())->with('error',  __('common.nothing_found'));
 		}
 
-		return View::make('logistics.search')->with("results", $results);
+		$pagination = new stdClass;
+		$pagination->num_pages = 1;
+		$pagination->total_hits = $elastisk['hits']['total'];
+		$pagination->current = Input::get('page') ? Input::get('page') : 1;
+		if($elastisk['hits']['total'] > $show){
+			$pagination->num_pages = $elastisk['hits']['total']/$show;
+			$pagination->prev = ($page-1) > 0 ? ($page-1) : 0;
+			$pagination->next = ($page+1) < $pagination->num_pages ? ($page+1) : 0;			
+		}
+
+		return View::make('logistics.search')->with("results", $results)->with("pagination", $pagination);
 	}
 
 	function action_post_parcel_bulk(){
@@ -419,6 +445,28 @@ class Logistics_Controller extends Base_Controller {
 		Elastisk::index($params);
 
 		return Response::json(array('status' => 'edited', 'id' => $parcel->id));
+	}
+
+	function action_parcel_print($storage, $parcel_id){
+		$parcel = Parcel::find($parcel_id);
+		if(!$parcel) return Redirect::to(Request::referrer())->with('error', __('logistics.parcel_not_found'));
+
+		$barcode = PDF::view('barcode.parcel')->with("parcel", $parcel);
+
+		#$barcode->get();
+
+		$cloudprint = new GoogleCloudPrint;
+		$event = Config::get('application.event');
+		$return = $cloudprint->submit(
+			$event->barcodeprinter,
+			"BARCODe-".time(),
+			$barcode->string(),
+			"application/pdf"
+			);
+
+		$storage = Config::get('logistics.storage');
+
+		return Redirect::to('/logistics/'.$storage->slug.'/'.$parcel->id)->with('success', __('logistics.barcode_printed'));
 	}
 }
 

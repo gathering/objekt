@@ -1,7 +1,7 @@
 <?
 
 return array(
-	'storage_not_found' => 'Lageret ble ikke funnet.',
+	'storage_not_found' => 'Lageret ble ikke funnet..',
 	'select_storage' => 'Velg lager',
 	'add' => 'Nytt lager',
 	'storage_added' => 'Lageret er lagt til.',
@@ -52,6 +52,8 @@ return array(
 	'bulk_missing_field' => 'Et felt mangler',
 	'beforeunload' => 'Dine data som er skrevet inn her i multiverktøyet, som ikke er merket med suksess, vil ikke bli lagret.',
 	'duplicates' => 'Duplikater',
+	'barcode_printed' => 'Strekkode ble bestilt skrevet ut',
+	'print' => 'Strekkode',
 
 	'placeholder' => array(
 		'name' => 'Lagernavn',

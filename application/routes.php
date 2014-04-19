@@ -293,8 +293,9 @@ Route::filter('logistics', function()
 		return Redirect::to('/logistics');
 
 	$location = Storage::findBySlug($slug);
-	if(!$location)
+	if(empty($location)){
 		return Redirect::to('/logistics')->with('error', __('logistics.storage_not_found'));
+	}
 
 	Config::set('logistics.storage', $location);
 
@@ -317,7 +318,7 @@ Route::group(array('before' => 'auth|can_logistics|event'), function()
 	Route::get('/logistics/owners/(:any).json', 'logistics@owners');
 	Route::get('/logistics/owners.json', 'logistics@owners');
 
-	Route::post('/logistics/search', 'logistics@search');
+	Route::any('/logistics/search', 'logistics@search');
 });
 
 Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
@@ -327,7 +328,6 @@ Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
 	Route::get($baseURL, 'logistics@view_storage');
 	Route::get($baseURL . '/add_parcel', 'logistics@add_parcel');
 	Route::get($baseURL . '/duplicates', function(){
-		var_dump(Parcel::duplicates()->get());
 		foreach (Parcel::duplicates()->get() as $parcel) {
 			foreach($parcel->ids() as $dup){
 				if(Parcellog::where("parcel_id", "=", $dup)->count() == 0){
@@ -348,18 +348,7 @@ Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
 	Route::get($baseURL . '/(:num)/handout', 'logistics@handout');
 	Route::post($baseURL . '/(:num)/handout', 'logistics@post_handout');
 	Route::get($baseURL . '/(:num)/receive', 'logistics@receive');
-
-	Route::any($baseURL . '/(:num)/(:any)', function(){
-		return View::make('not_done_yet');
-	});
-
-	Route::any($baseURL . '/search/filter', function(){
-		return View::make('not_done_yet');
-	});
-
-	Route::any($baseURL . '/reports', function(){
-		return View::make('not_done_yet');
-	});
+	Route::get($baseURL . '/(:num)/print', 'logistics@parcel_print');
 });
 
 

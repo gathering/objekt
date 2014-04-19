@@ -206,6 +206,40 @@
 						</div>
 	                  </div>
 	                </div>
+	                <hr />
+	                <div class="form-group">
+	                  <label class="col-lg-3 control-label">{{ __('admin.field.barcodeprinter') }}</label>
+	                  <div class="col-lg-8">
+						<select name="barcodeprinter" class="form-control">
+						<option {{ $event->barcodeprinter == "0" || $event->barcodeprinter == "" ? 'selected="selected"' : '' }} value="0">{{ __('admin.field.no_printer') }}</option>
+						@foreach($printers as $printer)
+						<option {{ $event->barcodeprinter == $printer['id'] ? 'selected="selected"' : '' }} value="{{ $printer['id'] }}">{{ $printer['displayname'] }}</option>
+						@endforeach
+						</select>
+						<br />
+						<div class="alert alert-info">
+							<i class="icon-info-sign icon-large"></i>
+							{{ __('admin.description.barcodeprinter') }}
+						</div>
+	                  </div>
+	                </div>
+	                <hr />
+	                <div class="form-group">
+	                  <label class="col-lg-3 control-label">{{ __('admin.field.ediprinter') }}</label>
+	                  <div class="col-lg-8">
+						<select name="ediprinter" class="form-control">
+						<option {{ $event->ediprinter == "0" || $event->ediprinter == "" ? 'selected="selected"' : '' }} value="0">{{ __('admin.field.no_printer') }}</option>
+						@foreach($printers as $printer)
+						<option {{ $event->ediprinter == $printer['id'] ? 'selected="selected"' : '' }} value="{{ $printer['id'] }}">{{ $printer['displayname'] }}</option>
+						@endforeach
+						</select>
+						<br />
+						<div class="alert alert-info">
+							<i class="icon-info-sign icon-large"></i>
+							{{ __('admin.description.ediprinter') }}
+						</div>
+	                  </div>
+	                </div>
 				</div>
 				<div class="tab-pane in" id="files">
 					<div class="form-group">

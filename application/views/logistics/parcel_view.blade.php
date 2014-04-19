@@ -36,6 +36,9 @@
 		    <a tabindex="4" href="{{ url('logistics/'.$storage->slug.'/'.$parcel->id.'/connect') }}" class="btn btn-info btn-circle">
 		        <i class="fa fa-chain"></i> {{ __('logistics.connect') }}
 		    </a>
+		    <a tabindex="5" href="{{ url('logistics/'.$storage->slug.'/'.$parcel->id.'/print') }}" class="btn btn-info btn-circle">
+		        <i class="fa fa-print"></i> {{ __('logistics.print') }}
+		    </a>
 		    <a tabindex="5" href="{{ url('logistics/'.$storage->slug.'/'.$parcel->id.'/transport') }}" class="btn btn-primary btn-circle">
 		        <i class="fa fa-truck"></i> {{ __('logistics.transport') }}
 		    </a>

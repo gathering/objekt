@@ -4,7 +4,9 @@
         "pusher/pusher-php-server": "dev-master",
         "simplepie/simplepie": "dev-master",
         "psliwa/php-pdf": "dev-master",
-        "imagine/Imagine": "dev-master"
+        "imagine/Imagine": "dev-master",
+        "zendframework/zend-validator": "dev-master",
+        "zendframework/zend-barcode": "dev-master"
     },
     "minimum-stability": "dev"
 }

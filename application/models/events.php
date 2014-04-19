@@ -108,13 +108,18 @@ class Events extends Eloquent {
 	}
 
 	public function people(){
-		return $this->has_many('person', 'event_id');
+		return Person::left_join('profiles', 'profiles.id', '=', 'people.profile_id')
+					   ->where('profiles.event_id', '=', $this->id);
+	}
+
+	public function profiles(){
+		return $this->has_many('profile', 'event_id');
 	}
 
 	public function entries(){
 		return Entry::left_join('people', 'people.id', '=', 'entries.person_id')
-				->where("entries.person_id", "=", DB::Raw('people.id'))
-				->where("people.event_id", "=", $this->id);
+				->left_join('profiles', 'profiles.id', '=', 'people.profile_id')
+				->where('profiles.event_id', '=', $this->id);
 	}
 
 	public function aid(){

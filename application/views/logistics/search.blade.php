@@ -1,30 +1,30 @@
 @layout('logistics.template')
 @section('content')
-<div class="grid-24">
-	<div class="widget widget-table">
-						
-		<div class="widget-header">
-			<span class="icon-list"></span>
-			<h3 class="icon chart">{{ __('common.index.search') }}</h3>		
-		</div>
-
-		<div class="widget-content">
-			
-			<table class="table table-bordered table-striped data-table">
-				<thead>
-					<tr>
-						<th>{{ __('user.name') }}</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach ($results as $result)
-					<tr>
-						<td><a href="{{ $result->url }}">{{ $result->name }}</a></td>
-					</tr>
-					@endforeach
-				</tbody>
-			</table>
-		</div>
+<section class="panel">
+	<header class="panel-heading bg bg-inverse">
+		{{ __('common.index.search') }}
+	</header>
+	<div class="list-group">
+		@foreach ($results as $result)
+		<a href="{{ $result->url }}" class="list-group-item bg-lighter">
+			{{ $result->name }}
+		</a>
+		@endforeach
 	</div>
-</div>
+	@if($pagination->num_pages > 1)
+	<center>
+		<ul class="pagination pagination-lg">
+			@if($pagination->prev > 0)
+			<li><a href="{{ url('logistics/search?search='.urlencode(Input::get('search')).'&page='.$pagination->prev) }}"><i class="fa fa-chevron-left"></i></a></li>
+			@endif
+			@for ($i = 1; $i <= $pagination->num_pages; $i++)
+			<li {{ $pagination->current == $i ? 'class="active"' : '' }}><a href="{{ url('logistics/search?search='.urlencode(Input::get('search')).'&page='.$i) }}">{{ $i }}</a></li>
+			@endfor
+			@if($pagination->next > 0)
+			<li><a href="{{ url('logistics/search?search='.urlencode(Input::get('search')).'&page='.$pagination->next) }}"><i class="fa fa-chevron-right"></i></a></li>
+	    	@endif
+	    </ul>
+	</center>
+	@endif
+</section>
 @endsection
