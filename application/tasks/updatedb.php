@@ -95,8 +95,8 @@ class UpdateDB_Task {
 			$person->status = "departed";
 			$person->save();
 
-			/* Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
-		$person->sendNotification(__('accreditation.notification.departed'));*/
+			Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
+			$person->sendNotification(__('accreditation.notification.departed'));
 
 			echo $person->firstname." ".$person->surname." has been marked departed\n";
 		}
