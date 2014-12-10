@@ -304,7 +304,7 @@
 				</div>
 				@endif
 				<div class="tab-pane in" id="usage">
-					<? $usage = $event->calculateMonths(); ?>
+					<? $usage = $event->calculateMonths(); if(count($usage)): ?>
 					<table class="table">
 					<thead>
 						<tr>
@@ -348,6 +348,7 @@
 						</tr>
 					</tbody>
 					</table>
+				<? endif; ?>
 				</div>
 			</div>
 		</div>

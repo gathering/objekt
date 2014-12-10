@@ -19,7 +19,7 @@
     <script src="{{ asset('js/ie/html5.js') }}"></script>
     <script src="{{ asset('js/ie/excanvas.js') }}"></script>
   <![endif]-->
-  @yield('styles')
+  @yieldSection('styles')
 </head>
 <body>
 <!-- header -->
@@ -89,7 +89,7 @@
     </form>
     @endif
     <ul class="nav navbar-nav hidden-xs pull-right">
-      @yield('top_buttons')
+      @yieldSection('top_buttons')
     </ul>
 	</header>
   <!-- / header -->
@@ -294,11 +294,11 @@
     var presenceChannel = pusher.subscribe('presence-obj');
     var channel = pusher.subscribe('{{ md5('user_'.Auth::user()->id) }}');
     channel.bind('notification', add_notification);
-    @yield('special_scripts')
+    @yieldSection('special_scripts')
   });
   </script>
 
-  @yield('scripts')
-  @yield('custom_scripts')
+  @yieldSection('scripts')
+  @yieldSection('custom_scripts')
 </body>
 </html>

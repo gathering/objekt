@@ -56,7 +56,7 @@ $(function() {
 		</div>
 	</aside>
 	<section class="main padder">
-		@yield('content')
+		@yieldSection('content')
 	</section>
 	@if (!$person->is_child())
 	<aside class="sidebar bg text-small">

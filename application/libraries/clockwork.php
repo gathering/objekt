@@ -526,6 +526,7 @@ class Clockwork {
       curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type: text/xml"));
       curl_setopt($ch, CURLOPT_USERAGENT, 'Clockwork PHP Wrapper/1.0' . self::VERSION);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
       if (isset($this->proxy_host) && isset($this->proxy_port)) {
         curl_setopt($ch, CURLOPT_PROXY, $this->proxy_host);
         curl_setopt($ch, CURLOPT_PROXYPORT, $this->proxy_port);

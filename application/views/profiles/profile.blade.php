@@ -95,7 +95,7 @@ $(function() {
         </div>
       </div>
       <!--<ul class="nav nav-tabs m-b-none no-radius">
-        <li class="active"><a href="#timeline" data-toggle="tab">{{ _('profile.timeline') }}</a></li>
+        <li class="active"><a href="#timeline" data-toggle="tab">{{ __('profile.timeline') }}</a></li>
       </ul>-->
       <div class="tab-content">
         <div class="tab-pane active padder" id="timeline">

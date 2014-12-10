@@ -19,7 +19,7 @@ $(function() {
             </form>
         </div>
         <div class="padder">
-            @yield('content')
+            @yieldSection('content')
         </div>
     </section>
 </section>

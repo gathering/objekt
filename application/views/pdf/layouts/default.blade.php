@@ -8,6 +8,6 @@
                 <div height="190px"></div>
             </footer>
         </placeholders>
-        @yield('content')
+        @yieldSection('content')
     </page>
 </pdf>

@@ -22,6 +22,7 @@ class Events extends Eloquent {
 	}
 
 	public function calculateMonths(){
+		return array();
 		$files = $this->files()
 					->select(
 						array(
@@ -37,6 +38,8 @@ class Events extends Eloquent {
 
 		$start = strtotime($startFile->created_at);
 		$end = strtotime($endFile->created_at);
+
+
 
 		$months = array();
 		$months[date('Y-m', $start)] = array();

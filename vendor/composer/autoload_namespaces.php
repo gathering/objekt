@@ -19,7 +19,7 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
     'PHPPdf' => array($vendorDir . '/psliwa/php-pdf/lib'),
-    'Imagine' => array($vendorDir . '/psliwa/php-pdf/lib', $vendorDir . '/imagine/imagine/lib'),
+    'Imagine' => array($vendorDir . '/imagine/imagine/lib', $vendorDir . '/psliwa/php-pdf/lib'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Elasticsearch\\Tests' => array($vendorDir . '/elasticsearch/elasticsearch/tests'),
