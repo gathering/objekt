@@ -11,6 +11,7 @@ return array(
 	'badge_manager' => 'Utleverte badge / Midlertidig akkredittering',
 	'must_be_delivered' => 'Må være levert innen %s',
 	'togglehidden' => 'Vis utløpte',
-	'togglehidden2' => 'Skjul utløpte'
+	'togglehidden2' => 'Skjul utløpte',
+	'profiles' => 'Dine profiler',
 );
 ?>

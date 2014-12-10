@@ -124,6 +124,18 @@ $(function(){
 </div>
 <div class="row">
 	<div class="col-lg-6">
+		<section class="panel">
+		<header class="panel-heading bg bg-inverse">
+		{{ __('dashboard.profiles') }}
+		</header>
+		<div class="list-group">
+			@foreach(Auth::user()->profiles()->get() as $profile)
+			<a href="{{ $profile->url() }}" class="list-group-item bg-lighter">
+				<i class="fa fa-chevron-right"></i>
+				{{ $profile->name }}
+			</a>
+			@endforeach
+		</section>
 		<div class="row">
 			<div class="col-lg-6">
 				<section class="panel">

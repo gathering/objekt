@@ -92,6 +92,31 @@
 	      </div>
 	    </div>
 	    <div class="form-group">
+	      <label class="col-lg-3 control-label">{{ __('user.responsible') }}</label>
+	      <div class="col-lg-8">
+	        <!--<input type="text" name="user_id" tabindex="1" value="{{ $profile->user_id }}" placeholder="{{ __('profile.placeholder.responsible') }}" class="form-control" autocomplete="off">-->
+	        <select name="user_id" class="form-control">
+	        	<!--<option value="0">Ingen</option>-->
+	        	<optgroup label="--">
+	        		@foreach(User::all() as $user)
+		        		@if($user->is('superAdmin'))
+		        		<option value="{{ $user->id }}">{{ $user->name }}</option>
+		        		@endif
+		        	@endforeach
+		        </optgroup>
+	        	@foreach($current_event->roles()->get() as $role)
+	        	<optgroup label="{{ $role->name }}">
+	        		@foreach ($role->users()->get() as $user)
+	        		<option value="{{ $user->id }}"{{ $profile->user_id == $user->id ? " selected" : "" }}>{{ $user->name }}</option>
+	        		@endforeach
+				</optgroup>
+	        	@endforeach
+	        	<!-- Really bad programming -->
+	        	
+	        </select>
+	      </div>
+	    </div>
+	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.website') }}</label>
 	      <div class="col-lg-8">
 	        <input type="text" name="website" tabindex="2" value="{{ $profile->website }}" placeholder="{{ __('profile.placeholder.website') }}" class="form-control" autocomplete="off">

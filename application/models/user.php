@@ -43,6 +43,10 @@ class User extends Verify\Models\User {
 		return $roles;
 	}
 
+	public function profiles(){
+		return $this->has_many('profile');
+	}
+
 	static function active($event=""){
 		return self::left_join('event_users', 'event_users.user_id', '=', 'users.id')
 					->where(function($query) use(&$event) {

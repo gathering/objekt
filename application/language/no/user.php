@@ -91,6 +91,7 @@ return array(
 	'user_edited' => 'Brukeren ble lagret',
 	'edit_user' => 'Endre bruker',
 	'admins' => 'Administratorer',
+	'responsive' => 'Ansvarlig',
 	'permission' => array(
 		'admin' => 'Administrasjon',
 		'mediabank' => 'Mediabank',

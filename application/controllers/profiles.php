@@ -31,6 +31,8 @@ class Profiles_Controller extends Controller {
 			}
 		}
 
+		if(!empty($input['user_id'])) $rules['user_id'] = 'exists:users,id';
+
 		if(!empty($input['logo']['name'])) $rules['logo'] = 'mimes:jpg,gif,png';
 		if(!empty($input['color'])) $rules['color'] = 'required';
 
