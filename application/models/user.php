@@ -44,7 +44,9 @@ class User extends Verify\Models\User {
 	}
 
 	public function profiles(){
-		return $this->has_many('profile');
+		$event = Config::get('application.event');
+		return $this->has_many('profile')->where("event_id", "=", $event->id);
+		
 	}
 
 	static function active($event=""){
