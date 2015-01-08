@@ -37,7 +37,7 @@
 	<div class="login-wrapper">
 		<form id="form-login" action="{{ url('/invite') }}" method="post">
 			<center>
-				<img src="{{ asset('images/logo_transolini_black.png') }}" />
+				<img src="{{ asset('images/logo_backolini_invite.png') }}" />
 				+
 				<img src="http://wannabe.gathering.org/img/wlogo.png" />
 			</center>
