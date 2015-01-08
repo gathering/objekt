@@ -24,26 +24,26 @@ class tg15 extends EventTemplate {
 
 		// Special users
 		switch($user->user->id){
-			case 5497:
-				$role = Role::find(6);
-			break;
-			case 2260:
-				$role = Role::find(8);
-			break;
-			case 3704:
-				$role = Role::find(11);
+			// Lesebrukarar
+			case 3070: // Andreas Martin Aanerud
+			case 3368: // Andreas Lindrupsen
+			case 5947: // Trine Jakobsen Rydland
+				$role = Role::find(16);
 			break;
 			default: case "":
 				foreach($user->user->crews->crew as $crew){
 					switch($crew->id){
-						case 279:
-							$role = Role::findByName($crew->name)->first();
+						case 301: // Core:Sponsor
+							$role = Role::find(15);
 						break;
-						case 275:
-							$role = Role::findByName($crew->name)->first();
+						case 298: // Core:Floor
+							$role = Role::find(16);
 						break;
-						case 278:
-							$role = Role::findByName($crew->name)->first();
+						case 328: // Economy
+							$role = Role::find(16);
+						break;
+						case 304: // Info:Desk
+							$role = Role::find(17);
 						break;
 					}
 				}
@@ -99,7 +99,7 @@ class tg15 extends EventTemplate {
 				'id' => $user->id
 				);
 
-			$params['index'] = 'wannabe_tg14';
+			$params['index'] = 'wannabe_tg15';
 			$params['type']  = 'user';
 			$params['id']    = $user->id;
 

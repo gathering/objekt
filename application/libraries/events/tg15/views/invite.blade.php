@@ -43,7 +43,7 @@
 			</center>
 			<h3>Invitiation to use Objekt for<br />The Gathering 2015</h3>
 			<p>
-				As a member of <b>Core:SponsorSupport</b> or <b>Info:Desk</b> you are eligible to create an account on Objekt for The Gathering 2015. You will be granted a user-role based on what crew you a part of.<br /><br />We would like you to take note that we only save the password you enter here, and do not synchronize with Wannabe any time later.<br /><br />
+				As a member of <b>Core:Sponsor</b>, <b>Info:Desk</b>, <b>Core:Floor</b> or <b>Economy</b> you are eligible to create an account on Objekt for The Gathering 2015. You will be granted a user-role based on what crew you a part of.<br /><br />We would like you to take note that we only save the password you enter here, and do not synchronize with Wannabe any time later.<br /><br />
 				To create an account, you need to enter your <a href="http://wannabe.gathering.org/tg15" target="_blank">Wannabe</a> account details below. This can only be done once.
 			</p>
 			<hr>
