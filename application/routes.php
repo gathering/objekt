@@ -419,8 +419,8 @@ Route::get('/partner/new', function(){
 	return View::make('partner.new')->with("event", $event);
 });
 Route::post('/partner/new', function(){
-
-	if(empty(Input::get('phone')))
+	$phone = Input::get('phone');
+	if(empty($phone))
 		return Redirect::to('/partner/new')->with("error", 'Mangler telefonnummer');
 
 	$event = Config::get('application.event');
