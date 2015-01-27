@@ -115,13 +115,22 @@ class CurlMultiConnection extends AbstractConnection implements ConnectionInterf
      */
     public function performRequest($method, $uri, $params = null, $body = null, $options = array())
     {
+        $curlHandle = curl_init();
+        $opts = $this->curlOpts;
+        $perRequestCurlOpts = array();
+
+        if (isset($params['curlOpts']) === true) {
+            $perRequestCurlOpts = $params['curlOpts'];
+            unset($params['curlOpts']);
+        }
+
         $uri = $this->getURI($uri, $params);
 
-        $curlHandle = curl_init();
-
-        $opts = $this->curlOpts;
         $opts[CURLOPT_URL] = $uri;
-        $opts[CURLOPT_CUSTOMREQUEST]= $method;
+
+        if (isset($opts[CURLOPT_CUSTOMREQUEST]) !== true) {
+            $opts[CURLOPT_CUSTOMREQUEST]= $method;
+        }
 
         if (count($options) > 0) {
             $opts = $this->reconcileOptions($options) + $opts;
@@ -135,11 +144,11 @@ class CurlMultiConnection extends AbstractConnection implements ConnectionInterf
         }
 
         if (isset($body) === true) {
-            if ($method === 'GET'){
-                $opts[CURLOPT_CUSTOMREQUEST] = 'POST';
-            }
             $opts[CURLOPT_POSTFIELDS] = $body;
         }
+
+        // Add in our custom per-request curl opts after everything is generated
+        $opts = $perRequestCurlOpts + $opts;    // Left-hand takes precedence over right-hand
 
         $this->log->debug("Curl Options:", $opts);
 
@@ -200,6 +209,10 @@ class CurlMultiConnection extends AbstractConnection implements ConnectionInterf
             }
         } while ($running === 1);
 
+        $this->lastRequest['response']['body']    = $response['responseText'];
+        $this->lastRequest['response']['info']    = $response['requestInfo'];
+        $this->lastRequest['response']['status']  = $response['requestInfo']['http_code'];
+
         // If there was an error response, something like a time-out or
         // refused connection error occurred.
         if ($response['error'] !== '') {
@@ -207,14 +220,10 @@ class CurlMultiConnection extends AbstractConnection implements ConnectionInterf
         }
 
         if ($response['requestInfo']['http_code'] >= 400 && $response['requestInfo']['http_code'] < 500) {
-            $this->process4xxError($method, $uri, $response);
+            $this->process4xxError($method, $uri, $body, $response);
         } else if ($response['requestInfo']['http_code'] >= 500) {
-            $this->process5xxError($method, $uri, $response);
+            $this->process5xxError($method, $uri, $body, $response);
         }
-
-        $this->lastRequest['response']['body']    = $response['responseText'];
-        $this->lastRequest['response']['info']    = $response['requestInfo'];
-        $this->lastRequest['response']['status']  = $response['requestInfo']['http_code'];
 
         $this->logRequestSuccess(
             $method,
@@ -257,9 +266,9 @@ class CurlMultiConnection extends AbstractConnection implements ConnectionInterf
      * @throws \Elasticsearch\Common\Exceptions\Missing404Exception
      * @throws \Elasticsearch\Common\Exceptions\AlreadyExpiredException
      */
-    private function process4xxError($method, $uri, $response)
+    private function process4xxError($method, $uri, $request, $response)
     {
-        $this->logErrorDueToFailure($method, $uri, $response);
+        $this->logErrorDueToFailure($method, $uri, $request, $response);
 
         $statusCode    = $response['requestInfo']['http_code'];
         $exceptionText = $response['error'];
@@ -293,9 +302,9 @@ class CurlMultiConnection extends AbstractConnection implements ConnectionInterf
      * @throws \Elasticsearch\Common\Exceptions\NoDocumentsToGetException
      * @throws \Elasticsearch\Common\Exceptions\ServerErrorResponseException
      */
-    private function process5xxError($method, $uri, $response)
+    private function process5xxError($method, $uri, $request, $response)
     {
-        $this->logErrorDueToFailure($method, $uri, $response);
+        $this->logErrorDueToFailure($method, $uri, $request, $response);
 
         $statusCode    = $response['requestInfo']['http_code'];
         $exceptionText = $response['error'];
@@ -334,17 +343,19 @@ class CurlMultiConnection extends AbstractConnection implements ConnectionInterf
     /**
      * @param $method
      * @param $uri
+     * @param $request
      * @param $response
      */
-    private function logErrorDueToFailure($method, $uri, $response)
+    private function logErrorDueToFailure($method, $uri, $request, $response)
     {
         $this->logRequestFail(
             $method,
             $uri,
-            $response['requestInfo']['total_time'],
+            $request,
             $response['requestInfo']['http_code'],
             $response['responseText'],
-            $response['error']
+            $response['error'],
+            $response
         );
     }
 

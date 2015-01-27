@@ -6,7 +6,8 @@
         "psliwa/php-pdf": "dev-master",
         "imagine/Imagine": "dev-master",
         "zendframework/zend-validator": "dev-master",
-        "zendframework/zend-barcode": "dev-master"
+        "zendframework/zend-barcode": "dev-master",
+        "mike182uk/cart": "dev-master",
     },
     "minimum-stability": "dev"
 }

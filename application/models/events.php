@@ -112,7 +112,7 @@ class Events extends Eloquent {
 
 	public function people(){
 		return Person::left_join('profiles', 'profiles.id', '=', 'people.profile_id')
-					   ->where('profiles.event_id', '=', $this->id);
+					   ->select('people.*')->where('profiles.event_id', '=', $this->id);
 	}
 
 	public function profiles(){
@@ -179,6 +179,10 @@ class Events extends Eloquent {
 		}
 
 		return $map;
+	}
+
+	function products(){
+		return $this->has_many('product', 'event_id');
 	}
 
 	private $specialClass;

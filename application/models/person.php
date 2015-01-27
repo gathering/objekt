@@ -22,6 +22,10 @@ class Person extends Eloquent {
 		return parent::delete();
 	}
 
+	public function _save(){
+		return parent::save();
+	}
+
 	public function save(){
 		$event = Config::get('application.event');
 		$this->event_id = $event->id;

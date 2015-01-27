@@ -133,10 +133,12 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
     private function assertRegex($pattern, $actual) {
         $pattern = trim($pattern);
 
-        // PHP doesn't like unescaped forward slashes, switch to a new delimeter
-        // to make life easier
+        // PHP doesn't like unescaped forward slashes
         $pattern = substr($pattern, 1, strlen($pattern)-2);
-        $pattern = "%$pattern%mx";
+        $pattern = str_replace('/', '\/', $pattern);
+        $pattern = "/$pattern/mx";
+        echo "\n         |> actual: $actual\n";
+        echo "\n         |> pattern: $pattern\n";
         ob_flush();
         $result = preg_match($pattern, $actual, $matches);
         $this->assertEquals(1, $result);
@@ -243,7 +245,8 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
             }
 
             foreach ($yamlDocs as $doc) {
-                echo "   ".key($doc['values'])."\n";
+                $ts = date('c');
+                echo "   ".key($doc['values'])." [$ts]\n";
                 ob_flush();
 
                 $this->clearCluster();
@@ -256,7 +259,7 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
                     }
 
                 }
-               $this->executeTestCase($doc['values'], $testFile);
+                $this->executeTestCase($doc['values'], $testFile);
 
             }
 
@@ -274,13 +277,13 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
 
         if (is_array($values) === true) {
             array_walk_recursive($values, function(&$item, $key) use ($stash) {
-                    if (is_string($item) === true || is_numeric($item) === true) {
-                        if (array_key_exists($item, $stash) == true) {
-                            $item = $stash[$item];
-                        }
+                if (is_string($item) === true || is_numeric($item) === true) {
+                    if (array_key_exists($item, $stash) == true) {
+                        $item = $stash[$item];
                     }
+                }
 
-                });
+            });
         } elseif (is_string($values) || is_numeric($values)) {
             if (array_key_exists($values, $stash) == true) {
                 $values = $stash[$values];
@@ -501,9 +504,11 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
                         }
                     } else if (isset($settings['features']) === true) {
                         $feature = $settings['features'];
+                        $whitelist = array();
 
-                        if ($feature === 'regex') {
-
+                        if (array_search($feature, $whitelist) === false) {
+                            echo "Unsupported optional feature: $feature\n";
+                            return;
                         }
                     }
 
@@ -622,18 +627,35 @@ EOF;
     }
 
     private function skipTest($path)
-    {
+    {//all_path_options
         $skipList = array(
             'indices.delete_mapping/all_path_options.yaml',
             'indices.exists_type/10_basic.yaml',
             'indices.get_mapping/10_basic.yaml',
             'indices.create/10_basic.yaml',
-            'indices.get_alias/10_basic.yaml'
+            'indices.get_alias/10_basic.yaml',
+            'cat.allocation/10_basic.yaml'      //regex breaks PHP
         );
 
         foreach ($skipList as $skip) {
             if (strpos($path, $skip) !== false) {
                 return true;
+            }
+        }
+
+        //TODO make this more generic
+        if (version_compare(YamlRunnerTest::$esVersion, "1.4.0", "<")) {
+
+            // Breaking changes in null alias
+            $skipList = array(
+                'indices.delete_alias/all_path_options.yaml',
+                'indices.put_alias/all_path_options.yaml'
+            );
+
+            foreach ($skipList as $skip) {
+                if (strpos($path, $skip) !== false) {
+                    return true;
+                }
             }
         }
 

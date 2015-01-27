@@ -35,6 +35,9 @@ return array(
 	'search_person' => 'Søk på person…',
 	'search_profiles' => 'Søk på profiler…',
 	'invite_non_existant' => 'Invitasjon er ikke tilgjengelig på dette arrangementet',
+	'forgot_password' => 'Glemt passord',
+	'phone' => 'Mobilnummer',
+	'send_password' => 'Send passord'
 );
 
 ?>

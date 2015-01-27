@@ -15,6 +15,10 @@ return array(
 	'change_event' => 'Endre arrangement',
 	'pushover' => 'Push-tjenester',
 	'roles' => 'Roller',
-	'logistics' => 'Logistikk'
+	'logistics' => 'Logistikk',
+	'partner' => array(
+		'shop' => 'Butikk',
+		'cart' => 'Bestillingsliste'
+		),
 
 );

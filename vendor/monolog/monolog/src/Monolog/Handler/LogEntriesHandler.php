@@ -12,14 +12,12 @@
 namespace Monolog\Handler;
 
 use Monolog\Logger;
-use Monolog\Formatter\LineFormatter;
 
 /**
  * @author Robert Kaufmann III <rok3@rok3.me>
  */
 class LogEntriesHandler extends SocketHandler
 {
-
     /**
      * @var string
      */
@@ -54,5 +52,4 @@ class LogEntriesHandler extends SocketHandler
     {
         return $this->logToken . ' ' . $record['formatted'];
     }
-
 }

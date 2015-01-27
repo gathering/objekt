@@ -388,6 +388,85 @@ Route::get('/login', function(){
 	return View::make('common.login');
 });
 
+/* Partner Login */
+Route::get('/partner/login', function(){
+	
+	$event = Config::get('application.event');
+	if(!$event) return Redirect::to('/');
+	#die(var_dump(partnerAuth::check()));
+	if(partnerAuth::check()) return Redirect::to('/partner');
+
+	// Find random image from mediabank.
+	$file = Fil3::order_by(DB::raw('RAND()'))->where('type', '=', 'mediabank')->first();
+
+	return View::make('common.partnerLogin')->with('file', $file)->with("event", $event);
+});
+Route::post('/partner/login', function(){
+
+	$credentials = array('username' => Input::get('username'), 'password' => Input::get('password'));
+	if (PartnerAuth::attempt($credentials))
+	{
+	    return Redirect::to('/partner/');
+	} else {
+		return Redirect::to('/partner/login')->with('error', "Brukernavn og passord stemmer ikke.");
+	}
+});
+Route::get('/partner/new', function(){
+	
+	$event = Config::get('application.event');
+	if(!$event) return Redirect::to('/');
+
+	return View::make('partner.new')->with("event", $event);
+});
+Route::post('/partner/new', function(){
+
+	if(empty(Input::get('phone')))
+		return Redirect::to('/partner/new')->with("error", 'Mangler telefonnummer');
+
+	$event = Config::get('application.event');
+	$person = $event->people()->where("password", "=", "")->where("contact_person", "=", "1")->where("phone", "=", Input::get('phone'))->first();
+	if(!$person)
+		return Redirect::to('/partner/new')->with("error", 'Fant ikke brukeren. Minner om at denne funksjonen kun er tilgjengelig for de som er registrert som kontaktperson for partneren, og kan kun gjennomføres én gang.');
+	
+	$password = strtolower(Str::random(6, 'alpha'));
+
+	$content = "Vi har registrert en ny partnerbruker i systemet, og ditt passord er: ".$password;
+	$from = "OBJEKT";
+	$message = array( 'to' => '47'.$person->phone, 'message' => $content, 'from' => $from );
+	$result = Clockwork::message($message);
+
+	$sms = new SMS;
+	$sms->event_id = $event->id;
+	$sms->success = $result['success'];
+	$sms->person_id = $person->id;
+	$sms->to = $result['sms']['to'];
+	$sms->from = $result['sms']['from'];
+	$sms->message = $result['sms']['message'];
+	$sms->message_id = $result['id'];
+
+	$user = User::find(1);
+	$user->sms()->insert($sms);
+
+	$person->password = Hash::make($password);
+	$person->_save();
+
+	return Redirect::to('/partner/login');
+
+});
+Route::group(array('before' => 'partner_auth'), function()
+{
+	Route::get('/partner', function(){
+		return View::make('partner.dashboard');
+	});
+	
+	Route::controller('partner.shop');
+
+	Route::get('/partner/logout', function(){
+		partnerAuth::logout();
+		return Redirect::to('/partner/login');
+	});
+});
+
 Route::any('/invite', function()
 {
 	$event = Config::get('application.event');
@@ -484,7 +563,9 @@ Route::filter('after', function($response)
 	// Redirects have no content and errors handle their own layout.
     if (($response->status() == 200 or (isset($response->layout) and $response->layout === true))
     	&& (@$response->content->view != "common.login"
-    	&& @$response->content->view != "" && !defined('EVENT_SPECIALITY')))
+    	&& @$response->content->view != "common.partnerLogin"
+    	&& @$response->content->view != "partner.new"
+    	&& @$response->content->view != "" && !defined('EVENT_SPECIALITY') && !defined('PARTNER')))
     {
         list($type) = explode(';', array_get($response->headers(), 'Content-Type', 'text/html'), 2);
         switch ($type)
@@ -499,6 +580,26 @@ Route::filter('after', function($response)
                 $response->content = View::make('common.default', array(
                     'content' => $response->content
                 ))->with("title", Lang::line('views.'.$response->content->view)->get())->with("notifications", $notifications);
+            break;
+        }
+    }
+
+    elseif (($response->status() == 200 or (isset($response->layout) and $response->layout === true))
+    	&& defined('PARTNER'))
+    {
+        list($type) = explode(';', array_get($response->headers(), 'Content-Type', 'text/html'), 2);
+        switch ($type)
+        {
+            case 'text/html':
+            	if (Auth::check())
+				{
+					$notifications = array();
+
+				} else $notifications = array();
+
+                $response->content = View::make('common.partner', array(
+                    'content' => $response->content
+                ))->with("title", Lang::line('views.'.$response->content->view)->get());
             break;
         }
     }
@@ -528,6 +629,12 @@ Route::filter('event', function()
 		print($content->__toString());
 		exit;
 	}
+});
+
+Route::filter('partner_auth', function()
+{
+	if (PartnerAuth::guest()) return Redirect::to('partner/login')->with("referer", URI::full());
+	define('PARTNER', true);
 });
 
 Route::filter('auth', function()
