@@ -54,7 +54,7 @@ return array(
 	*/
 
 	#'key' => 'abrakadabraolada39419419413',
-	'key' => 'MSV6pLInP7XDXMcLYzv*XswWj%#qrpgyBDVal',
+	'key' => 'eirlrpEMSsnpbwYA%#*ucs1@!77c@Tsz',
 
 	/*
 	|--------------------------------------------------------------------------
