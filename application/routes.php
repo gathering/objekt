@@ -404,7 +404,7 @@ Route::get('/partner/login', function(){
 Route::post('/partner/login', function(){
 
 	$credentials = array('username' => Input::get('username'), 'password' => Input::get('password'));
-	if (PartnerAuth::attempt($credentials))
+	if (partnerAuth::attempt($credentials))
 	{
 	    return Redirect::to('/partner/');
 	} else {
@@ -675,7 +675,7 @@ Route::filter('event', function()
 
 Route::filter('partner_auth', function()
 {
-	if (PartnerAuth::guest()) return Redirect::to('partner/login')->with("referer", URI::full());
+	if (partnerAuth::guest()) return Redirect::to('partner/login')->with("referer", URI::full());
 	define('PARTNER', true);
 });
 
