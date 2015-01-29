@@ -53,7 +53,8 @@ return array(
 	|
 	*/
 
-	'key' => 'abrakadabraolada39419419413',
+	#'key' => 'abrakadabraolada39419419413',
+	'key' => 'MSV6pLInP7XDXMcLYzv*XswWj%#qrpgyBDVal',
 
 	/*
 	|--------------------------------------------------------------------------
