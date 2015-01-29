@@ -411,6 +411,47 @@ Route::post('/partner/login', function(){
 		return Redirect::to('/partner/login')->with('error', "Brukernavn og passord stemmer ikke.");
 	}
 });
+Route::get('/partner/forgot', function(){
+	$event = Config::get('application.event');
+	if(!$event) return Redirect::to('/');
+
+	return View::make('partner.forgot_password')->with("event", $event);
+});
+Route::post('/partner/forgot', function(){
+	$phone = Input::get('phone');
+	if(empty($phone))
+		return Redirect::to('/partner/new')->with("error", 'Mangler telefonnummer');
+
+	$event = Config::get('application.event');
+	$person = $event->people()->where("contact_person", "=", "1")->where("phone", "=", Input::get('phone'))->first();
+	if(!$person)
+		return Redirect::to('/partner/new')->with("error", 'Fant ikke brukeren. Minner om at denne funksjonen kun er tilgjengelig for de som er registrert som kontaktperson for partneren, og kan kun gjennomføres én gang.');
+	
+	$password = strtolower(Str::random(6, 'alpha'));
+
+	$content = "Vi har opprettet et nytt passord til deg: ".$password;
+	$from = "OBJEKT";
+	$message = array( 'to' => '47'.$person->phone, 'message' => $content, 'from' => $from );
+	$result = Clockwork::message($message);
+
+	$sms = new SMS;
+	$sms->event_id = $event->id;
+	$sms->success = $result['success'];
+	$sms->person_id = $person->id;
+	$sms->to = $result['sms']['to'];
+	$sms->from = $result['sms']['from'];
+	$sms->message = $result['sms']['message'];
+	$sms->message_id = $result['id'];
+
+	$user = User::find(1);
+	$user->sms()->insert($sms);
+
+	$person->password = Hash::make($password);
+	$person->_save();
+
+	return Redirect::to('/partner/login');
+
+});
 Route::get('/partner/new', function(){
 	
 	$event = Config::get('application.event');
@@ -565,6 +606,7 @@ Route::filter('after', function($response)
     	&& (@$response->content->view != "common.login"
     	&& @$response->content->view != "common.partnerLogin"
     	&& @$response->content->view != "partner.new"
+    	&& @$response->content->view != "partner.forgot_password"
     	&& @$response->content->view != "" && !defined('EVENT_SPECIALITY') && !defined('PARTNER')))
     {
         list($type) = explode(';', array_get($response->headers(), 'Content-Type', 'text/html'), 2);

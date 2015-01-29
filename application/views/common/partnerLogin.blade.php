@@ -47,7 +47,7 @@
 			</div>
 			<button type="submit" class="btn btn-lg btn-primary btn-block" title="{{ __('common.logged_in_title') }}">{{ __('common.login_button') }}</button>
 			
-			<div class="text-center m-t m-b"><a>{{ __('common.forgot_password') }}</a></div>
+			<div class="text-center m-t m-b"><a href="{{ url('partner/forgot') }}">{{ __('common.forgot_password') }}</a></div>
 			<div class="line line-dashed"></div>
 			<p class="text-center"><small>Første gang du bruker Objekt?</small></p>
 			<a href="{{ url('partner/new') }}" class="btn btn-lg btn-default btn-block">Få passord tilsendt</a>
