@@ -1,3 +1,5 @@
+@layout('partner.layouts.profile')
+@section('content')
 <section class="panel">
   <header class="panel-heading">
     {{ __('partner.accreditation.heading')}}
@@ -57,3 +59,4 @@
     </table>
   </div>
 </section>
+@endsection

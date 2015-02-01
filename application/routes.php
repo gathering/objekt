@@ -497,6 +497,7 @@ Route::post('/partner/new', function(){
 Route::group(array('before' => 'partner_auth'), function()
 {
 	Route::get('/partner', function(){
+		tplConstructor::set(true);
 		return View::make('partner.dashboard');
 	});
 	
