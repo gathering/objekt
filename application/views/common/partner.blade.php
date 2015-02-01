@@ -36,7 +36,7 @@
         </ul>
       </li>
     </ul>
-    <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('images/logo_transolini.png') }}" alt="" /></a>
+    <a class="navbar-brand" href="{{ url('/partner') }}"><img src="{{ asset('images/logo_transolini.png') }}" alt="" /></a>
     <button type="button" class="btn btn-link pull-left nav-toggle visible-xs" data-toggle="class:slide-nav slide-nav-left" data-target="body">
       <i class="fa fa-bars icon-xlarge text-default"></i>
     </button>
@@ -46,13 +46,23 @@
 	</header>
   <!-- / header -->
   <!-- nav -->
-  <nav id="nav" class="nav-primary hidden-xs nav-vertical">
+  <nav id="nav" class="nav-primary hidden-xs">
     <ul class="nav" data-spy="affix" data-offset-top="50">
-      <li {{ URI::segment(3) == '' ? 'class="active"' : '' }}><a href="{{ url('/') }}"><i class="fa fa-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span></a></li>
-      <li {{ URI::segment(3) == 'shop' ? 'class="active"' : '' }}><a href="{{ url('/partner/shop') }}"><i class="fa fa-cubes icon-xlarge"></i><span>{{ __('nav.partner.shop') }}</span></a></li>
+      <li {{ URI::segment(3) == '' ? 'class="active"' : '' }}>
+        <a href="{{ url('/partner') }}">
+          <i class="fa fa-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span>
+        </a>
+      </li>
+      <li {{ URI::segment(3) == '' ? 'class="active"' : '' }}>
+        <a href="{{ url('/partner/accreditation') }}">
+          <i class="fa fa-users icon-xlarge"></i><span>{{ __('nav.partner.accreditation') }}</span>
+        </a>
+      </li>
+      <!--<li {{ URI::segment(3) == 'shop' ? 'class="active"' : '' }}><a href="{{ url('/partner/shop') }}"><i class="fa fa-cubes icon-xlarge"></i><span>{{ __('nav.partner.shop') }}</span></a></li>
       @if(isset($cart) && count($cartItems) > 0)
       <li {{ URI::segment(3) == 'shop' ? 'class="active"' : '' }}><a href="{{ url('/partner/shop/cart') }}"><i class="fa fa-shopping-cart icon-xlarge"></i><span>{{ __('nav.partner.cart') }}</span></a></li>
       @endif
+    -->
     </ul>
   </nav>
   <!-- / nav -->

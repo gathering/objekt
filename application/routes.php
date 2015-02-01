@@ -501,6 +501,7 @@ Route::group(array('before' => 'partner_auth'), function()
 	});
 	
 	Route::controller('partner.shop');
+	Route::controller('partner.accreditation');
 
 	Route::get('/partner/logout', function(){
 		partnerAuth::logout();

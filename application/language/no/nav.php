@@ -18,7 +18,8 @@ return array(
 	'logistics' => 'Logistikk',
 	'partner' => array(
 		'shop' => 'Butikk',
-		'cart' => 'Bestillingsliste'
+		'cart' => 'Bestillingsliste',
+		'accreditation' => 'Akkredittering'
 		),
 
 );
