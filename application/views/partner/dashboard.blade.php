@@ -9,7 +9,7 @@
                     <i class="fa fa-info fa-stack-1x text-white"></i>
                   </span>
                 </div>
-				Alle meldinger som blir skrevet her blir <strong>varslet i sanntid</strong> til arrangement-vertene, og vil derfor kreve umiddelbar assistanse.<br />Dette systemet er opprettet for å kunne gi våre samarbeidspartnere en sporbarhet i de tingene som blir kommunisert mellom arrangør og partner.
+				Alle meldinger som blir skrevet her blir <strong>varslet i sanntid</strong> til arrangement-vertene, og vil derfor kreve umiddelbar assistanse.<br />Dette systemet er opprettet for å kunne gi våre samarbeidspartnere en sporbarhet i det som blir kommunisert mellom arrangør og partner.
 			</div>
 		</section>
 		<section class="comment-list block">

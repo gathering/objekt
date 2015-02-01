@@ -53,7 +53,7 @@
           <i class="fa fa-dashboard icon-xlarge"></i><span>{{ __('nav.dashboard') }}</span>
         </a>
       </li>
-      <li {{ URI::segment(3) == '' ? 'class="active"' : '' }}>
+      <li {{ URI::segment(3) == 'accreditation' ? 'class="active"' : '' }}>
         <a href="{{ url('/partner/accreditation') }}">
           <i class="fa fa-users icon-xlarge"></i><span>{{ __('nav.partner.accreditation') }}</span>
         </a>
