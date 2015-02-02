@@ -21,7 +21,7 @@
 <div class="container w-xxl w-auto-xs">
 	<a href class="navbar-brand block m-t">{{ $event->name }}</a>
 	<div class="m-b-lg">
-		<p>For å logge på din partnerkonto må du har et passord. Dette sender vi til deg via SMS, og det eneste du trenger å gjøre er å skrive inn telefonnummeret ditt nedenfor.</p>
+		<p>For å logge på din partnerkonto må du du et passord. Dette sender vi til deg via SMS, og det eneste du trenger å gjøre er å skrive inn telefonnummeret ditt nedenfor.</p>
 		<i>Du kan når som helst be om et nytt passord ved å klikke på glemt passord</i><br /><br />
 		<form method="post">
 			<div class="list-group list-group-sm">

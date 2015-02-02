@@ -54,6 +54,14 @@ Date.now = Date.now || function() { return +new Date; };
 
   $(function(){
 
+    $('#modal').on('hidden.bs.modal', function (e) {
+      $(this).removeData('bs.modal');
+    });
+    $('#modal').on('show.bs.modal', function (e) {
+      $(this).find('.modal-content').html('<div class="modal-body"><big><i class="fa fa-refresh fa-spin"></i> Laster…</big></div>');
+    });
+    
+
   	// placeholder
   	$('input[placeholder], textarea[placeholder]').placeholder();
 

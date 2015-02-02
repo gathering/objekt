@@ -604,48 +604,63 @@ Route::filter('before', function()
 Route::filter('after', function($response)
 {
 	// Redirects have no content and errors handle their own layout.
-    if (($response->status() == 200 or (isset($response->layout) and $response->layout === true))
-    	&& (@$response->content->view != "common.login"
-    	&& @$response->content->view != "common.partnerLogin"
-    	&& @$response->content->view != "partner.new"
-    	&& @$response->content->view != "partner.forgot_password"
-    	&& @$response->content->view != "" && !defined('EVENT_SPECIALITY') && !defined('PARTNER')))
+    if (($response->status() == 200 or (isset($response->layout) and $response->layout === true)))
     {
-        list($type) = explode(';', array_get($response->headers(), 'Content-Type', 'text/html'), 2);
-        switch ($type)
-        {
-            case 'text/html':
-            	if (Auth::check())
-				{
-					$notifications = array();
+    	$break = false;
 
-				} else $notifications = array();
+    	switch($response->content->view){
+    		case 'common.login':
+    		case 'common.partnerLogin':
+    		case 'partner.new':
+    		case 'partner.forgot_password':
+    		case '':
+    			$break = true;
+    		break;
+    		default:
+    			// Needs clean-up!
+    			if(defined('EVENT_SPECIALITY')){ $break = true; }
+    			if(defined('MODALVIEW')){ $break = true; }
+    			elseif (defined('PARTNER'))
+			    {
+			        list($type) = explode(';', array_get($response->headers(), 'Content-Type', 'text/html'), 2);
+			        switch ($type)
+			        {
+			            case 'text/html':
+			            	if (Auth::check())
+							{
+								$notifications = array();
 
-                $response->content = View::make('common.default', array(
-                    'content' => $response->content
-                ))->with("title", Lang::line('views.'.$response->content->view)->get())->with("notifications", $notifications);
-            break;
-        }
-    }
+							} else $notifications = array();
 
-    elseif (($response->status() == 200 or (isset($response->layout) and $response->layout === true))
-    	&& defined('PARTNER'))
-    {
-        list($type) = explode(';', array_get($response->headers(), 'Content-Type', 'text/html'), 2);
-        switch ($type)
-        {
-            case 'text/html':
-            	if (Auth::check())
-				{
-					$notifications = array();
+			                $response->content = View::make('common.partner', array(
+			                    'content' => $response->content
+			                ))->with("title", Lang::line('views.'.$response->content->view)->get());
+			            break;
+			        }
 
-				} else $notifications = array();
+			        $break = true;
+			    }
+    		break;
+    	}
 
-                $response->content = View::make('common.partner', array(
-                    'content' => $response->content
-                ))->with("title", Lang::line('views.'.$response->content->view)->get());
-            break;
-        }
+
+    	if(!$break){
+	        list($type) = explode(';', array_get($response->headers(), 'Content-Type', 'text/html'), 2);
+	        switch ($type)
+	        {
+	            case 'text/html':
+	            	if (Auth::check())
+					{
+						$notifications = array();
+
+					} else $notifications = array();
+
+	                $response->content = View::make('common.default', array(
+	                    'content' => $response->content
+	                ))->with("title", Lang::line('views.'.$response->content->view)->get())->with("notifications", $notifications);
+	            break;
+	        }
+	    }
     }
 });
 

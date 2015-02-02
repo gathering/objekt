@@ -26,7 +26,7 @@
 	<div class="m-b-lg">
 		<div class="wrapper text-center">
 			<strong>Innlogging for partnere</strong><br />
-			<i>Kun for partnere med {{ $event->name }}.</i>
+			<i>Kun for {{ $event->name }}s partnere.</i>
 		</div>
 		<form name="form" method="post" class="form-validation">
 			@if ( Session::get('error') )
