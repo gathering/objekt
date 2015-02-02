@@ -25,7 +25,7 @@ return array(
 		'promote_modal' => array(
 			'heading' => 'Promotér personell',
 			'button' => '<i class="fa fa-star"></i> Promotér',
-			'description' => 'En kontaktperson er en person med administrasjonsrettigheter for partnerprofilen. Kontaktpersonen kan legge til og fjerne personell, legge til tjenester i butikken samt kontakte Arrangøren via app.obj.no.'
+			'description' => 'En kontaktperson er en person med administrasjonsrettigheter for partnerprofilen. Kontaktpersonen kan legge til og fjerne personell, legge til tjenester i butikken samt kontakte arrangøren via app.obj.no.'
 			),		
 		'delete_modal' => array(
 			'heading' => 'Sletting av personell',

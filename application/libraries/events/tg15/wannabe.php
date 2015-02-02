@@ -4,7 +4,7 @@
 class Wannabe {
 
 	static private $app_key = "53299290-9920-4cba-9afb-433bc39fe93c";
-	static private $api_url = "http://wannabe.gathering.org/tg14/api/";
+	static private $api_url = "http://wannabe.gathering.org/tg15/api/";
 
 	static private $api_key = "";
 

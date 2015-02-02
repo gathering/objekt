@@ -50,7 +50,7 @@ class tg15 extends EventTemplate {
 			break;
 		}
 
-		if(!$role)
+		if(!isset($role))
 			return Redirect::to('/invite')->with('error', "Not apart of a crew that are eligible to have an Objekt-account.");
 
 		$objUser = User::where("username", "=", $user->user->username);
