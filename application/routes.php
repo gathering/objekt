@@ -423,9 +423,9 @@ Route::post('/partner/forgot', function(){
 		return Redirect::to('/partner/new')->with("error", 'Mangler telefonnummer');
 
 	$event = Config::get('application.event');
-	$person = $event->people()->where("contact_person", "=", "1")->where("phone", "=", Input::get('phone'))->first();
+	$person = $event->people()->where("password", "!=", "")->where("contact_person", "=", "1")->where("phone", "=", Input::get('phone'))->first();
 	if(!$person)
-		return Redirect::to('/partner/new')->with("error", 'Fant ikke brukeren. Minner om at denne funksjonen kun er tilgjengelig for de som er registrert som kontaktperson for partneren, og kan kun gjennomføres én gang.');
+		return Redirect::to('/partner/new')->with("error", 'Fant ikke brukeren. Dette kan være fordi du ikke er registrert som kontaktperson, eller ikke har vært å laget deg bruker under «Ny bruker».');
 	
 	$password = strtolower(Str::random(6, 'alpha'));
 
