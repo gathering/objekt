@@ -30,6 +30,10 @@ class User extends Verify\Models\User {
 		return $this->following()->where("type", "=", $what)->where("belongs_to", "=", $id)->count() > 0 ? true : false;
 	}
 
+	public function roles(){
+		return $this->has_many_and_belongs_to('role', 'role_user');
+	}
+
 	public function allRoles(){
 		$event = Config::get('application.event');
 		$roles = $event->roles()->get();
@@ -50,16 +54,18 @@ class User extends Verify\Models\User {
 	}
 
 	static function active($event=""){
-		return self::left_join('event_users', 'event_users.user_id', '=', 'users.id')
-					->where(function($query) use(&$event) {
-						$query->where(function($query) use(&$event) {
-							$event = !empty($event) ? $event : Config::get('application.event');
+		$event = !empty($event) ? $event : Config::get('application.event');
+		return $event->users();
+
+		/*return self::left_join('event_users', 'event_users.user_id', '=', 'users.id')
+					->where(function($query) use($event) {
+						$query->where(function($query) use($event) {
 							$query->where("event_users.event_id", "=", $event->id);
 							$query->where("users.id", "=", DB::Raw('`event_users`.`user_id`'));
 						});
 					})
 					->where("users.disabled", "=", "0")
-					->where("users.deleted", "=", "0");
+					->where("users.deleted", "=", "0");*/
 	}
 
 	public function events(){

@@ -100,14 +100,14 @@
 	        	<optgroup label="--">
 	        		@foreach(User::all() as $user)
 		        		@if($user->is('superAdmin'))
-		        		<option value="{{ $user->id }}">{{ $user->name }}</option>
+		        		<option value="{{ $user->id }}"{{ (isset($profile->user_id) ? $profile->user_id == $user->id : $profile->event()->first()->primary_contact == $user->id) ? " selected" : "" }}>{{ $user->name }}</option>
 		        		@endif
 		        	@endforeach
 		        </optgroup>
 	        	@foreach($current_event->roles()->get() as $role)
 	        	<optgroup label="{{ $role->name }}">
 	        		@foreach ($role->users()->get() as $user)
-	        		<option value="{{ $user->id }}"{{ $profile->user_id == $user->id ? " selected" : "" }}>{{ $user->name }}</option>
+	        		<option value="{{ $user->id }}"{{ (isset($profile->user_id) ? $profile->user_id == $user->id : $profile->event()->first()->primary_contact == $user->id) ? " selected" : "" }}>{{ $user->name }}</option>
 	        		@endforeach
 				</optgroup>
 	        	@endforeach

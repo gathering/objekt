@@ -45,12 +45,15 @@ class tg15 extends EventTemplate {
 						case 304: // Info:Desk
 							$role = Role::find(17);
 						break;
+						case 332: // Core:Obj
+							$role = Role::find(1);
+						break;
 					}
 				}
 			break;
 		}
 
-		if(!isset($role))
+		if(!isset($role))	
 			return Redirect::to('/invite')->with('error', "Not apart of a crew that are eligible to have an Objekt-account.");
 
 		$objUser = User::where("username", "=", $user->user->username);

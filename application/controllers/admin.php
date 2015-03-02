@@ -21,7 +21,7 @@ class Admin_Controller extends Base_Controller {
 		$printers = $cloudPrinter->getPrinters();
 
 		$users = array();
-		foreach(User::active($event)->get(DB::Raw('users.*')) as $user) array_push($users, array('id' => $user->id, 'text' => $user->username));
+		foreach(User::active($event)->get() as $user) array_push($users, array('id' => $user->id, 'text' => $user->username));
 
 		return View::make('admin.event')
 				->with("event", $event)

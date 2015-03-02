@@ -118,10 +118,7 @@ $(function(){
 	});
 });
 </script>
-@endsection
-<div class="welcome">
-	<div class="labelDisplay">{{ __('dashboard.welcome') }}</div>
-</div>
+@endsection	
 <div class="row">
 	<div class="col-lg-6">
 		<section class="panel">
