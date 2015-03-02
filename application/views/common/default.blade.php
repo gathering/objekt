@@ -178,7 +178,7 @@
       @if(isset(serverConfig::get()->name))
         <br />
         <hr />
-        This is <b>{{ serverConfig::get()->name }}</b> instance on ({{ serverConfig::get()->ip }})<br />
+        This is <b>{{ serverConfig::get()->name }}</b> <i>({{ serverConfig::get()->ip }})</i> instance.<br />
         <br />
         @if(isset(serverConfig::get()->powered_by))
           <b>Powered by</b><br />
