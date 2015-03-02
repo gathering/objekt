@@ -308,7 +308,7 @@
   <br />
   @if(isset(serverconfig()->powered_by))
   <b>Powered by</b>
-  <a href="{{ serverconfig()->powered_by }}">{{ serverconfig()->powered_by_logo }}</a>
+  <a href="{{ serverconfig()->powered_by->url }}">{{ serverconfig()->powered_by->logo }}</a>
   @endif
 </body>
 </html>
