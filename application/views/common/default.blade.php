@@ -300,15 +300,15 @@
 
   @yieldSection('scripts')
   @yieldSection('custom_scripts')
-  @if(isset(serverconfig()->name))
+  @if(isset(serverConfig::get()->name))
   <br />
   <hr />
   <br />
-  <b>{{ serverconfig()->name }}</b>({{ serverconfig()->ip }})<br />
+  <b>{{ serverConfig::get()->name }}</b>({{ serverConfig::get()->ip }})<br />
   <br />
-  @if(isset(serverconfig()->powered_by))
+  @if(isset(serverConfig::get()->powered_by))
   <b>Powered by</b>
-  <a href="{{ serverconfig()->powered_by->url }}">{{ serverconfig()->powered_by->logo }}</a>
+  <a href="{{ serverConfig::get()->powered_by->url }}">{{ serverConfig::get()->powered_by->logo }}</a>
   @endif
   @endif
 </body>
