@@ -178,10 +178,10 @@
       @if(isset(serverConfig::get()->name))
         <br />
         <hr />
-        <b>{{ serverConfig::get()->name }}</b>({{ serverConfig::get()->ip }})<br />
+        This is <b>{{ serverConfig::get()->name }}</b> ({{ serverConfig::get()->ip }})<br />
         <br />
         @if(isset(serverConfig::get()->powered_by))
-          <b>Powered by</b>
+          <b>Powered by</b><br />
           <a href="{{ serverConfig::get()->powered_by->url }}"><img src="{{ serverConfig::get()->powered_by->logo }}" alt="" /></a>
         @endif
       @endif
