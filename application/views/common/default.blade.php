@@ -304,11 +304,12 @@
   <br />
   <hr />
   <br />
-  <b>{{ serverconfig()->name }}</b><br />
+  <b>{{ serverconfig()->name }}</b>({{ serverconfig()->ip }})<br />
   <br />
   @if(isset(serverconfig()->powered_by))
   <b>Powered by</b>
   <a href="{{ serverconfig()->powered_by->url }}">{{ serverconfig()->powered_by->logo }}</a>
+  @endif
   @endif
 </body>
 </html>
