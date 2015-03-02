@@ -175,6 +175,16 @@
       <? echo shell_exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit"); ?></small><br><br>
 	    <a href="https://twitter.com/objno" target="_blank" class="btn btn-xs btn-circle btn-twitter"><i class="fa fa-twitter"></i></a>
 	    <a href="https://facebook.com/objno" target="_blank" class="btn btn-xs btn-circle btn-facebook"><i class="fa fa-facebook"></i></a>
+      @if(isset(serverConfig::get()->name))
+        <br />
+        <hr />
+        <b>{{ serverConfig::get()->name }}</b>({{ serverConfig::get()->ip }})<br />
+        <br />
+        @if(isset(serverConfig::get()->powered_by))
+          <b>Powered by</b>
+          <a href="{{ serverConfig::get()->powered_by->url }}"><img src="{{ serverConfig::get()->powered_by->logo }}" alt="" /></a>
+        @endif
+      @endif
 	  </p>
 	</div>
 	</footer>
@@ -300,16 +310,5 @@
 
   @yieldSection('scripts')
   @yieldSection('custom_scripts')
-  @if(isset(serverConfig::get()->name))
-  <br />
-  <hr />
-  <br />
-  <b>{{ serverConfig::get()->name }}</b>({{ serverConfig::get()->ip }})<br />
-  <br />
-  @if(isset(serverConfig::get()->powered_by))
-  <b>Powered by</b>
-  <a href="{{ serverConfig::get()->powered_by->url }}">{{ serverConfig::get()->powered_by->logo }}</a>
-  @endif
-  @endif
 </body>
 </html>
