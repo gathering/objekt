@@ -300,5 +300,15 @@
 
   @yieldSection('scripts')
   @yieldSection('custom_scripts')
+  @if(isset(serverconfig()->name))
+  <br />
+  <hr />
+  <br />
+  <b>{{ serverconfig()->name }}</b><br />
+  <br />
+  @if(isset(serverconfig()->powered_by))
+  <b>Powered by</b>
+  <a href="{{ serverconfig()->powered_by }}">{{ serverconfig()->powered_by_logo }}</a>
+  @endif
 </body>
 </html>
