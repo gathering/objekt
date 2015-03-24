@@ -11,13 +11,22 @@ class PDF {
 
 	var $content;
 	var $variables = array();
+	var $layout = false;
 
 	function prepare(){
 		$document = $this->preparePath($this->document);
 		$stylesheet = $this->preparePath($this->stylesheet, 'stylesheet');
 
-		$documentView = View::make('path: '.$document);
-		foreach($this->variables as $name => $value) $documentView->with($name, $value);
+		
+		if($this->layout){
+			$documentView = View::make('path: '.$this->layout.'/theme.blade.php')->nest('content', 'pdf.'.$this->document, $this->variables);
+			$stylesheet = $this->layout.'/theme.stylesheet.blade.php';
+		}
+		else {
+			$documentView = View::make('path: '.$document);
+			foreach($this->variables as $name => $value) $documentView->with($name, $value);
+		}
+		
 		$documentXml = $documentView->__toString();
 
 		if(!empty($stylesheet)){
@@ -29,7 +38,10 @@ class PDF {
 			$stylesheetXml = $stylesheetView->__toString();
 		}
 
-		$facade = PHPPdf\Core\FacadeBuilder::create()->build();
+		$loader = new PHPPdf\Core\Configuration\LoaderImpl();
+		$loader->setFontFile(path('app').'views/pdf/config/fonts.xml');
+
+		$facade = PHPPdf\Core\FacadeBuilder::create($loader)->build();
 	    $this->content = $facade->render($documentXml, $stylesheetXml);
 	}
 
@@ -43,6 +55,10 @@ class PDF {
 	function with($name, $value){
 		$this->variables[$name] = $value;
 		return $this;
+	}
+
+	function layout($name){
+		$this->layout = $name;
 	}
 
 	function string(){

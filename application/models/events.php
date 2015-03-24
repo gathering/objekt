@@ -181,6 +181,11 @@ class Events extends Eloquent {
 		return $map;
 	}
 
+	function primary_contact()
+	{
+		return User::find($this->primary_contact);
+	}
+
 	function products(){
 		return $this->has_many('product', 'event_id');
 	}

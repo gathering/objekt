@@ -120,15 +120,13 @@ class Users_Controller extends Base_Controller {
 
 		if($user->email != $email){
 			$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
-			$response = Mandrill::request('/messages/send', array(
-			    'message' => array(
-			        'html' => $contents->render(),
-			        'subject' => Lang::line('user.verification_subject')->get(),
-			        'from_email' => Lang::line('user.noreply')->get(),
-			        'from_name' => Lang::line('user.noreply_name')->get(),
-			        'to' => array(array('email'=>$user->email)),
-			    ),
-			));
+			$response = Mandr::messages()->send(array(
+	            'html' => $contents->render(),
+	            'subject' => Lang::line('user.verification_subject')->get(),
+	            'from_email' => Lang::line('user.noreply')->get(),
+			    'from_name' => Lang::line('user.noreply_name')->get(),
+	            'to' => array(array('email'=>$user->email))
+	        ), false);
 			$user->email = $email;
 		}
 
@@ -169,15 +167,13 @@ class Users_Controller extends Base_Controller {
 		$user->password = $password;
 
 		$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
-		$response = Mandrill::request('/messages/send', array(
-		    'message' => array(
-		        'html' => $contents->render(),
-		        'subject' => Lang::line('user.verification_subject')->get(),
-		        'from_email' => Lang::line('user.noreply')->get(),
-		        'from_name' => Lang::line('user.noreply_name')->get(),
-		        'to' => array(array('email'=>$user->email)),
-		    ),
-		));
+		$response = Mandr::messages()->send(array(
+	            'html' => $contents->render(),
+	            'subject' => Lang::line('user.verification_subject')->get(),
+	            'from_email' => Lang::line('user.noreply')->get(),
+			    'from_name' => Lang::line('user.noreply_name')->get(),
+	            'to' => array(array('email'=>$user->email))
+	        ), false);
 
 		$user->save();
 		return Redirect::to('users')->with('success', __('user.user_added'));
@@ -216,15 +212,13 @@ class Users_Controller extends Base_Controller {
 		$user->roles()->sync(array(Input::get('role')));
 
 		$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
-		$response = Mandrill::request('/messages/send', array(
-		    'message' => array(
-		        'html' => $contents->render(),
-		        'subject' => Lang::line('user.verification_subject')->get(),
-		        'from_email' => Lang::line('user.noreply')->get(),
-		        'from_name' => Lang::line('user.noreply_name')->get(),
-		        'to' => array(array('email'=>$user->email)),
-		    ),
-		));
+		$response = Mandr::messages()->send(array(
+	            'html' => $contents->render(),
+	            'subject' => Lang::line('user.verification_subject')->get(),
+	            'from_email' => Lang::line('user.noreply')->get(),
+			    'from_name' => Lang::line('user.noreply_name')->get(),
+	            'to' => array(array('email'=>$user->email))
+	        ), false);
 
 		/*var_dump($response);
 		$user->delete(); die();*/

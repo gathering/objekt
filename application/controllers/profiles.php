@@ -500,4 +500,10 @@ class Profiles_Controller extends Controller {
 
 		return Redirect::to($profile->url())->with("success", __('profile.person_deleted'));
 	}
+	public function action_messages($profile_slug){
+		$profile = profile::find($profile_slug);
+		if(!$profile->exists) return Event::first('404');
+
+		return View::make('profiles.messages');
+	}
 }

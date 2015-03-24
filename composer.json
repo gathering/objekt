@@ -8,6 +8,7 @@
         "zendframework/zend-validator": "dev-master",
         "zendframework/zend-barcode": "dev-master",
         "mike182uk/cart": "dev-master",
+        "mandrill/mandrill": "1.0.*"
     },
     "minimum-stability": "dev"
 }

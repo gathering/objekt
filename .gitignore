@@ -1,3 +1,4 @@
 vendor/
+application/config/database.php
 composer.lock
 .server.config

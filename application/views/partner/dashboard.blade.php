@@ -1,7 +1,7 @@
 @layout('partner.layouts.profile')
 @section('content')
 <div class="tab-pane active padder">
-		<section class="panel">
+		<!--<section class="panel">
 			<div class="panel-body">
 				<div class="pull-left thumb-small" style="margin-right: 30px;">
                   <span class="fa-stack fa-lg">
@@ -13,7 +13,6 @@
 			</div>
 		</section>
 		<section class="comment-list block">
-			<!-- comment form -->
             <article class="comment-item media" id="comment-form">
               <a class="pull-left thumb-small avatar"><img src="http://placehold.it/36x36" class="img-circle"></a>
               <section class="media-body">
@@ -41,5 +40,5 @@
               </section>
             </article>
           </section>
-         </div>
+         </div>-->
 @endsection

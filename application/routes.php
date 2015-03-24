@@ -89,6 +89,10 @@ Route::group(array('before' => 'auth|is_superadmin|event'), function()
 	});
 });
 
+#Route::group(array('before' => 'event'), function(){
+	Route::controller('ticket.inbound');
+#});
+
 /* Generic Admin */
 Route::group(array('before' => 'auth|can_admin|event'), function()
 {
@@ -210,6 +214,8 @@ Route::group(array('before' => 'auth|can_profiles|event'), function(){
 	/* Profile */
 	Route::get('/profile/(:any)/edit', array('before' => 'can_edit_profile', 'uses' => 'profiles@edit'));
 	Route::post('/profile/(:any)/edit', array('before' => 'can_edit_profile', 'uses' => 'profiles@post_edit'));
+
+	Route::get('/profile/(:any)/messages', array('before' => 'can_profiles', 'uses' => 'profiles@messages'));
 
 	Route::get('/profile/(:any)/delete', array('before' => 'can_delete_profile', 'uses' => 'profiles@delete'));
 	Route::post('/profile/(:any)/delete', array('before' => 'can_delete_profile', 'uses' => 'profiles@post_delete'));
@@ -608,7 +614,7 @@ Route::filter('after', function($response)
     {
     	$break = false;
 
-    	switch($response->content->view){
+    	switch(@$response->content->view){
     		case 'common.login':
     		case 'common.partnerLogin':
     		case 'partner.new':

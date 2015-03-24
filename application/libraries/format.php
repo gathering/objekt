@@ -51,6 +51,11 @@ class Format {
 		 
 		return $num;
 	}
+
+	static function money($num)
+	{
+		return number_format($num, 0, ',', ' ').' NOK';
+	}
 }
 
 ?>

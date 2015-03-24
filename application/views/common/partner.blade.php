@@ -58,12 +58,10 @@
           <i class="fa fa-users icon-xlarge"></i><span>{{ __('nav.partner.accreditation') }}</span>
         </a>
       </li>
-      <!--<li {{ URI::segment(3) == 'shop' ? 'class="active"' : '' }}><a href="{{ url('/partner/shop') }}"><i class="fa fa-cubes icon-xlarge"></i><span>{{ __('nav.partner.shop') }}</span></a></li>
-      @if(isset($cart) && count($cartItems) > 0)
-      <li {{ URI::segment(3) == 'shop' ? 'class="active"' : '' }}><a href="{{ url('/partner/shop/cart') }}"><i class="fa fa-shopping-cart icon-xlarge"></i><span>{{ __('nav.partner.cart') }}</span></a></li>
-      @endif
-    -->
+      <li {{ URI::segment(3) == 'shop' ? 'class="active"' : '' }}><a href="{{ url('/partner/shop') }}"><i class="fa fa-cubes icon-xlarge"></i><span>{{ __('nav.partner.shop') }}</span></a></li>
+      @yieldSection('navigations')
     </ul>
+    @yieldSection('afterNavigation')
   </nav>
   <!-- / nav -->
   @if (!tplConstructor::has())
