@@ -14,8 +14,6 @@ class Ticket_Inbound_Controller extends Base_Controller {
 		$events = json_decode( Input::get('mandrill_events') );
 		if(!$events) Response::json(array('error' => 'Not correct format applied'), 505);
 
-		var_dump($events); exit;
-
 		foreach($events as $event){
 			$message = new Message;
 
