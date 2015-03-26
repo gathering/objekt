@@ -42,7 +42,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'mysql-dev',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -65,6 +65,16 @@ return array(
 			'driver'   => 'sqlite',
 			'database' => 'application',
 			'prefix'   => '',
+		),
+
+		'mysql-dev' => array(
+			'driver'   => 'mysql',
+			'host'     => 'localhost',
+			'database' => 'objekt_dev',
+			'username' => 'objekt_dev',
+			'password' => 'WKWWjFKCQdLT5h2f',
+			'charset'  => 'utf8',
+			'prefix'   => '', 
 		),
 
 		'mysql' => array(
