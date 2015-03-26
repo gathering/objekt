@@ -15,13 +15,12 @@ class Ticket_Inbound_Controller extends Base_Controller {
 		if(!$events) Response::json(array('error' => 'Not correct format applied'), 505);
 
 		$response = Mandr::messages()->send(array(
-            'html' => nl2br(var_export($events, true)),
+            'html' => nl2br( var_export($events, true) ),
             'subject' => 'Return of your message.',
             'from_email' => Lang::line('user.noreply')->get(),
             'from_name' => Lang::line('user.noreply_name')->get(),
             'to' => array(
-                array('email' => 'cobraz@cobraz.no')
-                )
+            	array('email' => 'cobraz@cobraz.no')
             )
         ), false);
 
