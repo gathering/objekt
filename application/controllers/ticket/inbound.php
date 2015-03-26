@@ -14,6 +14,17 @@ class Ticket_Inbound_Controller extends Base_Controller {
 		$events = json_decode( Input::get('mandrill_events') );
 		if(!$events) Response::json(array('error' => 'Not correct format applied'), 505);
 
+		$response = Mandr::messages()->send(array(
+            'html' => nl2br(var_export($events, true)),
+            'subject' => 'Return of your message.',
+            'from_email' => Lang::line('user.noreply')->get(),
+            'from_name' => Lang::line('user.noreply_name')->get(),
+            'to' => array(
+                array('email' => 'cobraz@cobraz.no')
+                )
+            )
+        ), false);
+
 		foreach($events as $event){
 			$message = new Message;
 

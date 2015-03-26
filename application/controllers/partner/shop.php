@@ -53,7 +53,7 @@ class Partner_Shop_Controller extends Base_Controller
             'from_email' => Lang::line('user.noreply')->get(),
             'from_name' => Lang::line('user.noreply_name')->get(),
             'to' => array(
-                array('email' => 'cobraz@cobraz.no')
+                array('email' => partnerAuth::user()->email)
                 ),
             'attachments' => array(
                 array(
