@@ -55,8 +55,9 @@ class Message extends Eloquent {
 	function set_to_email($email){
 
 		// Find user that have sent the email.
-		$person = Person::where('email', '=', $this->get_attribute('from_email'))->first();
+		$person = Person::where('email', '=', $this->get_attribute('from_email'));
 		if($person->count() > 0){
+			$person = $person->first();
 			$this->set_attribute('person_id', $person->id);
 			$this->set_attribute('profile_id', $person->profile_id);
 		}
