@@ -6,6 +6,10 @@ class Profile extends Eloquent {
 		return $this->belongs_to('Role');
 	}
 
+	public function responsible(){
+		return User::find($this->user_id);
+	}
+
 	static function all(){
 		$event = Config::get('application.event');
 		return parent::order_by('name', 'asc')->where("event_id", "=", $event->id)->get();
@@ -13,6 +17,10 @@ class Profile extends Eloquent {
 
 	static function everyone(){
 		return parent::all();
+	}
+
+	public function messages(){
+		return $this->has_many('message');
 	}
 
 	public function tags(){
@@ -117,7 +125,7 @@ class Profile extends Eloquent {
 		} else return false;
 	}
 	public function url(){
-		return URL::to('profile/'.$this->slug);
+		return 'profile/'.$this->slug;
 	}
 
 	public function contactpersons(){

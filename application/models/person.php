@@ -14,6 +14,14 @@ class Person extends Eloquent {
 		return $this->has_many('following', 'belongs_to')->where("type", "=", "person");
 	}
 
+	public function get_phone(){
+		$phone = $this->get_attribute('phone');
+
+		if(substr($phone, 0, 2) == '00')
+			return $phone;
+		else return '0047'.$phone;
+	}
+
 	public function delete(){
 		$params['index'] = 'people';
 		$params['type']  = 'obj';
@@ -79,9 +87,9 @@ class Person extends Eloquent {
 		$profile = $this->profile();
 
 		if($this->is_child()){
-			return URL::to($url.'/'.$this->profile()->slug.'/'.$this->parent()->slug.'/'.$this->slug);
+			return $url.'/'.$this->profile()->slug.'/'.$this->parent()->slug.'/'.$this->slug;
 		} else {
-			return URL::to($url.'/'.$this->profile()->slug.'/'.$this->slug);
+			return $url.'/'.$this->profile()->slug.'/'.$this->slug;
 		}
 	}
 	function parent(){

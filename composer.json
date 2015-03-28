@@ -1,4 +1,10 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://cobraz@bitbucket.org/objekt/objekt-language.git"
+        }
+    ],
     "require": {
         "elasticsearch/elasticsearch": "~1.0",
         "pusher/pusher-php-server": "dev-master",
@@ -8,7 +14,14 @@
         "zendframework/zend-validator": "dev-master",
         "zendframework/zend-barcode": "dev-master",
         "mike182uk/cart": "dev-master",
-        "mandrill/mandrill": "1.0.*"
+        "mandrill/mandrill": "1.0.*",
+        "mnsami/composer-custom-directory-installer": "1.0.*",
+        "objekt/objekt-language": "dev-master"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "installer-paths": {
+            "application/language": ["objekt/objekt-language"]
+        }
+    }
 }

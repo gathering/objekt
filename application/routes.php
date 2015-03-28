@@ -1,5 +1,11 @@
 <?php
 
+// API
+
+Route::group(array('before' => 'basic-auth|event|can_api'), function(){
+	Route::controller('api.profile.person');
+	Route::controller('api.profile.contact_persons');
+});
 
 Route::group(array('before' => 'auth|event'), function()
 {
@@ -705,6 +711,11 @@ Route::filter('partner_auth', function()
 Route::filter('auth', function()
 {
 	if (Auth::guest()) return Redirect::to('login')->with("referer", URI::full());
+});
+
+Route::filter('basic-auth', function()
+{
+	if (!Auth::basic()) return Redirect::json(array('status' => 'failed'), 401);
 });
 
 Route::filter('is_superadmin', function(){

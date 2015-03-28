@@ -31,12 +31,24 @@ class Message extends Eloquent {
 		exit;
 	}
 
+	public function replys(){
+		return Message::where('thread', '=', $this->thread)
+					->where('id', '!=', $this->id)
+					->where('profile_id', '=', $this->profile_id);
+	}
+
+	public function person(){
+		return $this->belongs_to('person')->first();
+	}
+
 	public function get_event_from_mail($email=NULL){
 
 		$email = explode("@", ($email == NULL ? $this->get_attribute('to_email') : $email));
 		$username = explode("-", $email[0]);
+
 		
-		return Events::where('slug', '=', $username[0])->first();
+		$event = Events::where('slug', '=', $username[0])->first();
+		return $event;
 
 	}
 
@@ -47,15 +59,19 @@ class Message extends Eloquent {
 
 		if(count($username) > 1)
 			return str_replace($username[0]."-", "", $email[0]);
-		else
+		else 
 			return strtolower(Str::random(32));
 
 	}
 
-	function set_to_email($email){
+	function set_from_email($email){
+
+		$this->set_attribute('from_email', $email);
 
 		// Find user that have sent the email.
-		$person = Person::where('email', '=', $this->get_attribute('from_email'));
+		$person = Person::where('email', '=', $email)
+					->where('event_id', '=', $this->event_id);
+
 		if($person->count() > 0){
 			$person = $person->first();
 			$this->set_attribute('person_id', $person->id);
@@ -64,10 +80,15 @@ class Message extends Eloquent {
 
 	}
 
-	function set_from_email($email){
+	function set_to_email($email){
+
+		$this->set_attribute('to_email', $email);
+
+		$event = $this->get_event_from_mail($email);
+
 		// Set event
-		if($this->get_event_from_mail())
-			$this->set_attribute('event_id', $this->get_event_from_mail()->id);
+		if($event)
+			$this->set_attribute('event_id', $event->id);
 
 		if(empty($this->get_attribute('thread')))
 			$this->set_attribute('thread', $this->get_thread_from_mail());

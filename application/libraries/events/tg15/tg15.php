@@ -48,6 +48,12 @@ class tg15 extends EventTemplate {
 						case 332: // Core:Obj
 							$role = Role::find(1);
 						break;
+						case 303: // Info:Content
+							$role = Role::find(23);
+						break;
+						case 325:
+							$role = Role::find(17);
+						break;
 					}
 				}
 			break;

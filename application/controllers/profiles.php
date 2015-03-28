@@ -252,6 +252,12 @@ class Profiles_Controller extends Controller {
 		$parent = $profile->person()->where("slug", "=", $person_slug)->first();
 
 		$input = Input::all();
+		$input['phone'] = str_replace('+', '00', $input['phone']);
+
+		if(substr($input['phone'], 0, 2) != '00')
+		    return Redirect::to(Request::referrer())->with('error', 'Telefonnummeret var feil lagt inn. Dette må begynne med 00XX.')->with('post', $input);
+
+
 		$rules = array(
 		    'firstname'  => 'required|max:255',
 		    'surname'  => 'required|max:255',
@@ -438,6 +444,12 @@ class Profiles_Controller extends Controller {
 		}
 
 		$input = Input::all();
+
+		$input['phone'] = str_replace('+', '00', $input['phone']);
+
+		if(substr($input['phone'], 0, 2) != '00')
+		    return Redirect::to(Request::referrer())->with('error', 'Telefonnummeret var feil lagt inn. Dette må begynne med 00XX.')->with('post', $input);
+
 		$rules = array(
 		    'firstname'  => 'required|max:255',
 		    'surname'  => 'required|max:255',
@@ -504,6 +516,6 @@ class Profiles_Controller extends Controller {
 		$profile = profile::find($profile_slug);
 		if(!$profile->exists) return Event::first('404');
 
-		return View::make('profiles.messages');
+		return View::make('profiles.messages')->with('profile', $profile);
 	}
 }

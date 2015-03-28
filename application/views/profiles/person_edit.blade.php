@@ -18,6 +18,10 @@
   <label class="col-lg-3 control-label">{{ __('user.phone') }}</label>
   <div class="col-lg-8">
     <input type="text" name="phone" value="{{ $person->phone }}" tabindex="3" placeholder="{{ __('profile.placeholder.phone') }}"  class="form-control" autocomplete="off">
+    <br />
+    <div class="alert alert-info">
+      {{ __('profile.phone_news') }}
+    </div>
   </div>
 </div>
 <div class="form-group">

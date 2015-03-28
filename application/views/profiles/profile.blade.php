@@ -46,7 +46,7 @@ $(function() {
         <div class="text-muted">{{ sprintf(__('profile.followers'), $profile->followers()->count()) }}</div>
       </div>
       <div class="list-group list-normal m-b-none">
-      	<a href="{{ $profile->url() }}" class="list-group-item active"><i class="fa fa-user"></i> {{ __('profile.profile') }}</a>
+      	<a href="{{ url($profile->url()) }}" class="list-group-item active"><i class="fa fa-user"></i> {{ __('profile.profile') }}</a>
         @if (Auth::user()->can("add_personell"))
         <a href="{{ url('profile/'.$profile->slug.'/add-person') }}" class="list-group-item active"><i class="fa fa-plus"></i> {{ __('profile.add_personel') }}</a>
         @endif
@@ -56,7 +56,7 @@ $(function() {
         @if (Auth::user()->can("edit_profile"))
         <a href="{{ url('profile/'.$profile->slug.'/edit') }}" class="list-group-item active"><i class="fa fa-pencil"></i> {{ __('profile.edit') }}</a>
         @endif
-        <!--<a href="{{ url('profile/'.$profile->slug.'/messages') }}" class="list-group-item active"><i class="fa fa-envelope"></i> {{ __('profile.messages') }}</a>-->
+        <a href="{{ url('profile/'.$profile->slug.'/messages') }}" class="list-group-item active"><i class="fa fa-envelope"></i> {{ __('profile.messages') }}</a>
       </div>
       @if ($profile->location()->w > 0)
       <div class="text-center clearfix bg-white">
@@ -122,7 +122,7 @@ $(function() {
                   </div>
                   @endif
                   <div class="media-body">
-                    <div><a href="{{ $person->url() }}" class="h5">{{ $person->firstname }} {{ $person->surname }}</a></div>
+                    <div><a href="{{ url($person->url()) }}" class="h5">{{ $person->firstname }} {{ $person->surname }}</a></div>
                     <small class="text-muted">
                       @if (!empty($person->email))
                       <i class="fa fa-envelope"></i> {{ $person->email }} 

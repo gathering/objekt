@@ -99,6 +99,10 @@ class Verify extends \Laravel\Auth\Drivers\Driver
 		}
 	}
 
+	public function basic(){
+		return true;
+	}
+
 	/**
 	 * Get a fresh model instance.
 	 *

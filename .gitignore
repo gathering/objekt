@@ -1,4 +1,5 @@
 vendor/
 application/config/database.php
+application/language/*
 composer.lock
 .server.config
