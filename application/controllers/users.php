@@ -306,4 +306,13 @@ class Users_Controller extends Base_Controller {
 		return Redirect::to('users/roles')->with('success', __('user.role_deleted'));
 	}
 
+	public function action_api(){
+		$user = Auth::user();
+		if(empty($user->apikey)){
+			$user->apikey = Str::random(32);
+			$user->save();
+		}
+		return View::make('user.api')->with('user', $user);
+	}
+
 }

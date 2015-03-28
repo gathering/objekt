@@ -14,6 +14,8 @@ Route::group(array('before' => 'auth|event'), function()
 	Route::get('/pushover', 'users@pushover');
 	Route::post('/pushover', 'users@post_pushover');
 
+	Route::get('/api', 'users@api');
+
 	Route::post('/pusher_auth', function(){
 		$presence_data = array('name' => Auth::user()->username);
 		echo Push::presence_auth(Input::get('channel_name'), Input::get('socket_id'), Auth::user()->id, $presence_data);

@@ -33,6 +33,9 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="{{ url('/pushover') }}">{{ __('nav.pushover') }}</a></li>
+          @if(Auth::user()->can('api'))
+          <li><a href="{{ url('/api') }}">{{ __('nav.api') }}</a></li>
+          @endif
           <li class="divider"></li>
           <li><a href="{{ url('/change_event') }}">{{ __('nav.change_event') }}</a></li>
           <li class="divider"></li>
