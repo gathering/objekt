@@ -36,6 +36,7 @@
           @if(Auth::user()->can('api'))
           <li><a href="{{ url('/api') }}">{{ __('nav.api') }}</a></li>
           @endif
+          <li><a href="{{ url('/settings') }}">{{ __('nav.settings') }}</a></li>
           <li class="divider"></li>
           <li><a href="{{ url('/change_event') }}">{{ __('nav.change_event') }}</a></li>
           <li class="divider"></li>

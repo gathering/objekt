@@ -34,6 +34,11 @@
 				<p>{{ Session::get('error') }}</p>
 			</div>
 			@endif
+			@if ( Session::get('success') )
+			<div class="text-info wrapper text-center">
+				<p>{{ Session::get('success') }}</p>
+			</div>
+			@endif
 			@if ( Session::get('referer') )
 			<input type="hidden" name="referer" value="{{ Session::get('referer') }}" />
 			@endif

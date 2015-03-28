@@ -315,4 +315,65 @@ class Users_Controller extends Base_Controller {
 		return View::make('user.api')->with('user', $user);
 	}
 
+	public function action_settings(){
+		return View::make('user.settings')->with('user', Auth::user());
+	}
+
+	public function action_post_settings()
+	{
+		$user = Auth::user();	
+		$input = Input::all();
+
+		$input['phone'] = str_replace('+', '00', $input['phone']);
+
+		if(substr($input['phone'], 0, 2) != '00')
+		    return Redirect::to(Request::referrer())->with('error', 'Telefonnummeret var feil lagt inn. Dette må begynne med 00XX.')->with('post', $input);
+
+
+		$rules = array(
+		    'phone'  => 'numeric',
+		    'password' => 'same:password2'
+		);
+
+		if($user->email != $input['email'])
+			$rules['email'] = 'required|email|unique:users,email,'.$user->id;
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+		}
+
+		$username = Input::get('username');
+		$password = Input::get('password');
+		$password2 = Input::get('password2');
+
+		$email = Input::get('email');
+
+		$user->username = $username;
+		$user->name = Input::get('name');
+		$user->phone = Input::get('phone');
+
+		if(!empty($password))
+			$user->password = $password; // This is automatically salted and encrypted
+
+		if($user->email != $email){
+			$contents = View::make("user.verification")->with("user", $user)->with("password", $password);
+			$response = Mandr::messages()->send(array(
+	            'html' => $contents->render(),
+	            'subject' => Lang::line('user.verification_subject')->get(),
+	            'from_email' => Lang::line('user.noreply')->get(),
+			    'from_name' => Lang::line('user.noreply_name')->get(),
+	            'to' => array(array('email'=>$user->email))
+	        ), false);
+			$user->email = $email;
+		}
+
+		unset($user->to_check_cache);
+		$user->save();
+
+		return Redirect::to('/')->with('success', 'Brukeren ble oppdatert!');
+	}
+
 }

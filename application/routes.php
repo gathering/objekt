@@ -16,6 +16,9 @@ Route::group(array('before' => 'auth|event'), function()
 
 	Route::get('/api', 'users@api');
 
+	Route::get('/settings', 'users@settings');
+	Route::post('/settings', 'users@post_settings');
+
 	Route::post('/pusher_auth', function(){
 		$presence_data = array('name' => Auth::user()->username);
 		echo Push::presence_auth(Input::get('channel_name'), Input::get('socket_id'), Auth::user()->id, $presence_data);
@@ -445,7 +448,7 @@ Route::post('/partner/forgot', function(){
 
 	$content = "Vi har opprettet et nytt passord til deg: ".$password;
 	$from = "OBJEKT";
-	$message = array( 'to' => '47'.$person->phone, 'message' => $content, 'from' => $from );
+	$message = array( 'to' => ltrim($person->phone, '0'), 'message' => $content, 'from' => $from );
 	$result = Clockwork::message($message);
 
 	$sms = new SMS;
@@ -463,7 +466,7 @@ Route::post('/partner/forgot', function(){
 	$person->password = Hash::make($password);
 	$person->_save();
 
-	return Redirect::to('/partner/login');
+	return Redirect::to('/partner/login')->with('success', 'Meldingen ble sendt!');
 
 });
 Route::get('/partner/new', function(){
@@ -487,7 +490,7 @@ Route::post('/partner/new', function(){
 
 	$content = "Vi har registrert en ny partnerbruker i systemet, og ditt passord er: ".$password;
 	$from = "OBJEKT";
-	$message = array( 'to' => '47'.$person->phone, 'message' => $content, 'from' => $from );
+	$message = array( 'to' => ltrim($person->phone, '0'), 'message' => $content, 'from' => $from );
 	$result = Clockwork::message($message);
 
 	$sms = new SMS;
@@ -505,7 +508,7 @@ Route::post('/partner/new', function(){
 	$person->password = Hash::make($password);
 	$person->_save();
 
-	return Redirect::to('/partner/login');
+	return Redirect::to('/partner/login')->with('success', 'Meldingen ble sendt!');
 
 });
 Route::group(array('before' => 'partner_auth'), function()
