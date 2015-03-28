@@ -2,7 +2,7 @@
 
 // API
 
-Route::group(array('before' => 'basic-auth|event|can_api'), function(){
+Route::group(array('before' => 'basic-auth|basic-event|can_basic_api'), function(){
 	Route::controller('api.profile.person');
 	Route::controller('api.profile.contact_persons');
 });
@@ -702,6 +702,26 @@ Route::filter('event', function()
 	}
 });
 
+Route::filter('basic-event', function()
+{
+	$event = Config::get('application.event');
+	$user = Auth::digestUser();
+	$events = $user->events();
+
+	if(!is_object($event) && $event == 0){
+		$content = View::make('event.select')->with("events", $events);
+		$content = View::make('common.clean', array('content' => $content));
+		print($content->__toString());
+		exit;
+	} elseif($events->where("events.id", "=", $event->id)->count() < 1){
+		$events = $user->events();
+		$content = View::make('event.select')->with("events", $events);
+		$content = View::make('common.clean', array('content' => $content));
+		print($content->__toString());
+		exit;
+	}
+});
+
 Route::filter('partner_auth', function()
 {
 	if (partnerAuth::guest()) return Redirect::to('partner/login')->with("referer", URI::full());
@@ -728,6 +748,11 @@ foreach(Permission::all() as $permission){
 	{
 		if (Auth::guest()) return Redirect::to('login')->with("referer", URI::full());
 		if (!Auth::user()->can($permission->name))
+			return Redirect::to(Request::referrer())->with('error', sprintf(__('common.access_denied'), __('user.permission.'.$permission->name)));
+	});
+	Route::filter('can_basic_'.$permission->name, function() use($permission)
+	{
+		if (!Auth::digestUser()->can($permission->name))
 			return Redirect::to(Request::referrer())->with('error', sprintf(__('common.access_denied'), __('user.permission.'.$permission->name)));
 	});
 }

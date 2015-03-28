@@ -99,77 +99,63 @@ class Verify extends \Laravel\Auth\Drivers\Driver
 		}
 	}
 
-	public function basic()
+	private function digest_header($realm)
+	{
+		$response = Response::make('Please access this trough basic auth.', 401, 
+			[
+				'WWW-Authenticate' => 'Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).''
+			]);
+
+		$response->send_headers();
+		print($response->render());
+
+		exit;
+	}
+
+	public function digestUser()
+	{
+		return $this->basic(true);
+	}
+
+	public function basic($return=false)
 	{
 
-		if ( ! Request::server('PHP_AUTH_USER') ) {
-			$response = Response::make('Please access this trough basic auth.', 401, [
-					'WWW-Authenticate' => 'Basic realm="API ACCESS"'
-				]);
-			$response->send_headers();
-			print($response->render());
-			exit;
-		}
+		$response = httpDigest::parse(Request::server('HTTP_AUTHORIZATION'));
+		$realm = "API ACCESS";
 
-		$arguments = [
-			'username' => Request::server('PHP_AUTH_USER'),
-			'password' => Request::server('PHP_AUTH_PW')
-		];
+		Config::set('session.driver', '');
 
+		if ( ! $response || !isset($response['username']) )
+			$this->digest_header($realm);
+		
+		$user = $this->model()
+			->where('username', '=', $response['username'])
+			->first();
 
-		$valid = false;
+		if (is_null($user) || empty($user->apikey))
+			$this->digest_header($realm);
 
-		// Get the username fields
-		$usernames = Config::get('verify::verify.username');
-		$usernames = (!is_array($usernames))
-			? array($usernames)
-			: $usernames;
+		$A1 = md5($response['username'] . ':' . $realm . ':' . $user->apikey);
+        $A2 = md5(Request::server('REQUEST_METHOD').':'.$response['uri']);
+        $key = md5($A1.':'.$response['nonce'].':'.$response['nc'].':'.$response['cnonce'].':'.$response['qop'].':'.$A2);
 
-		foreach ($usernames as $identify_by)
-		{
-			$user = $this->model()
-				->where($identify_by, '=', array_get($arguments, $identify_by))
-				->first();
+        if ($response['response'] != $key)
+			$this->digest_header($realm);
 
-			if (!is_null($user))
-			{
-				// Is user password is valid?
-		                if(!Hash::check($user->salt . array_get($arguments, 'password'), $user->password))
-		                {
-		                    throw new UserPasswordIncorrectException('User password is incorrect');
-		                }
+		// Valid user, but are they verified?
+		if (!$user->verified)
+			$this->digest_header($realm);
 
-				// Valid user, but are they verified?
-				if (!$user->verified)
-				{
-					throw new UserUnverifiedException('User is unverified');
-				}
+		// Is the user disabled?
+		if ($user->disabled)
+			$this->digest_header($realm);
 
-				// Is the user disabled?
-				if ($user->disabled)
-				{
-					throw new UserDisabledException('User is disabled');
-				}
+		// Is the user deleted?
+		if ($user->deleted)
+			$this->digest_header($realm);
 
-				// Is the user deleted?
-				if ($user->deleted)
-				{
-					throw new UserDeletedException('User is deleted');
-				}
-
-				$valid = true;
-				break;
-			}
-		}
-
-		if ($valid)
-		{
-			return $this->login($user->get_key(), array_get($arguments, 'remember'));
-		}
-		else
-		{
-			throw new UserNotFoundException('User can not be found');
-		}
+		if($return) return $user;
+		return true;
 	}
 
 	/**

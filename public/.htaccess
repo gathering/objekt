@@ -5,6 +5,8 @@
 # be placed in your Apache config whenever possible.
 # http://httpd.apache.org/docs/2.2/howto/htaccess.html
 
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
 # Turning on the rewrite engine is necessary for the following rules and
 # features. "+FollowSymLinks" must be enabled for this to work symbolically.
 
