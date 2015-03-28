@@ -99,8 +99,77 @@ class Verify extends \Laravel\Auth\Drivers\Driver
 		}
 	}
 
-	public function basic(){
-		return true;
+	public function basic()
+	{
+
+		if ( ! Request::server('PHP_AUTH_USER') ) {
+			$response = Response::make('Please access this trough basic auth.', 401, [
+					'WWW-Authenticate' => 'Basic realm="API ACCESS"'
+				]);
+			$response->send_headers();
+			print($response->render());
+			exit;
+		}
+
+		$arguments = [
+			'username' => Request::server('PHP_AUTH_USER'),
+			'password' => Request::server('PHP_AUTH_PW')
+		];
+
+
+		$valid = false;
+
+		// Get the username fields
+		$usernames = Config::get('verify::verify.username');
+		$usernames = (!is_array($usernames))
+			? array($usernames)
+			: $usernames;
+
+		foreach ($usernames as $identify_by)
+		{
+			$user = $this->model()
+				->where($identify_by, '=', array_get($arguments, $identify_by))
+				->first();
+
+			if (!is_null($user))
+			{
+				// Is user password is valid?
+		                if(!Hash::check($user->salt . array_get($arguments, 'password'), $user->password))
+		                {
+		                    throw new UserPasswordIncorrectException('User password is incorrect');
+		                }
+
+				// Valid user, but are they verified?
+				if (!$user->verified)
+				{
+					throw new UserUnverifiedException('User is unverified');
+				}
+
+				// Is the user disabled?
+				if ($user->disabled)
+				{
+					throw new UserDisabledException('User is disabled');
+				}
+
+				// Is the user deleted?
+				if ($user->deleted)
+				{
+					throw new UserDeletedException('User is deleted');
+				}
+
+				$valid = true;
+				break;
+			}
+		}
+
+		if ($valid)
+		{
+			return $this->login($user->get_key(), array_get($arguments, 'remember'));
+		}
+		else
+		{
+			throw new UserNotFoundException('User can not be found');
+		}
 	}
 
 	/**
