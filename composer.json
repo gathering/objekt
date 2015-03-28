@@ -3,6 +3,10 @@
         {
             "type": "vcs",
             "url": "https://cobraz@bitbucket.org/objekt/objekt-language.git"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.zendframework.com/"
         }
     ],
     "require": {
