@@ -50,7 +50,8 @@ class partnerAuth {
 		$user = self::model()->where(function($query) use($arguments)
 		{		
 			$query->where('phone', '=', $arguments['username']);
-
+			$query->or_where('phone', '=', '0047'.$arguments['username']);
+			
 		})->first();
 
 		// If the credentials match what is in the database we will just

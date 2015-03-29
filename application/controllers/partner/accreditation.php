@@ -35,6 +35,12 @@ class Partner_Accreditation_Controller extends Base_Controller
     public function post_add()
     {
         $input = Input::all();
+
+        $input['phone'] = str_replace('+', '00', $input['phone']);
+
+        if(substr($input['phone'], 0, 2) != '00')
+            return Redirect::to(Request::referrer())->with('error', 'Telefonnummeret var feil lagt inn. Dette må begynne med 00XX.')->with('post', $input);
+
         $rules = array(
             'firstname'  => 'required|max:255',
             'surname'  => 'required|max:255',
@@ -86,6 +92,13 @@ class Partner_Accreditation_Controller extends Base_Controller
         if(!$person) return Redirect::to('partner/accreditation')->with('error', 'En feil oppsto, vennligst forsøk igjen.');
 
         $input = Input::all();
+
+        $input['phone'] = str_replace('+', '00', $input['phone']);
+
+        if(substr($input['phone'], 0, 2) != '00')
+            return Redirect::to(Request::referrer())->with('error', 'Telefonnummeret var feil lagt inn. Dette må begynne med 00XX.')->with('post', $input);
+
+
         $rules = array(
             'firstname'  => 'required|max:255',
             'surname'  => 'required|max:255',

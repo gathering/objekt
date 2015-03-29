@@ -3,7 +3,7 @@
  * @Author: cobraz
  * @Date:   2015-03-28 13:23:13
  * @Last Modified by:   Simen A.W. Olsen
- * @Last Modified time: 2015-03-28 15:54:21
+ * @Last Modified time: 2015-03-29 13:52:59
  */
 
 class API_Profile_Person_Controller extends Controller {
@@ -37,6 +37,7 @@ class API_Profile_Person_Controller extends Controller {
 
 		$profile = $person->profile();
 		$contact_person = $profile->responsible();
+		
 		if(!$contact_person)
 			return Response::json(array('status' => 'missing-contact', 'message' => 'contact person not found'), 404);	
 

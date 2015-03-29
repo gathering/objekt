@@ -45,7 +45,8 @@
 			<div class="list-group list-group-sm">
 				<div class="list-group-item">
 					<input type="text" name="username" placeholder="{{ __('common.phone') }}" class="form-control no-border">
-				</div>
+				</div><br />
+				<div class="alert alert-info">{{ __('profile.phone_news_login') }}</div>
 				<div class="list-group-item">
 					<input type="password" name="password" placeholder="{{ __('common.password') }}" class="form-control no-border">
 				</div>

@@ -12,11 +12,15 @@ class Mediabank_Controller extends Base_Controller {
 	public function action_tag($tag)
 	{
 		$event = Config::get('application.event');
+
 		$params['index'] = 'mediabank';
 		$params['type']  = 'image';
-		$params['body']['query']['query_string']['query'] = str_replace(" ", " +", urldecode($tag));
+
+		$params['body']['query']['filtered']['query']['query_string']['query'] = urldecode($tag);
 		$params['body']['size'] = 5000;
-		$params['body']['sort'] = array('timestamp' => 'desc', 'filename' => 'desc');
+
+		$params['body']['sort']['timestamp'] = 'desc';
+		$params['body']['sort']['filename'] = 'desc';
 		
 		tplConstructor::set(true);
 		$elastisk = Elastisk::search($params);
@@ -84,7 +88,8 @@ class Mediabank_Controller extends Base_Controller {
 				
 			$tags = array_merge($tags, $event->tags()); // Add event-tags.
 
-			foreach($tags as $int => $tag) if(empty($tag)) unset($tags[$int]); // Clean empty tags.
+			array_filter($tags);
+
 			$tags = array_values($tags);
 
 			$fil3 = new Fil3;
@@ -99,6 +104,7 @@ class Mediabank_Controller extends Base_Controller {
 			$fil3->save();
 
 			$timestamp = isset($file['xmp']['Creation Date']) ? strtotime($file['xmp']['Creation Date']) : time();
+			var_dump($timestamp); exit;
 
 			$params = array();
 			$params['body']  = array(
@@ -133,7 +139,11 @@ class Mediabank_Controller extends Base_Controller {
 
 		$meta = $file->meta();
 
-		$timestamp = isset($meta['xmp']['Creation Date']) ? strtotime($meta['xmp']['Creation Date']) : strtotime($file->created_at);
+		$timestamp = isset($meta['xmp']['Creation Date']) ?
+					 strtotime($meta['xmp']['Creation Date']) :
+					 strtotime($file->created_at);
+
+
 
 		$params = array();
 		$params['body']  = array(
@@ -172,21 +182,28 @@ class Mediabank_Controller extends Base_Controller {
 	}
 
 	public function action_search(){
+
 		$term = Input::get('search');
+
+		if(empty($term)) return Redirect::to('/mediabank');
+
+		$event = Config::get('application.event');
+		
 		$params['index'] = 'mediabank';
 		$params['type']  = 'image';
-		$event = Config::get('application.event');
-		$params['body']['query']['query_string']['query'] = "*".$term."*";
+		
+		$params['body']['query']['filtered']['query']['query_string']['query'] = urldecode($term);
 		$params['body']['size'] = 5000;
-		$params['body']['sort'] = array('id' => array('order' => 'desc'), '_score');
-		$params['body']['filter']['term']['event_id'] = $event->id;
+
+		$params['body']['sort']['timestamp'] = 'desc';
+		$params['body']['sort']['filename'] = 'desc';
 
 		$elastisk = Elastisk::search($params);
 		tplConstructor::set(true);
 		$results = array();
 
 		if($elastisk['hits']['total'] == 0)
-			return Redirect::to(Request::referrer())->with('error', __('mediabank.nothing_found'));
+			return Redirect::to('mediabank')->with('error', __('mediabank.nothing_found'));
 
 		foreach($elastisk['hits']['hits'] as $result){
 			$model = Fil3::find($result['_id']);

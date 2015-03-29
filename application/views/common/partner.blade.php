@@ -32,6 +32,7 @@
           <b class="caret hidden-xs-only"></b>
         </a>
         <ul class="dropdown-menu">
+          <li><a href="{{ url('/partner/settings') }}">{{ __('nav.settings') }}</a></li>
           <li><a href="{{ url('/partner/logout') }}">{{ __('nav.logout') }}</a></li>
         </ul>
       </li>

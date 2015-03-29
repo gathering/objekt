@@ -350,8 +350,6 @@ class Users_Controller extends Base_Controller {
 		$password2 = Input::get('password2');
 
 		$email = Input::get('email');
-
-		$user->username = $username;
 		$user->name = Input::get('name');
 		$user->phone = Input::get('phone');
 
