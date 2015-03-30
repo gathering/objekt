@@ -114,7 +114,11 @@ class Mediabank_Controller extends Base_Controller {
 				'tags' => $tags,
 				'hash' => $file['hash'],
 				'uploaded_at' => date("Y-m-d H:i:s"),
-				'timestamp' => $timestamp
+				'timestamp' => $timestamp,
+				'uploaded_by' => array(
+					'name' => Auth::user()->name,
+					'username' => Auth::user()->username
+					)
 				);
 
 			$params['index'] = 'mediabank';
