@@ -103,8 +103,7 @@ class Mediabank_Controller extends Base_Controller {
 			$fil3->size = $file['filesize'];
 			$fil3->save();
 
-			$timestamp = isset($file['xmp']['Creation Date']) ? strtotime($file['xmp']['Creation Date']) : time();
-			var_dump($timestamp); exit;
+			$timestamp = (!isset($file['xmp']['Creation Date']) || !strtotime($file['xmp']['Creation Date'])) ? time() : strtotime($file['xmp']['Creation Date']);
 
 			$params = array();
 			$params['body']  = array(
