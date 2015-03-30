@@ -45,6 +45,18 @@ $(function() {
         </button><br /><br />
         <div class="text-muted">{{ sprintf(__('profile.followers'), $profile->followers()->count()) }}</div>
       </div>
+      <div style="background-color: #1d2d3d; color: #FFFFFF;" class="padder-v">
+       <div class="row">
+        <div class="col-xs-9" style="text-align: center;">
+          <small class="text-muted">Ansvarlig</small><br />
+          <?php $responsible = $profile->responsible(); ?>
+          {{ $responsible->name }}
+        </div>
+        <div class="col-xs-3">
+          <a href="tel:{{ $responsible->phone }}" class="pull-right" style="padding-right: 20px; font-size: 24px;"><i class="fa fa-phone"></i></a>
+        </div>
+        </div>
+      </div>
       <div class="list-group list-normal m-b-none">
       	<a href="{{ url($profile->url()) }}" class="list-group-item active"><i class="fa fa-user"></i> {{ __('profile.profile') }}</a>
         @if (Auth::user()->can("add_personell"))
