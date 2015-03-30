@@ -87,7 +87,7 @@ $(function() {
             <form method="post" action="{{ url('mediabank/search') }}">
                 {{ __('mediabank.search') }}
                 <div class="input-group" style="margin-top: 5px;">
-                    <input type="text" name="search" {{ isset($term) ? "value=\"".$term."\"" : "" }}placeholder="{{ __('mediabank.placeholder.search') }}" class="form-control">
+                    <input type="text" name="search" {{ (isset($term) ? ' value="'.htmlentities($term).'"' : "") }} placeholder="{{ __('mediabank.placeholder.search') }}" class="form-control">
                     <span class="input-group-btn">
                       <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                     </span>

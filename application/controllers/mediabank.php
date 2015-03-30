@@ -121,6 +121,7 @@ class Mediabank_Controller extends Base_Controller {
 			$params['id']    = $fil3->id;
 
 			$ret = Elastisk::index($params);
+			if(!$ret) return $ret;
 		}
 		die("true");
 	}
@@ -138,11 +139,7 @@ class Mediabank_Controller extends Base_Controller {
 
 		$meta = $file->meta();
 
-		$timestamp = isset($meta['xmp']['Creation Date']) ?
-					 strtotime($meta['xmp']['Creation Date']) :
-					 strtotime($file->created_at);
-
-
+		$timestamp = (!isset($meta['xmp']['Creation Date']) || !strtotime($meta['xmp']['Creation Date'])) ? time() : strtotime($meta['xmp']['Creation Date']);
 
 		$params = array();
 		$params['body']  = array(
@@ -160,8 +157,8 @@ class Mediabank_Controller extends Base_Controller {
 		$params['id']    = $file->id;
 
 		$ret = Elastisk::index($params);
-
-		return "true";
+		if($ret) return "true";
+		else return $ret;
 	}
 
 	public function action_delete_file($id){
