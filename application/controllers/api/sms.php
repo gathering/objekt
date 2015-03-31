@@ -3,7 +3,7 @@
  * @Author: Simen A.W. Olsen
  * @Date:   2015-03-29 16:40:02
  * @Last Modified by:   Simen A.W. Olsen
- * @Last Modified time: 2015-03-31 14:32:58
+ * @Last Modified time: 2015-03-31 15:28:30
  */
 
 
@@ -11,7 +11,7 @@ class API_SMS_Controller extends Controller {
 
 	public $restful = true;
 
-	function get_inbound(){
+	function post_inbound(){
 
 		$sms = new SMS;
 
