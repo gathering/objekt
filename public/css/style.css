@@ -14,6 +14,10 @@ a:hover, a:focus{text-decoration:none;}
           box-shadow: none;
 }
 img{max-width: 100%}
+.time-select {
+  margin: 3px;
+  margin-left: 0px;
+}
 /*primary nav*/
 .nav-primary:before, .nav-primary:after {display: table;content: " ";}
 .nav-primary:after {clear: both;}

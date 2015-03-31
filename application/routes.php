@@ -183,8 +183,8 @@ Route::group(array('before' => 'auth|can_accreditation|event'), function()
 	Route::get('/accreditation', 'accreditation@index');
 	Route::post('/accreditation', 'search@search_accreditation');
 
-	Route::get('/accreditation/wristband/(:any)/(:any)', 'accreditation@wristband');
-	Route::get('/accreditation/wristband/(:any)/(:any)/(:any)', 'accreditation@wristband');
+	Route::post('/accreditation/wristband/(:any)/(:any)', 'accreditation@wristband');
+	Route::post('/accreditation/wristband/(:any)/(:any)/(:any)', 'accreditation@wristband');
 
 	Route::get('/accreditation/departed/(:any)/(:any)', 'accreditation@departed');
 	Route::get('/accreditation/departed/(:any)/(:any)/(:any)', 'accreditation@departed');

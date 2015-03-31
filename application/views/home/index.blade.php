@@ -127,7 +127,7 @@ $(function(){
 		</header>
 		<div class="list-group">
 			@foreach(Auth::user()->profiles()->get() as $profile)
-			<a href="{{ $profile->url() }}" class="list-group-item bg-lighter">
+			<a href="{{ url($profile->url()) }}" class="list-group-item bg-lighter">
 				<i class="fa fa-chevron-right"></i>
 				{{ $profile->name }}
 			</a>

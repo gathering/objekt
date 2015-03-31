@@ -84,7 +84,7 @@ $(function() {
             </div>
             @endif
             <div class="media-body">
-              <div><a href="#" class="h5"><a href="{{ $child->url() }}">{{ $child->firstname }} {{ $child->surname }}</a></a></div>
+              <div><a href="{{ url($child->url()) }}">{{ $child->firstname }} {{ $child->surname }}</a></div>
               <small class="text-muted">{{ $child->contact_person ? __('profile.contactperson') : "" }}</small>
             </div>
           </div>
@@ -92,7 +92,7 @@ $(function() {
 		@endforeach
       </ul>
       @if (Auth::user()->can("add_personell"))
-      <a href="{{ $person->url() }}/add-child" class="list-group-item{{ URI::segment(5) == 'add-child' ? ' active' : '' }}"><i class="icon-plus"></i> {{ __('profile.add_child') }}</a>
+      <a href="{{ url($person->url()) }}/add-child" class="list-group-item{{ URI::segment(5) == 'add-child' ? ' active' : '' }}"><i class="icon-plus"></i> {{ __('profile.add_child') }}</a>
       @endif
     </aside>
     @endif

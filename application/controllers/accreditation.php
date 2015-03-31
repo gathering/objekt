@@ -28,11 +28,26 @@ class Accreditation_Controller extends Controller {
 			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		}
 
+		$input = Input::all();
+		$rules = array(
+		    'ident' => 'required'
+		);
+
+		$entry = Entry::where('ident', '=', $input['ident'])->where('status', '=', 'valid');
+		if($entry->count() > 0)
+			return Redirect::to(Request::referrer())->with('error', 'Identifikasjonen er allerede brukt, og registrert inn.')->with('post', $input);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		    return Redirect::to(Request::referrer())->with('error', $validation->errors)->with('post', $input);
+
 		$person->status = "arrived";
 		$person->save();
 
 		$entry = new Entry;
 		$entry->type = "wristband";
+		$entry->ident = Input::get('ident');
 		$person->entries()->insert($entry);
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has arrived to stay, equiped with a wristband.");
 		$person->sendNotification(__('accreditation.notification.wristband'));
@@ -40,7 +55,8 @@ class Accreditation_Controller extends Controller {
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_arrived', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));
 	}
 	public function action_badge($profile_slug, $person_slug, $child_slug=""){
-		$profile = profile::find($profile_slug);
+
+		$profile = Profile::find($profile_slug);
 		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		if(!empty($child_slug)){
 			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
@@ -59,7 +75,6 @@ class Accreditation_Controller extends Controller {
 
 		$input = Input::all();
 		$rules = array(
-		    'badge_id'  => 'numeric',
 		    'delivery_deadline' => 'required|after:'.date("Y-m-d H:i:s", time()-86400)
 		);
 
@@ -141,7 +156,7 @@ class Accreditation_Controller extends Controller {
 	public function action_print($profile_slug, $person_slug, $child_slug=""){
 		$profile = profile::find($profile_slug);
 		$person = $profile->person()->where("slug", "=", $person_slug)->first();
-		if(!empty($child_slug)){
+		if(!empty($child_slug) && $child_slug != 'debug'){
 			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
 		}
 

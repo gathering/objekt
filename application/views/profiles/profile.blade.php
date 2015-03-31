@@ -220,7 +220,7 @@ $(function() {
             </div>
             @endif
             <div class="media-body">
-              <div><a href="#" class="h5"><a href="{{ $person->url() }}">{{ $person->firstname }} {{ $person->surname }}</a></a></div>
+              <div><a href="{{ url($person->url()) }}" class="h5">{{ $person->firstname }} {{ $person->surname }}</a></div>
               <small class="text-muted">{{ $person->contact_person ? __('profile.contactperson') : "" }}</small>
             </div>
           </div>
