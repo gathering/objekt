@@ -94,4 +94,39 @@ class SMS_Controller extends Base_Controller {
 		}
 	}
 
+	public function post_reply($profile_slug, $person_slug, $child_slug="")
+	{
+		$profile = profile::find($profile_slug);
+		$person = $profile->person()->where("slug", "=", $person_slug)->first();
+		if(!empty($child_slug)){
+			$person = $profile->person_x()->where("slug", "=", $child_slug)->where("parent_id", "=", $person->id)->first();
+		}
+
+		$txt = Input::get('message');
+		$response = GotSMS::send($person->phone, $txt);
+		$event = Config::get('application.event');		
+
+		foreach($response->messages as $message){
+			if($message->status != '0'){
+				Loogie::doo("person", $person, "A SMS was attempted to be transmitted to this person without results. ({$sms->message})");
+				return Redirect::to($person->url('sms/inbox'))->with("error", __("sms.status.not_sent"));
+			}
+
+			$sms = new SMS;
+			$sms->event_id = $event->id;
+			$sms->success = 1;
+			$sms->person_id = $person->id;
+			$sms->to = $message->to;
+			$sms->from = '4759441509';
+			$sms->message = $txt;
+			$sms->message_id = $message->{'message-id'};
+
+			$user = Auth::user();
+			$user->sms()->insert($sms);				
+		}
+
+		Loogie::doo("person", $person, "A SMS was sent to this person with the following content: ({$sms->message})");
+		return Redirect::to($person->url('sms/inbox'))->with("success", __("sms.status.sent"));
+	}
+
 }

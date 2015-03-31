@@ -14,14 +14,6 @@ class Person extends Eloquent {
 		return $this->has_many('following', 'belongs_to')->where("type", "=", "person");
 	}
 
-	public function get_phone(){
-		$phone = $this->get_attribute('phone');
-
-		if(substr($phone, 0, 2) == '00')
-			return $phone;
-		else return '0047'.$phone;
-	}
-
 	public function delete(){
 		$params['index'] = 'people';
 		$params['type']  = 'obj';

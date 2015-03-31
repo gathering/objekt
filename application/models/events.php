@@ -111,6 +111,7 @@ class Events extends Eloquent {
 	}
 
 	public function people(){
+		#return $this->has_many_and_belongs_to('Person', 'profiles', 'event_id', 'perer', 'dudud');
 		return Person::left_join('profiles', 'profiles.id', '=', 'people.profile_id')
 					   ->select('people.*')->where('profiles.event_id', '=', $this->id);
 	}
@@ -188,6 +189,10 @@ class Events extends Eloquent {
 
 	function products(){
 		return $this->has_many('product', 'event_id');
+	}
+
+	function sms(){
+		return $this->has_many('sms', 'event_id');
 	}
 
 	private $specialClass;

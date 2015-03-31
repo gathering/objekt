@@ -5,6 +5,7 @@
 Route::group(array('before' => 'basic-auth|basic-event|can_basic_api'), function(){
 	Route::controller('api.profile.person');
 	Route::controller('api.profile.contact_persons');
+	Route::controller('api.sms');
 });
 
 Route::group(array('before' => 'auth|event'), function()
