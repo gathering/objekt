@@ -99,7 +99,7 @@ class Search_Controller extends Controller {
 			foreach($elastisk['hits']['hits'] as $result){
 				$profile = new stdClass;
 				$profile->name = $result['_source']['name'];
-				$profile->url = url('profile/'.$result['_source']['slug']);
+				$profile->url = 'profile/'.$result['_source']['slug'];
 				array_push($results, $profile);
 			}
 
