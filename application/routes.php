@@ -206,7 +206,10 @@ Route::group(array('before' => 'auth|can_accreditation|event'), function()
 });
 
 /* SMS */
-Route::controller('sms');
+Route::group(array('before' => 'auth|event'), function()
+{
+	Route::controller('sms');
+});
 
 /* Search */
 Route::group(array('before' => 'auth|can_search|event'), function(){
