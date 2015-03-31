@@ -19,7 +19,7 @@
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('sms.from') }}</label>
 	      <div class="col-lg-8">
-	        <input type="text" tabindex="3" value="OBJEKT" placeholder="{{ __('sms.placeholder.from') }}" class="form-control" autocomplete="off">
+	        <input type="text" tabindex="3" name="from" value="OBJEKT" placeholder="{{ __('sms.placeholder.from') }}" class="form-control" autocomplete="off">
 	      </div>
 	    </div>
 	    @endif
