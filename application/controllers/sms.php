@@ -30,8 +30,11 @@ class SMS_Controller extends Base_Controller {
 
 		$from = Input::get('from') ? Input::get('from') : "OBJEKT"; // TODO: Fix event settings
 
-		$message = array( 'to' => '47'.$person->phone, 'message' => $content, 'from' => $from );
+		$message = array( 'to' => ltrim($person->phone, '0'), 'message' => $content, 'from' => $from );
 		$result = Clockwork::message($message);
+
+		if(!$result)
+			return Redirect::to($person->url())->with('error', __("sms.status.not_sent"));
 
 		$event = Config::get('application.event');
 
