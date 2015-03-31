@@ -22,7 +22,7 @@ class Update_People {
 				$person->phone = '0047'.$person->phone;
 			}
 			echo $person->phone." => (".$person->id.") ".$person->firstname." i ".$person->profile()->name."\n";
-			$person->save();
+			$person->_save();
 		}
 	}
 
