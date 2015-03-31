@@ -100,13 +100,6 @@ $(function() {
             {{ __('profile.departed') }}
           </div>
         </div>
-        <div class="row">
-          @foreach($profile->media(6) as $media)
-          @if($media->thumbnail())
-          <div class="col-xs-2 mediaboard" style="background-image: url('{{ $media->thumbnail()->url }}');"></div>
-          @endif
-          @endforeach
-        </div>
       </div>
       <!--<ul class="nav nav-tabs m-b-none no-radius">
         <li class="active"><a href="#timeline" data-toggle="tab">{{ __('profile.timeline') }}</a></li>
