@@ -45,7 +45,7 @@ $(function() {
       <a href="{{ url($person->url('accreditation')) }}" class="list-group-item{{ URI::segment(2) != 'accreditation' ? ' active' : '' }}"><i class="fa fa-tag"></i> {{ __('accreditation.accredit') }}</a>
 			@endif
       @if (Auth::user()->can("sms"))
-      <a href="{{ url($person->url('sms')) }}" class="list-group-item{{ URI::segment(2) != 'person-edit' ? ' active' : '' }}"><i class="fa fa-mobile-phone"></i> {{ __('profile.sms_inbox') }}</a>
+      <a href="{{ url($person->url('sms/inbox')) }}" class="list-group-item{{ URI::segment(2) != 'person-edit' ? ' active' : '' }}"><i class="fa fa-mobile-phone"></i> {{ __('profile.sms_inbox') }}</a>
       <a href="{{ url($person->url('sms/send')) }}" class="list-group-item{{ URI::segment(2) != 'sms' ? ' active' : '' }}"><i class="fa fa-mobile-phone"></i> {{ __('sms.send_to_person') }}</a>
 			@endif
       @if (Auth::user()->can("edit_personell"))
