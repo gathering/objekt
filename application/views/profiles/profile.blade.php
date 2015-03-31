@@ -183,6 +183,7 @@ $(function() {
               </section>
             </article>
             @endforeach
+          </section>
         </div>
       </div>
     </section>

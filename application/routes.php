@@ -205,13 +205,7 @@ Route::group(array('before' => 'auth|can_accreditation|event'), function()
 });
 
 /* SMS */
-Route::group(array('before' => 'auth|can_sms|event'), function()
-{
-	Route::get('/sms/(:any)/(:any)', 'sms@person');
-	Route::post('/sms/(:any)/(:any)', 'sms@post_person');
-	Route::get('/sms/(:any)/(:any)/(:any)', 'sms@person');
-	Route::post('/sms/(:any)/(:any)/(:any)', 'sms@post_person');
-});
+Route::controller('sms');
 
 /* Search */
 Route::group(array('before' => 'auth|can_search|event'), function(){
