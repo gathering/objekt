@@ -1,6 +1,12 @@
 <section class="panel">
 	<div class="panel-body">
 	  <form class="form-horizontal" method="post">
+	  	<div class="form-group">
+	      <label class="col-lg-3 control-label">{{ __('user.name') }}</label>
+	      <div class="col-lg-8">
+	        <input type="text" tabindex="1" name="name" value="{{ $user->name }}" placeholder="{{ __('user.placeholder.name') }}" class="form-control">
+	      </div>
+	    </div>
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.email') }}</label>
 	      <div class="col-lg-8">
