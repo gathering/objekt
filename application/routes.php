@@ -182,7 +182,7 @@ Route::group(array('before' => 'auth|can_users|event'), function()
 
 
 /* Accreditation */
-Route::get('/accreditation/controll/(:any)/(:any)', array('uses' => 'accreditation@controll', 'before' => 'event'));
+Route::get('/accreditation_controll/(:any)', array('uses' => 'accreditation@controll', 'before' => 'event'));
 Route::group(array('before' => 'auth|can_accreditation|event'), function()
 {
 	Route::get('/accreditation', 'accreditation@index');
@@ -206,7 +206,6 @@ Route::group(array('before' => 'auth|can_accreditation|event'), function()
 	
 	Route::get('/accreditation/(:any)/(:any)', 'accreditation@person');
 	Route::get('/accreditation/(:any)/(:any)/(:any)', 'accreditation@child');
-
 });
 
 /* SMS */

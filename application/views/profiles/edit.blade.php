@@ -157,6 +157,7 @@
 	    <div class="form-group">
 	      <label class="col-lg-3 control-label">{{ __('user.placement') }}</label>
 	      <div class="col-lg-8">
+	      	@if(isset($map->jpg_759))
 	      	<img id="map_img" src="{{ $map->jpg_759->url }}" alt="" />
 	        <br />
 	        
@@ -165,6 +166,7 @@
 					 <img id="placement" src="{{ $map->jpg_759->url }}" style="display: inline;" alt="" />
 				</div>
 			</div>
+			@endif
 
 			<input type="hidden" name="map_location" id="map_location" value="" />
 	        <div class="col-lg-8">

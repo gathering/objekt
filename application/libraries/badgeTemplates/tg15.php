@@ -36,12 +36,12 @@ class TG15_Badge extends BadgeTemplate {
 		// QR
 		include(path('app')."libraries/bitly.php");
 		include(path('app')."libraries/phpqrcode/qrlib.php");
-		$bitly = bitly_v3_shorten(url('accreditation/controll/'.$badge->person()->hash));
-		if(!isset($bitly['url'])) $bitly['url'] = url('accreditation/controll/'.$badge->person()->hash);
-		QRcode::png('url:'.$bitly['url'], path('storage')."work/".$badge->id.".png", QR_ECLEVEL_L, 7);
+		$bitly = bitly_v3_shorten(url('accreditation_controll/'.$badge->person()->hash));
+		if(!isset($bitly['url'])) $bitly['url'] = url('accreditation_controll/'.$badge->person()->hash);
+		QRcode::png('url:'.$bitly['url'], path('storage')."work/".$badge->id.".png", QR_ECLEVEL_L, 12);
     	$qr = PHPImageWorkshop\ImageWorkshop::initFromPath(path('storage')."work/".$badge->id.".png");
     	unlink(path('storage')."work/".$badge->id.".png");
-    	$sublayerInfos = $layer->addLayerOnTop($qr, 1150, 320, 0);
+    	$sublayerInfos = $layer->addLayerOnTop($qr, 1050, 220, 0);
 
 		$text = 'GYLDIG TIL: '.date("d.m \k\l. H:i", strtotime($badge->delivery_date));
 		$fontPath = self::fontsDir()."Droid_Sans/DroidSans-Bold.ttf";

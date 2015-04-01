@@ -7,10 +7,33 @@ class Accreditation_Controller extends Controller {
 		return View::make('accreditation.index');
 	}
 
+	public function action_controll($hash)
+	{
+		$event = Config::get('application.event');
+		$person = $event->people()->where('hash', '=', $hash)->first();
+
+		if(!$person)
+			die(View::make('controll.denied')->render());
+
+		$entry = $person->entries()
+						->where('status', '=', 'valid')
+						->where('delivery_date', '>', DB::Raw('NOW()'))
+						->where('type', '=', 'badge')
+						->first();
+
+		if(!$entry) 
+			die(View::make('controll.denied')->render());
+
+		die(View::make('controll.valid')->render());
+	}
+
 	public function action_person($profile_slug, $person_slug)
 	{
 		$profile = profile::find($profile_slug);
+		if(!$profile) return Redirect::to(Request::referrer());
+
 		tplConstructor::set(true);
+
 		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		return View::make('accreditation.person_profile')->with("person", $person);
 	}
