@@ -2,6 +2,8 @@
 
 // API
 
+Route::controller('api.accreditation');
+
 Route::group(array('before' => 'basic-auth|basic-event|can_basic_api'), function(){
 	Route::controller('api.profile.person');
 	Route::controller('api.profile.contact_persons');
@@ -56,6 +58,8 @@ Route::group(array('before' => 'auth|event'), function()
 	});
 
 });
+
+Route::controller('api.check');
 
 /* Admin */
 Route::group(array('before' => 'auth|is_superadmin|event'), function()
