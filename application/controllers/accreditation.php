@@ -10,6 +10,9 @@ class Accreditation_Controller extends Controller {
 	public function action_controll($hash)
 	{
 		$event = Config::get('application.event');
+		if(!$event)
+			return Response::error('404');
+		
 		$person = $event->people()->where('hash', '=', $hash)->first();
 
 		if(!$person)
