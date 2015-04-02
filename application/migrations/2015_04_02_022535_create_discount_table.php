@@ -53,7 +53,7 @@ class Create_Discount_Table {
 			[
 				['name' => 'Category'],
 				['name' => 'Product'],
-				['name' => 'Global']
+				['name' => 'Profile']
 			]);
 
 		// Set up value types

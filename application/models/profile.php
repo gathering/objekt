@@ -31,6 +31,15 @@ class Profile extends Eloquent {
 		return array_unique(array_map('strtolower', array_merge(array($this->slug), explode(" ", $this->name))), SORT_REGULAR);
 	}
 
+	protected function Discount_Type(){
+		return Discount_Type::where('name', '=', 'Profile');
+	}
+
+	function discount(){
+		$type = $this->Discount_Type()->first();
+		return $this->has_many('discount')->where('type_id', '=', $type->id);
+	}
+
 	public function media($take=0){
 
 		$tags = $this->tags();
