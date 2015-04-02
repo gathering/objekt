@@ -42,7 +42,11 @@
       <i class="fa fa-bars icon-xlarge text-default"></i>
     </button>
     <ul class="nav navbar-nav hidden-xs pull-right">
-      
+      @if(!Auth::guest())
+      <div class="m-t-small">
+        <a href="{{ url('/') }}" class="btn btn-sm btn-info"><i class="fa fw fa-arrow-left"></i> {{ __('partner.back_to_backoffice') }}</a>
+      </div>
+      @endif
     </ul>
 	</header>
   <!-- / header -->

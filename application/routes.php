@@ -228,6 +228,7 @@ Route::group(array('before' => 'auth|can_profiles|event'), function(){
 	Route::post('/profile/(:any)/edit', array('before' => 'can_edit_profile', 'uses' => 'profiles@post_edit'));
 
 	Route::get('/profile/(:any)/messages', array('before' => 'can_profiles', 'uses' => 'profiles@messages'));
+	Route::get('/profile/(:any)/logon-as-partner', array('before' => 'can_logon_as_partner', 'uses' => 'profiles@logon_as_partner'));
 
 	Route::get('/profile/(:any)/delete', array('before' => 'can_delete_profile', 'uses' => 'profiles@delete'));
 	Route::post('/profile/(:any)/delete', array('before' => 'can_delete_profile', 'uses' => 'profiles@post_delete'));
@@ -372,12 +373,9 @@ Route::group(array('before' => 'auth|can_logistics|event|logistics'), function()
 
 /* General */
 
-Route::get('/change_event', function(){
-	$user = Auth::user()->id;
-	$user = User::find($user);
-	$events = $user->events();
-	return View::make('event.select')->with("events", $events);
-});
+Route::get('/change_event', array('before' => 'auth', function(){
+	return View::make('event.select')->with("events", Auth::user()->events());
+}));
 
 Route::get('/verification/(:any)', function($salt){
 	#if (!Auth::guest()) return Redirect::to('/');
@@ -414,10 +412,7 @@ Route::get('/partner/login', function(){
 	#die(var_dump(partnerAuth::check()));
 	if(partnerAuth::check()) return Redirect::to('/partner');
 
-	// Find random image from mediabank.
-	$file = Fil3::order_by(DB::raw('RAND()'))->where('type', '=', 'mediabank')->first();
-
-	return View::make('common.partnerLogin')->with('file', $file)->with("event", $event);
+	return View::make('common.partnerLogin')->with("event", $event);
 });
 Route::post('/partner/login', function(){
 

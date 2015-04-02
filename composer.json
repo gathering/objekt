@@ -20,7 +20,8 @@
         "mike182uk/cart": "dev-master",
         "mandrill/mandrill": "1.0.*",
         "mnsami/composer-custom-directory-installer": "1.0.*",
-        "objekt/objekt-language": "dev-master"
+        "objekt/objekt-language": "dev-master",
+        "league/csv": "~7.0@dev"
     },
     "minimum-stability": "dev",
     "extra": {

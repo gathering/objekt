@@ -10,6 +10,10 @@ class Profile extends Eloquent {
 		return User::find($this->user_id);
 	}
 
+	public function discounts(){
+		return $this->has_many('discount');
+	}
+
 	static function all(){
 		$event = Config::get('application.event');
 		return parent::order_by('name', 'asc')->where("event_id", "=", $event->id)->get();
@@ -131,6 +135,10 @@ class Profile extends Eloquent {
 
 	public function contactpersons(){
 		return $this->person()->where("contact_person", "=", "1")->get();
+	}
+
+	public function contacts(){
+		return $this->person()->where("contact_person", "=", "1");
 	}
 	
 	function delete(){

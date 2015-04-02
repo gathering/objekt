@@ -47,6 +47,10 @@ class Format {
 		return $num;
 	}
 
+	static function price($number){
+		return number_format($number, 0, '', ' ').',-';
+	}
+
 	static function orgnr($num)
 	{
 		$num = preg_replace('/[^0-9]/', '', $num);

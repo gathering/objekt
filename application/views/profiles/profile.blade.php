@@ -69,6 +69,9 @@ $(function() {
         @if (Auth::user()->can("edit_profile"))
         <a href="{{ url('profile/'.$profile->slug.'/edit') }}" class="list-group-item active"><i class="fa fa-pencil"></i> {{ __('profile.edit') }}</a>
         @endif
+        @if (Auth::user()->can("logon_as_partner"))
+        <a href="{{ url('profile/'.$profile->slug.'/logon-as-partner') }}" target="_blank" class="list-group-item{{ URI::segment(2) != 'person-edit' ? ' active' : '' }}"><i class="fa fa-key"></i> {{ __('profile.logon_as_partner') }}</a>
+        @endif
         <a href="{{ url('profile/'.$profile->slug.'/messages') }}" class="list-group-item active"><i class="fa fa-envelope"></i> {{ __('profile.messages') }}</a>
       </div>
       @if ($profile->location()->w > 0)

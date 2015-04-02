@@ -17,10 +17,7 @@
 	<link rel="stylesheet" href="{{ asset('css/backolini/app.css') }}">
 </head>
 
-<body style="background: url('http://d1q68elf4gs9cr.cloudfront.net/{{ $file->s3_path }}') no-repeat center center fixed; -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; padding-top: 60px;">
+<body>
 <div class="container w-xxl w-auto-xs" style="background: white;">
 	<a href class="navbar-brand block m-t">{{ $event->name }}</a>
 	<div class="m-b-lg">

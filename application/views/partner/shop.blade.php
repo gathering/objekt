@@ -30,32 +30,45 @@
 	</div>
 </div>
 @endif
-
-<div class="row">
-	<?php $count=0; ?>
-	@foreach ($current_event->products()->get() as $product)
-	<?php $count += $product->sortsize; ?>
-	<div class="col-lg-{{ $product->sortsize }}">
+<div class="container-fluid">
+	<div class="row">
+		@foreach ($current_event->productCategories()->get() as $category)
+		<?php $count = 0; ?>
+		<?php $count += $category->sortsize; ?>
+		<div class="col-md-{{ $category->sortsize }}">
 		<section class="panel">
-			<header class="panel-heading">{{ $product->name }}</header>
-			<div class="panel-body">
-				{{ $product->description }}
-				<br />
-			</div>
-			<div class="panel-footer">
-				<div class="pull-right">
-					<div style="font-size: 48px;">{{ $product->price() }},-</div>
-					På lager: {{ $product->stock() }} stk
-				</div>
-				<a href="{{ url('/partner/shop/cart/'.$product->id) }}" class="btn btn-primary btn-lg pull-right" style="margin-right: 30px; margin-top: 20px;">Legg i handlevogn</a>
-				<div class="clear"></div>
-			</div>
+			<header class="panel-heading">
+				{{ $category->name }}
+			</header>
+			<ul class="list-group">
+			  @foreach($category->products()->get() as $product)
+			  <li class="list-group-item">
+			    <div class="media">
+			      <div class="pull-right m-t-small">
+			        <a href="{{ url('/partner/shop/cart/'.$product->id) }}" class="btn btn-primary btn-xs"><i class="fa fa-shopping-cart"></i> Legg i handlevogn</a>
+			      </div>
+			      <div class="pull-right m-t-small" style="text-align: right">
+			      	{{ Format::price($product->price()) }}<br />
+			      	<small class="text-muted">{{ $product->unit }}</small>
+			      </div>
+			      <div class="media-body">
+			        <div>{{ $product->name }}</div>
+			        <small class="text-muted">
+			        	{{ $product->description }}
+			        	@if($product->stock() > 0)
+						<span class="badge bg-success">På lager: {{ $product->stock() }} stk</span>
+						@endif
+			        </small>
+			      </div>
+			    </div>
+			  </li>
+			  @endforeach
+			</ul>
 		</section>
 	</div>
 	@if($count == 12)
-</div>
-<div class="row">
+	</div>
+	<div class="row">
 	<?php $count=0; ?>
 	@endif
 	@endforeach
-</div>

@@ -187,6 +187,15 @@ class Events extends Eloquent {
 		return User::find($this->primary_contact);
 	}
 
+	function productCategories()
+	{
+		return $this->has_many('category', 'event_id');
+	}
+
+	function categories(){
+		return $this->has_many('category', 'event_id');
+	}
+
 	function products(){
 		return $this->has_many('product', 'event_id');
 	}

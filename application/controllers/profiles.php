@@ -6,6 +6,17 @@ class Profiles_Controller extends Controller {
 		return View::make('profiles.index');
 	}
 
+	public function action_logon_as_partner($slug)
+	{
+		$profile = profile::find($slug);
+		if(!$profile) die("This profile was not found, and will not be found - unless its added. (SLUG: {$slug})");
+			
+		$person = $profile->contacts()->first();
+		PartnerAuth::login($person->id);
+
+		return Redirect::to('partner');
+	}
+
 	public function action_edit($slug)
 	{
 		$profile = profile::find($slug);
