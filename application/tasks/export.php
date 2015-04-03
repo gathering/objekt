@@ -32,18 +32,22 @@ class Export_Task {
 
 			// If person has valid accreditation
 			$entry = $person->entries()->where(function($query){
+
 				$query->where('status', '=', 'valid');
 				$query->where('type', '=', 'badge');
+
 			})->or_where(function($query){
+
 				$query->where('status', '=', 'valid');
 				$query->where('type', '=', 'wristband');
 				$query->where('delivery_date', '>', DB::Raw('NOW()'));
+
 			})->order_by('created_at', 'desc')->first();
 
 			if($entry){
 			
-				array_push($personData, $entry['type']);
-				array_push($personData, $entry['ident']);
+				array_push($personData, $entry->type);
+				array_push($personData, $entry->ident);
 
 			}
 
