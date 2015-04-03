@@ -14,7 +14,7 @@ class Export_Task {
 			die("Could not find event.\n");
 
 		$writer = Writer::createFromFileObject(new SplTempFileObject());
-		if(isset($attributes[1]))
+		if($attributes[1] == 'true')
 			$writer->setDelimiter(';');
 
 		$ex_profiles = [];
