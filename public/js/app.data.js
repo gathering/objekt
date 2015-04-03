@@ -1,5 +1,8 @@
 $(document).ready(function() {
-
+	$( document ).scannerDetection(function(ident){
+		$('input[name=search]').val(ident);
+		$("#search").submit();
+	});
 	 $('#docs pre code').each(function(){
 	    var $this = $(this);
 	    var t = $this.html();

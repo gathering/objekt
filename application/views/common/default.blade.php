@@ -87,7 +87,7 @@
       </li>
     </ul>
     @if (Auth::user()->can("search"))
-    <form action="{{ url('search') }}" method="post" class="navbar-form pull-left shift">
+    <form action="{{ url('search') }}" id="search" method="post" class="navbar-form pull-left shift">
       <i class="fa fa-search text-muted"></i>
       <input type="text" name="search" class="input-sm form-control" placeholder="{{ __('common.search') }}">
     </form>
@@ -199,6 +199,8 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.2/typeahead.bundle.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.2/handlebars.min.js"></script>
+  <script>var SearchUrl = '{{ url('search') }}';</script>
+  <script src="{{ asset('js/jquery.scannerdetection.js') }}"></script>
   <!-- app -->
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script src="{{ asset('js/app.plugin.js') }}"></script>
