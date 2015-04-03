@@ -1,7 +1,7 @@
 <?php
 
 class tplConstructor {
-	static $constructor = true;
+	static $constructor = false;
 	static function has(){
 		return self::$constructor;
 	}
