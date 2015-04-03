@@ -31,7 +31,7 @@ class Export_Task {
 				];
 
 			// If person has valid accreditation
-			$entries = $person->entries()->where(function($query){
+			$entry = $person->entries()->where(function($query){
 				$query->where('status', '=', 'valid');
 				$query->where('type', '=', 'badge');
 			})->or_where(function($query){
@@ -39,9 +39,13 @@ class Export_Task {
 				$query->where('type', '=', 'wristband');
 				$query->where('delivery_date', '>', DB::Raw('NOW()'));
 			})->order_by('created_at', 'desc')->first();
+
+			if($entry){
 			
-			array_push($personData, $entries['type']);
-			array_push($personData, $entries['ident']);
+				array_push($personData, $entry['type']);
+				array_push($personData, $entry['ident']);
+
+			}
 
 			$writer->insertOne($personData);
 		}
