@@ -41,6 +41,12 @@
 				@endif
 			</span></td>
 		</tr>
+		@if($entry = $person->validEntries()->where('type', '=', 'wristband')->first())
+		<tr>
+			<td class="description"><b>{{ __('user.accreditation_ident') }}</b></td>
+			<td class="value"><span>{{ $entry->ident }}</span></td>
+		</tr>
+		@endif
 	</tbody>
 </table>
 <section class="panel">

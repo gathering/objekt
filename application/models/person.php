@@ -75,6 +75,16 @@ class Person extends Eloquent {
 	function entries(){
 		return $this->has_many("entry");
 	}
+	function validEntries(){
+		return $this->entries()
+					->where('status', '=', 'valid')
+					->where(function($query){
+						$query->where('type', '=', 'wristband');
+					})->or_where(function($query){
+						$query->where('type', '=', 'badge');
+						$query->where('delivery_date', '>', DB::Raw('NOW()'));
+					});
+	}
 	function url($url="profile"){
 		$profile = $this->profile();
 

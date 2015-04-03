@@ -75,6 +75,18 @@ class Accreditation_Controller extends Controller {
 		$entry->type = "wristband";
 		$entry->ident = Input::get('ident');
 		$person->entries()->insert($entry);
+
+		$params['body']  = $person->to_array();
+		unset($params['body']['updated_at']); // Not needed.
+		unset($params['body']['created_at']); // Not needed.
+
+		$params['index'] = 'people';
+		$params['type']  = 'obj';
+		$params['id']    = $person->id;
+
+		$params['body']['entry']['ident'] = $entry->ident;
+		Elastisk::index($params);
+
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has arrived to stay, equiped with a wristband.");
 		$person->sendNotification(__('accreditation.notification.wristband'));
 
@@ -175,6 +187,19 @@ class Accreditation_Controller extends Controller {
 
 		$person->status = "departed";
 		$person->save();
+
+		$params['body']  = $person->to_array();
+		unset($params['body']['updated_at']); // Not needed.
+		unset($params['body']['created_at']); // Not needed.
+
+		$params['index'] = 'people';
+		$params['type']  = 'obj';
+		$params['id']    = $person->id;
+
+		# $params['body']['entry']['ident'] = $entry->ident;
+		
+		Elastisk::index($params);
+
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has departed from the event. {$person->firstname} is not expected to be back again.");
 		$person->sendNotification(__('accreditation.notification.departed'));
 		return Redirect::to("accreditation")->with("success", __('accreditation.registred_departed', array("name" => $person->firstname." ".$person->surname, "url" => $person->url())));

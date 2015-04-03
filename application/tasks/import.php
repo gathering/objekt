@@ -12,10 +12,6 @@ class Import_Task {
 
 		return $price;
 	}
-	
-	function run($attributes){
-		var_dump($attributes);
-	}
 
 	function products($attributes){
 		$event = $attributes[0];
