@@ -5,10 +5,9 @@ class Export_Task {
 
 	function csv($attributes){
 		if(count($attributes) != 2)
-			die("Usage: artisan export:csv <event-id> <filepath>\n");
+			die("Usage: artisan export:csv <event-id>\n");
 
 		$event = $attributes[0];
-		$file = realpath($attributes[1]);
 
 		$event = Events::find($event);
 		if(!$event)
@@ -54,7 +53,7 @@ class Export_Task {
 			$writer->insertOne($personData);
 		}
 
-		$writer->output($file);
+		$writer->output();
 	}
 
 }
