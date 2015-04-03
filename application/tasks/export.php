@@ -14,9 +14,11 @@ class Export_Task {
 			die("Could not find event.\n");
 
 		$writer = Writer::createFromFileObject(new SplTempFileObject());
+		if(isset($attributes[1]))
+			$writer->setDelimiter(';');
 
 		// Insert headers
-		$writer->insertOne(['firstname', 'surname', 'phone', 'email', 'partner', 'is_contact_person', 'accreditation', 'card_id']);
+		$writer->insertOne(['firstname', 'surname', 'phone', 'email', 'partner', 'is_contact_person', 'status', 'accreditation', 'card_id']);
 
 		foreach($event->people()->get() as $person){
 
@@ -26,22 +28,25 @@ class Export_Task {
 					$person->phone,
 					$person->email,
 					$person->profile()->name,
-					$person->contact_person
+					$person->contact_person,
+					$person->status
 				];
 
 			// If person has valid accreditation
-			$entry = $person->entries()->where(function($query){
+			$entry = $person->entries()
+			->where('status', '=', 'valid')
+			->where(function($query){
 
-				$query->where('status', '=', 'valid');
-				$query->where('type', '=', 'badge');
+				$query->where('type', '=', 'wristband');
 
 			})->or_where(function($query){
 
-				$query->where('status', '=', 'valid');
-				$query->where('type', '=', 'wristband');
+				$query->where('type', '=', 'badge');
 				$query->where('delivery_date', '>', DB::Raw('NOW()'));
 
-			})->order_by('created_at', 'desc')->first();
+			})->first();
+
+			var_dump($entry);
 
 			if($entry){
 			
@@ -53,7 +58,7 @@ class Export_Task {
 				array_push($personData, '');
 			}
 
-			$personData = array_map( "utf8_encode", $personData );
+			$personData = array_map( "utf8_decode", $personData );
 
 			$writer->insertOne($personData);
 		}
