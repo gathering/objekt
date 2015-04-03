@@ -46,8 +46,6 @@ class Export_Task {
 
 			})->first();
 
-			var_dump($entry);
-
 			if($entry){
 			
 				array_push($personData, $entry->type);
