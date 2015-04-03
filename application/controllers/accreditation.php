@@ -36,6 +36,7 @@ class Accreditation_Controller extends Controller {
 		if(!$profile) return Redirect::to(Request::referrer());
 
 		tplConstructor::set(true);
+		scannerConstructor::set(false);
 
 		$person = $profile->person()->where("slug", "=", $person_slug)->first();
 		return View::make('accreditation.person_profile')->with("person", $person);
@@ -197,7 +198,7 @@ class Accreditation_Controller extends Controller {
 		$params['id']    = $person->id;
 
 		# $params['body']['entry']['ident'] = $entry->ident;
-		
+
 		Elastisk::index($params);
 
 		Loogie::doo("person", $person, "User «{$person->slug}» at «{$profile->name}» has departed from the event. {$person->firstname} is not expected to be back again.");

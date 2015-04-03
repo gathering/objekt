@@ -1,6 +1,6 @@
 <?php
 
-class tplConstructor {
+class scannerConstructor {
 	static $constructor = true;
 	static function has(){
 		return self::$constructor;

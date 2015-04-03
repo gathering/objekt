@@ -20,6 +20,10 @@ $(function() {
 		});
 	});
 	$('input[name=ident]').focus();
+	$( document ).scannerDetection(function(ident){
+      $('input[name=ident]').val(ident);
+      $("#wristband").submit();
+    });
 });
 </script>
 @endsection
@@ -34,8 +38,8 @@ $(function() {
 			</div>
 			<section class="panel bg-inverse padder">
 				<p>{{ __('profile.wristband_header') }}</p>
-				<form method="post" action="{{ url($person->url('accreditation/wristband')) }}">
-					<input type="text" name="ident" class="form-control" /><br />
+				<form method="post" id="wristband" action="{{ url($person->url('accreditation/wristband')) }}">
+					<input type="text" autocomplete="off" name="ident" class="form-control" /><br />
 					<button type="submit" class="btn btn-primary">{{ __('accreditation.accredit') }}</button>
 				</form>
 			</section>

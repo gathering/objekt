@@ -269,6 +269,14 @@
   
   <script>
   $(function() {
+
+    @if(scannerConstructor::has())
+    $( document ).scannerDetection(function(ident){
+      $('input[name=search]').val(ident);
+      $("#search").submit();
+    });
+    @endif
+
     var num_notifications = {{ $notification_count }};
     function add_notification(data){
         if(data.url){
