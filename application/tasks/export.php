@@ -1,0 +1,52 @@
+<?php
+use League\Csv\Writer;
+
+class Export_Task {
+
+	function csv($attributes){
+		if(count($attributes) != 2)
+			die("Usage: artisan export:csv <event-id> <filepath>\n");
+
+		$event = $attributes[0];
+		$file = realpath($attributes[1]);
+
+		$event = Events::find($event);
+		if(!$event)
+			die("Could not find event.\n");
+
+		$writer = Writer::createFromFileObject(new SplTempFileObject());
+
+		// Insert headers
+		$writer->insertOne(['firstname', 'surname', 'phone', 'email', 'partner', 'is_contact_person', 'accreditation', 'card_id']);
+
+		foreach($event->people()->get() as $person){
+
+			$personData = [
+					$person->firstname,
+					$person->surname,
+					$person->phone,
+					$person->email,
+					$person->profile()->name,
+					$person->contact_person
+				];
+
+			// If person has valid accreditation
+			$entries = $person->entries()->where(function($query){
+				$query->where('status', '=', 'valid');
+				$query->where('type', '=', 'badge');
+			})->or_where(function($query){
+				$query->where('status', '=', 'valid');
+				$query->where('type', '=', 'wristband');
+				$query->where('delivery_date', '>', DB::Raw('NOW()'));
+			})->order_by('created_at', 'desc')->first();
+			
+			array_push($personData, $entries['type']);
+			array_push($personData, $entries['ident']);
+
+			$writer->insertOne($personData);
+		}
+
+		$writer->output($file);
+	}
+
+}

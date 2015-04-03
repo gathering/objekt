@@ -12,7 +12,7 @@ class Profiles_Controller extends Controller {
 		if(!$profile) die("This profile was not found, and will not be found - unless its added. (SLUG: {$slug})");
 			
 		$person = $profile->contacts()->first();
-		PartnerAuth::login($person->id);
+		partnerAuth::login($person->id);
 
 		return Redirect::to('partner');
 	}
