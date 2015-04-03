@@ -5,7 +5,7 @@ class Export_Task {
 
 	function csv($attributes){
 		if(count($attributes) < 1)
-			die("Usage: artisan export:csv <event-id>\n");
+			die("Usage: artisan export:csv <event-id> <semicolon-seperator?> <profiles-to-exclude>\n");
 
 		$event = $attributes[0];
 
@@ -17,10 +17,18 @@ class Export_Task {
 		if(isset($attributes[1]))
 			$writer->setDelimiter(';');
 
+		$ex_profiles = [];
+		if(isset($attributes[2])){
+			$ex_profiles = explode(",", $attributes[2]);
+		}
+
 		// Insert headers
 		$writer->insertOne(['firstname', 'surname', 'phone', 'email', 'partner', 'is_contact_person', 'status', 'accreditation', 'card_id']);
 
 		foreach($event->people()->get() as $person){
+
+			if(in_array($person->profile_id, $ex_profiles))
+				continue;
 
 			$personData = [
 					$person->firstname,
