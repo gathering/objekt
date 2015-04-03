@@ -67,7 +67,7 @@ Class Index_Task {
 					->first();
 
 				if(isset($entry->ident) && !empty($entry->ident))
-					$params['body']['entry']['ident'] = $entry['ident'];
+					$params['body']['entry']['ident'] = $entry->ident;
 
 				Elastisk::index($params);
 
