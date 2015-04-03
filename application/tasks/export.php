@@ -48,7 +48,12 @@ class Export_Task {
 				array_push($personData, $entry->type);
 				array_push($personData, $entry->ident);
 
+			} else {
+				array_push($personData, '');
+				array_push($personData, '');
 			}
+
+			$personData = array_map( "utf8_encode", $personData );
 
 			$writer->insertOne($personData);
 		}
