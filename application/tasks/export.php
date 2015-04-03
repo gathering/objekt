@@ -4,7 +4,7 @@ use League\Csv\Writer;
 class Export_Task {
 
 	function csv($attributes){
-		if(count($attributes) > 1)
+		if(count($attributes) < 1)
 			die("Usage: artisan export:csv <event-id>\n");
 
 		$event = $attributes[0];
