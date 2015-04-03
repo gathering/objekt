@@ -212,7 +212,7 @@
   <script>
   $(function() {
     Messenger.options = {
-        extraClasses: 'messenger-fixed messenger-on-bottom',
+        extraClasses: 'messenger-fixed messenger-on-top',
         theme: 'flat'
     }
   });
